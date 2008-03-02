@@ -1,7 +1,8 @@
-package com.garretwilson.text.xml.xlink;
+package com.globalmentor.text.xml.xlink;
 
 import java.net.URI;
-import com.garretwilson.text.xml.XML;
+
+import com.globalmentor.text.xml.XML;
 
 /**Definitions for XLink defined by the W3C at
 	<a href="http://www.w3.org/TR/xlink/">http://www.w3.org/TR/xlink/</a>.

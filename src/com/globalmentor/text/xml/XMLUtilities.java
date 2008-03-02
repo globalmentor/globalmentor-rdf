@@ -1,4 +1,4 @@
-package com.garretwilson.text.xml;
+package com.globalmentor.text.xml;
 
 import java.io.*;
 import java.lang.ref.*;
@@ -8,7 +8,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import static com.garretwilson.text.xml.stylesheets.XMLStyleSheetConstants.*;
 
 import com.globalmentor.io.ContentTypes;
 import com.globalmentor.java.*;
@@ -17,15 +16,16 @@ import com.globalmentor.util.Debug;
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.*;
 
-import static com.garretwilson.text.xml.mathml.MathMLConstants.*;
-import static com.garretwilson.text.xml.svg.SVGConstants.*;
-import static com.garretwilson.text.xml.xhtml.XHTML.*;
 
-import static com.garretwilson.text.xml.XML.*;
 
 import static com.globalmentor.io.ContentTypeConstants.*;
 import static com.globalmentor.io.ContentTypes.*;
 import static com.globalmentor.java.Integers.*;
+import static com.globalmentor.text.xml.XML.*;
+import static com.globalmentor.text.xml.mathml.MathMLConstants.*;
+import static com.globalmentor.text.xml.stylesheets.XMLStyleSheetConstants.*;
+import static com.globalmentor.text.xml.svg.SVGConstants.*;
+import static com.globalmentor.text.xml.xhtml.XHTML.*;
 
 /**Various XML constants and manipulation functions. The methods here are meant to be generic
 in that they only access XML through the W3C DOM.

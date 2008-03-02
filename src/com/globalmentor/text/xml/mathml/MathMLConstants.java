@@ -1,4 +1,4 @@
-package com.garretwilson.text.xml.mathml;
+package com.globalmentor.text.xml.mathml;
 
 import java.net.URI;
 import javax.mail.internet.ContentType;

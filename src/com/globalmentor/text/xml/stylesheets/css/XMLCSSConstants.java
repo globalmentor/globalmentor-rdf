@@ -1,4 +1,4 @@
-package com.garretwilson.text.xml.stylesheets.css;
+package com.globalmentor.text.xml.stylesheets.css;
 
 import java.awt.Color;
 import java.util.regex.Pattern;

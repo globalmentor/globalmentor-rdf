@@ -1,4 +1,4 @@
-package com.garretwilson.text.xml.schema;
+package com.globalmentor.text.xml.schema;
 
 import java.util.*;
 

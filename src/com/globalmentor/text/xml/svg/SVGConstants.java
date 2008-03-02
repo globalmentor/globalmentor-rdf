@@ -1,4 +1,4 @@
-package com.garretwilson.text.xml.svg;
+package com.globalmentor.text.xml.svg;
 
 import java.net.URI;
 import javax.mail.internet.ContentType;

@@ -1,4 +1,4 @@
-package com.garretwilson.text.xml.xhtml;
+package com.globalmentor.text.xml.xhtml;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,19 +14,19 @@ import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.w3c.dom.css.CSSStyleDeclaration;
 
-import static com.garretwilson.text.xml.XMLUtilities.*;
-import com.garretwilson.text.xml.oeb.OEBConstants;
-import com.garretwilson.text.xml.stylesheets.css.XMLCSSProcessor;
-import com.garretwilson.text.xml.stylesheets.css.XMLCSSStyleDeclaration;
-import com.garretwilson.text.xml.xpath.XPath;
-import com.garretwilson.text.xml.xpath.XPathConstants;
 import com.globalmentor.io.ContentTypes;
 import com.globalmentor.io.Files;
 import com.globalmentor.io.ParseReader;
 import com.globalmentor.java.Objects;
+import com.globalmentor.text.xml.oeb.OEBConstants;
+import com.globalmentor.text.xml.stylesheets.css.XMLCSSProcessor;
+import com.globalmentor.text.xml.stylesheets.css.XMLCSSStyleDeclaration;
+import com.globalmentor.text.xml.xpath.XPath;
+import com.globalmentor.text.xml.xpath.XPathConstants;
 import com.globalmentor.util.Arrays;
 
 import static com.globalmentor.io.ContentTypeConstants.*;
+import static com.globalmentor.text.xml.XMLUtilities.*;
 
 /**Constants to work with an XHTML and DOM document representing XHTML.
 @author Garret Wilson
