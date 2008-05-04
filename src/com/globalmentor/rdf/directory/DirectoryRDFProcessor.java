@@ -20,7 +20,7 @@ import java.util.*;
 
 import com.globalmentor.rdf.*;
 import com.globalmentor.text.directory.*;
-import static com.globalmentor.text.directory.DirectoryConstants.*;
+import static com.globalmentor.text.directory.Directory.*;
 
 /**Class that is able to construct an RDF data model from a directory of type
 	<code>text/directory</code> as defined in
@@ -131,7 +131,7 @@ public class DirectoryRDFProcessor extends AbstractRDFProcessor
 	@return The RDF data model resulting from this processing and any previous
 		processing.
 	*/
-	public RDF process(final RDFResource resource, final com.globalmentor.text.directory.Directory directory)
+	public RDF process(final RDFResource resource, final Directory directory)
 	{
 		final RDF rdf=getRDF(); //get the RDF data model we're using
 		final Iterator contentLineIterator=directory.getContentLineList().iterator();	//get an iterator to all the content lines of the directory

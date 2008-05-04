@@ -21,7 +21,6 @@ import java.util.*;
 
 import com.globalmentor.rdf.*;
 import com.globalmentor.text.directory.*;
-import static com.globalmentor.text.directory.DirectoryConstants.*;
 
 /**RDF factory for the predefined types of a directory of type
 	<code>text/directory</code> as defined in
@@ -60,8 +59,8 @@ public class PredefinedRDFProfile extends PredefinedProfile implements RDFProper
 	public PredefinedRDFProfile()
 	{
 			//register property URIs for the predefined types
-		registerPropertyURI(SOURCE_TYPE, RDFResources.createReferenceURI(RDFDirectory.DIRECTORY_NAMESPACE_URI, SOURCE_TYPE.toLowerCase()));	//SOURCE		
-		registerPropertyURI(NAME_TYPE, RDFResources.createReferenceURI(RDFDirectory.DIRECTORY_NAMESPACE_URI, NAME_TYPE.toLowerCase()));	//NAME
+		registerPropertyURI(Directory.SOURCE_TYPE, RDFResources.createReferenceURI(RDFDirectory.DIRECTORY_NAMESPACE_URI, Directory.SOURCE_TYPE.toLowerCase()));	//SOURCE		
+		registerPropertyURI(Directory.NAME_TYPE, RDFResources.createReferenceURI(RDFDirectory.DIRECTORY_NAMESPACE_URI, Directory.NAME_TYPE.toLowerCase()));	//NAME
 	}
 	
 	/**Creates an RDF property resource to represent the given directory
@@ -89,7 +88,7 @@ public class PredefinedRDFProfile extends PredefinedProfile implements RDFProper
 	*/
 	public RDFObject createPropertyValue(final RDF rdf, final ContentLine contentLine, final String valueType)
 	{
-		if(TEXT_VALUE_TYPE.equalsIgnoreCase(valueType))	//if this is the "text" value type
+		if(Directory.TEXT_VALUE_TYPE.equalsIgnoreCase(valueType))	//if this is the "text" value type
 		{
 			return new RDFPlainLiteral(contentLine.getValue().toString());	//return the string value of the content line as a literal
 /*TODO fix
