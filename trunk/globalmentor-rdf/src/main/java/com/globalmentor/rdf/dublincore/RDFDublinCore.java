@@ -21,10 +21,10 @@ import java.util.*;
 
 import com.globalmentor.model.Locales;
 import com.globalmentor.rdf.*;
+
+import static com.globalmentor.metadata.DCMI.*;
 import static com.globalmentor.rdf.RDFResources.*;
 import com.globalmentor.text.*;
-
-import static com.globalmentor.dcmi.DCMI.*;
 
 /**
  * Utilities for working with Dublin Core stored in RDF.
