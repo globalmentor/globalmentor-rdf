@@ -16,11 +16,11 @@
 
 package com.globalmentor.rdf.xmlschema;
 
+import static com.globalmentor.w3c.spec.XMLSchema.*;
+
 import java.net.*;
 
 import com.globalmentor.rdf.*;
-
-import static com.globalmentor.text.xml.schema.XMLSchema.*;
 
 /**
  * A factory to create typed literals within the XML schema namespace.

@@ -16,9 +16,10 @@
 
 package com.globalmentor.rdf.xmlschema;
 
+import static com.globalmentor.w3c.spec.XMLSchema.*;
+
 import com.globalmentor.java.Objects;
 import com.globalmentor.rdf.*;
-import static com.globalmentor.text.xml.schema.XMLSchema.*;
 import com.globalmentor.util.Base64;
 
 /**

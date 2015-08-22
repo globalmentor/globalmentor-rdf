@@ -16,9 +16,9 @@
 
 package com.globalmentor.rdf.xmlschema;
 
-import com.globalmentor.rdf.*;
+import static com.globalmentor.w3c.spec.XMLSchema.*;
 
-import static com.globalmentor.text.xml.schema.XMLSchema.*;
+import com.globalmentor.rdf.*;
 
 /**
  * An RDF typed literal that represents an XML Schema string.

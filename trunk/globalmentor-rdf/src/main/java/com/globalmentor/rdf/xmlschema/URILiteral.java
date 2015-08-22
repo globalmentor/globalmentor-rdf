@@ -21,7 +21,7 @@ import java.net.*;
 import com.globalmentor.rdf.*;
 
 import static com.globalmentor.java.Objects.*;
-import static com.globalmentor.text.xml.schema.XMLSchema.*;
+import static com.globalmentor.w3c.spec.XMLSchema.*;
 
 /**
  * An RDF literal that represents an XML Schema URI.
