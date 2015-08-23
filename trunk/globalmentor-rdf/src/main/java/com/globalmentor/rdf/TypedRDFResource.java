@@ -16,6 +16,8 @@
 
 package com.globalmentor.rdf;
 
+import static com.globalmentor.w3c.spec.RDF.*;
+
 import java.net.URI;
 
 /**
@@ -49,7 +51,7 @@ public abstract class TypedRDFResource extends DefaultRDFResource {
 	 * @param newLocalName The XML local name used in the serialization.
 	 */
 	public TypedRDFResource(final URI newNamespaceURI, final String newLocalName) {
-		this((RDF)null, newNamespaceURI, newLocalName); //do the default construction, combining the namespace URI and the local name for the reference URI
+		this((RDFModel)null, newNamespaceURI, newLocalName); //do the default construction, combining the namespace URI and the local name for the reference URI
 	}
 
 	/**
@@ -58,8 +60,8 @@ public abstract class TypedRDFResource extends DefaultRDFResource {
 	 * @param newNamespaceURI The XML namespace URI used in the serialization.
 	 * @param newLocalName The XML local name used in the serialization.
 	 */
-	public TypedRDFResource(final RDF rdf, final URI newNamespaceURI, final String newLocalName) {
-		this(rdf, RDFResources.createReferenceURI(newNamespaceURI, newLocalName)); //do the default construction, combining the namespace URI and the local name for the reference URI
+	public TypedRDFResource(final RDFModel rdf, final URI newNamespaceURI, final String newLocalName) {
+		this(rdf, createReferenceURI(newNamespaceURI, newLocalName)); //do the default construction, combining the namespace URI and the local name for the reference URI
 	}
 
 	/**
@@ -67,7 +69,7 @@ public abstract class TypedRDFResource extends DefaultRDFResource {
 	 * @param rdf The data model with which this resource should be associated.
 	 * @param referenceURI The reference URI for the new resource.
 	 */
-	public TypedRDFResource(final RDF rdf, final URI referenceURI) {
+	public TypedRDFResource(final RDFModel rdf, final URI referenceURI) {
 		super(rdf, referenceURI); //construct the parent class
 		RDFResources.addType(this, getDefaultTypeNamespaceURI(), getDefaultTypeName()); //add the default type
 	}

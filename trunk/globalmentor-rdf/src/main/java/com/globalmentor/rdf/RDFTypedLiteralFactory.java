@@ -21,7 +21,7 @@ import java.net.URI;
 /**
  * A factory to create typed literals by doing the required lexical form to value mapping.
  * @author Garret Wilson
- * @see RDF
+ * @see RDFModel
  */
 public interface RDFTypedLiteralFactory {
 

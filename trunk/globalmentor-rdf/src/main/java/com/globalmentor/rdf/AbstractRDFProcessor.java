@@ -21,8 +21,9 @@ import java.util.*;
 
 import com.globalmentor.java.Java;
 import com.globalmentor.net.*;
-import static com.globalmentor.rdf.RDF.*;
+
 import static com.globalmentor.rdf.RDFResources.*;
+import static com.globalmentor.w3c.spec.RDF.*;
 
 /**
  * Base class for RDF processors. Each instance of an RDF processor maintains an internal RDF data model throughout its lifetime that is continually updated
@@ -47,10 +48,10 @@ import static com.globalmentor.rdf.RDFResources.*;
 public abstract class AbstractRDFProcessor {
 
 	/** The RDF data model that is filled by the processor. */
-	private RDF rdf;
+	private RDFModel rdf;
 
 	/** @return The RDF data model being constructed by the RDF processor. */
-	public RDF getRDF() {
+	public RDFModel getRDF() {
 		return rdf;
 	}
 
@@ -60,7 +61,7 @@ public abstract class AbstractRDFProcessor {
 	 * Sets the RDF data model. The list of statements is reset.
 	 * @param newRDF The RDF data model to use.
 	 */
-	public void setRDF(final RDF newRDF) {
+	public void setRDF(final RDFModel newRDF) {
 		rdf = newRDF; //set the RDF data model
 		//TODO del when works			setBaseURI(rdf.getBaseURI());	//use the same base URI
 		statementSet.clear(); //clear the set of statements
@@ -174,14 +175,14 @@ public abstract class AbstractRDFProcessor {
 
 	/** Default constructor. */
 	public AbstractRDFProcessor() {
-		this(new RDF()); //create an RDF data model to use
+		this(new RDFModel()); //create an RDF data model to use
 	}
 
 	/**
 	 * Constructor that specifies an existing data model to continue filling.
 	 * @param newRDF The RDF data model to use.
 	 */
-	public AbstractRDFProcessor(final RDF newRDF) {
+	public AbstractRDFProcessor(final RDFModel newRDF) {
 		setRDF(newRDF); //set the RDF data model and the base URI
 	}
 

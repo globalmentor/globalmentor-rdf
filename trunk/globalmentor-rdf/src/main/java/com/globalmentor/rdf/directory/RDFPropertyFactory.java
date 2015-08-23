@@ -33,6 +33,6 @@ public interface RDFPropertyFactory {
 	 * @param contentLine The directory content line to be converted to an RDF property.
 	 * @return An RDF property resource representing the directory content line, or <code>null</code> if an RDF property resource cannot be creatd.
 	 */
-	public RDFResource createProperty(final RDF rdf, final ContentLine contentLine);
+	public RDFResource createProperty(final RDFModel rdf, final ContentLine contentLine);
 
 }

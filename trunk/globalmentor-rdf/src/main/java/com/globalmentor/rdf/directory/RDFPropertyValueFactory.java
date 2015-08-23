@@ -34,6 +34,6 @@ public interface RDFPropertyValueFactory {
 	 * @param valueType The type of directory value the content line represents.
 	 * @return An RDF object representing the value of the directory content line, or <code>null</code> if an RDF object cannot be creatd.
 	 */
-	public RDFObject createPropertyValue(final RDF rdf, final ContentLine contentLine, final String valueType);
+	public RDFObject createPropertyValue(final RDFModel rdf, final ContentLine contentLine, final String valueType);
 
 }

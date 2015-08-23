@@ -37,14 +37,14 @@ public interface RDFResource extends RDFObject, Resource, Cloneable {
 	/**
 	 * @return The RDF data model with which this resource is associated, or <code>null</code> if this resource is not associated with a data model.
 	 */
-	public RDF getRDF();
+	public RDFModel getRDF();
 
 	/**
 	 * Associates this resource with an RDF data model.
 	 * @param rdf The RDF data model with which to associate this resource, or <code>null</code> if this resource should not be associated with any RDF data
 	 *          model.
 	 */
-	public void setRDF(final RDF rdf);
+	public void setRDF(final RDFModel rdf);
 
 	/** @return The number of properties this resource has. */
 	public int getPropertyCount();

@@ -18,10 +18,11 @@ package com.globalmentor.rdf;
 
 import java.io.*;
 
-import static com.globalmentor.rdf.RDF.*;
+import static com.globalmentor.w3c.spec.RDF.*;
 import static java.nio.charset.StandardCharsets.*;
 
 import com.globalmentor.text.xml.*;
+import com.globalmentor.text.xml.XML;
 
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;

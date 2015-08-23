@@ -18,7 +18,7 @@ package com.globalmentor.rdf;
 
 import java.net.URI;
 
-import static com.globalmentor.rdf.RDF.*;
+import static com.globalmentor.w3c.spec.RDF.*;
 
 /**
  * Represents an RDF bag resource.
@@ -28,7 +28,7 @@ public class RDFBagResource extends RDFContainerResource {
 
 	/** @return The namespace URI of the ontology defining the default type of this resource. */
 	public URI getDefaultTypeNamespaceURI() {
-		return RDF_NAMESPACE_URI;
+		return NAMESPACE_URI;
 	}
 
 	/** @return The local name of the default type of this resource. */
@@ -49,7 +49,7 @@ public class RDFBagResource extends RDFContainerResource {
 	 * @param rdf The data model associated with the container.
 	 * @param newReferenceURI The reference URI for the new resource.
 	 */
-	RDFBagResource(final RDF rdf, final URI newReferenceURI) {
+	RDFBagResource(final RDFModel rdf, final URI newReferenceURI) {
 		super(rdf, newReferenceURI); //construct the parent class
 	}
 

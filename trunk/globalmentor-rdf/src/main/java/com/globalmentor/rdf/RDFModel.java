@@ -24,6 +24,8 @@ import static java.util.Collections.*;
 import com.globalmentor.collections.IdentityHashSet;
 import com.globalmentor.net.URIs;
 import static com.globalmentor.rdf.RDFResources.*;
+import static com.globalmentor.w3c.spec.RDF.*;
+
 import com.globalmentor.rdf.rdfs.RDFS;
 import com.globalmentor.rdf.xmlschema.XMLSchemaRDFTypedLiteralFactory;
 import com.globalmentor.w3c.spec.XMLSchema;
@@ -50,70 +52,8 @@ import com.globalmentor.w3c.spec.XMLSchema;
  * </dl>
  * @author Garret Wilson
  */
-public class RDF //TODO special-case rdf:nil list resources so that they are not located, but a different instance is created for each one, to make RDFListResource convenience methods work correctly 
+public class RDFModel
 {
-
-	/** The recommended prefix to the RDF namespace. */
-	public static final String RDF_NAMESPACE_PREFIX = "rdf";
-
-	/** The URI to the RDF namespace. */
-	public static final URI RDF_NAMESPACE_URI = URI.create("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
-
-	//RDF property names
-	/** The pseudo-property name of a member container used only for serialization. The local name of rdf:li. */
-	public static final String LI_PROPERTY_NAME = "li";
-	/** The first element of a list. The local name of rdf:first. */
-	public static final String FIRST_PROPERTY_NAME = "first";
-	/** The rest of the elements of a list. The local name of rdf:rest. */
-	public static final String REST_PROPERTY_NAME = "rest";
-	/** The type of an RDF resource. The local name of rdf:type. */
-	public static final String TYPE_PROPERTY_NAME = "type";
-	/** The value of an RDF resource. The local name of rdf:value. (Defined in RDFS.) */
-	public static final String VALUE_PROPERTY_NAME = "value";
-
-	//RDF class names
-	/** The local name of rdf:Alt. */
-	public static final String ALT_CLASS_NAME = "Alt";
-	/** The local name of rdf:Bag. */
-	public static final String BAG_CLASS_NAME = "Bag";
-	/** The local name of rdf:List. */
-	public static final String LIST_CLASS_NAME = "List";
-	/** The local name of rdf:Seq. */
-	public static final String SEQ_CLASS_NAME = "Seq";
-
-	//RDF datatypes
-	/** The local name of the rdf:XMLLiteral. */
-	public static final String XML_LITERAL_DATATYPE_NAME = "XMLLiteral";
-	/** The URI of the <code>rdf:XMLLiteral</code> datatype. */
-	public static final URI XML_LITERAL_DATATYPE_URI = RDFResources.createReferenceURI(RDF_NAMESPACE_URI, XML_LITERAL_DATATYPE_NAME);
-
-	/**
-	 * The prefix to be used when generating property names for each member of a container, originally represented by <code>&lt;li&gt;</code> in the
-	 * serialization.
-	 */
-	public static final String CONTAINER_MEMBER_PREFIX = "_";
-
-	//RDF predefined reference URIs
-	/** The name of the <code>rdf:nil</code> resource. */
-	public static final String NIL_RESOURCE_NAME = "nil";
-	/** The URI of the <code>rdf:nil</code> resource. */
-	public static final URI NIL_RESOURCE_URI = RDFResources.createReferenceURI(RDF_NAMESPACE_URI, NIL_RESOURCE_NAME);
-
-	//RDF XML predefined class reference URIs
-	/** The reference URI of the rdf:alt property. */
-	public static final URI ALT_PROPERTY_REFERENCE_URI = RDFResources.createReferenceURI(RDF_NAMESPACE_URI, ALT_CLASS_NAME);
-	/** The reference URI of the rdf:bag property. */
-	public static final URI BAG_PROPERTY_REFERENCE_URI = RDFResources.createReferenceURI(RDF_NAMESPACE_URI, BAG_CLASS_NAME);
-	/** The reference URI of the rdf:list property. */
-	public static final URI LIST_PROPERTY_REFERENCE_URI = RDFResources.createReferenceURI(RDF_NAMESPACE_URI, LIST_CLASS_NAME);
-	/** The reference URI of the rdf:seq property. */
-	public static final URI SEQ_PROPERTY_REFERENCE_URI = RDFResources.createReferenceURI(RDF_NAMESPACE_URI, SEQ_CLASS_NAME);
-
-	//RDF XML predefined property reference URIs
-	/** The reference URI of the rdf:li property. */
-	public static final URI LI_PROPERTY_REFERENCE_URI = RDFResources.createReferenceURI(RDF_NAMESPACE_URI, LI_PROPERTY_NAME);
-	/** The reference URI of the rdf:type property. */
-	public static final URI TYPE_PROPERTY_REFERENCE_URI = RDFResources.createReferenceURI(RDF_NAMESPACE_URI, TYPE_PROPERTY_NAME);
 
 	/** A map of resource factories, keyed to namespace URI. */
 	private final Map<URI, RDFResourceFactory> resourceFactoryMap = new HashMap<URI, RDFResourceFactory>();
@@ -272,7 +212,7 @@ public class RDF //TODO special-case rdf:nil list resources so that they are not
 	}
 
 	/**
-	 * Retreives a resource from the data model based upon an XML namespace URI and an XML local name. If no such resource exists, one will be created and added
+	 * Retrieves a resource from the data model based upon an XML namespace URI and an XML local name. If no such resource exists, one will be created and added
 	 * to the data model.
 	 * @param namespaceURI The XML namespace URI used in the serialization.
 	 * @param localName The XML local name used in the serialization.
@@ -464,16 +404,16 @@ public class RDF //TODO special-case rdf:nil list resources so that they are not
 			resource = resourceFactory.createResource(referenceURI, typeNamespaceURI, typeLocalName); //try to create a resource from this factory
 		}
 		if(resource == null) { //if we haven't created a resource, see if this is an RDF resource
-			if(RDF.NIL_RESOURCE_URI.equals(referenceURI)) { //if we are creating the nil resource
-				resource = new RDFListResource(this, RDF.NIL_RESOURCE_URI); //create the nil resource with the special RDF nil URI
-			} else if(RDF.RDF_NAMESPACE_URI.equals(typeNamespaceURI)) { //if this resource is an RDF resource
-				if(RDF.ALT_CLASS_NAME.equals(typeLocalName)) { //<rdf:Alt>
+			if(NIL_RESOURCE_URI.equals(referenceURI)) { //if we are creating the nil resource
+				resource = new RDFListResource(this, NIL_RESOURCE_URI); //create the nil resource with the special RDF nil URI
+			} else if(NAMESPACE_URI.equals(typeNamespaceURI)) { //if this resource is an RDF resource
+				if(ALT_CLASS_NAME.equals(typeLocalName)) { //<rdf:Alt>
 					//TODO fix for alt
-				} else if(RDF.BAG_CLASS_NAME.equals(typeLocalName)) { //<rdf:Bag>
+				} else if(BAG_CLASS_NAME.equals(typeLocalName)) { //<rdf:Bag>
 					resource = new RDFBagResource(this, referenceURI); //create a bag resource
-				} else if(RDF.SEQ_CLASS_NAME.equals(typeLocalName)) { //<rdf:Seq>
+				} else if(SEQ_CLASS_NAME.equals(typeLocalName)) { //<rdf:Seq>
 					resource = new RDFSequenceResource(this, referenceURI); //create a sequence resource
-				} else if(RDF.LIST_CLASS_NAME.equals(typeLocalName)) { //<rdf:Seq>
+				} else if(LIST_CLASS_NAME.equals(typeLocalName)) { //<rdf:Seq>
 					resource = new RDFListResource(this, referenceURI); //create a list resource
 				}
 			}
@@ -515,7 +455,7 @@ public class RDF //TODO special-case rdf:nil list resources so that they are not
 			typedLiteral = typedLiteralFactory.createTypedLiteral(lexicalForm, datatypeURI); //try to create a typed literal from this factory
 		}
 		if(typedLiteral == null) { //if we haven't created a typed literal, see if this is an RDF datatype
-			if(RDF.XML_LITERAL_DATATYPE_URI.equals(datatypeURI)) { //if we are creating an XML typed literal
+			if(XML_LITERAL_DATATYPE_URI.equals(datatypeURI)) { //if we are creating an XML typed literal
 				typedLiteral = new RDFXMLLiteral(lexicalForm); //create a new XML typed literal containing the lexical form
 			}
 		}
@@ -526,7 +466,7 @@ public class RDF //TODO special-case rdf:nil list resources so that they are not
 	}
 
 	/** Default constructor. */
-	public RDF() {
+	public RDFModel() {
 		//register typed literal factories for certain default namespaces
 		registerTypedLiteralFactory(XMLSchema.XML_SCHEMA_NAMESPACE_URI, new XMLSchemaRDFTypedLiteralFactory()); //XML Schema
 	}

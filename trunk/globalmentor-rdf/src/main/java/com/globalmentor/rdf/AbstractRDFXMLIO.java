@@ -102,8 +102,8 @@ public abstract class AbstractRDFXMLIO<T> implements RDFIO<T> {
 	 * @param baseURI The base URI of the RDF data model, or <code>null</code> if unknown.
 	 * @return An RDF instance appropriate for populating with data read from some source.
 	 */
-	protected RDF createRDF(final URI baseURI) {
-		final RDF rdf = new RDF(); //create a new RDF data model
+	protected RDFModel createRDF(final URI baseURI) {
+		final RDFModel rdf = new RDFModel(); //create a new RDF data model
 		for(final Map.Entry<URI, RDFResourceFactory> resourceFactoryEntry : resourceFactoryMap.entrySet()) { //for each registered resource factory
 			rdf.registerResourceFactory(resourceFactoryEntry.getKey(), resourceFactoryEntry.getValue()); //register the factory with the RDF instance				
 		}
@@ -120,7 +120,7 @@ public abstract class AbstractRDFXMLIO<T> implements RDFIO<T> {
 	}
 
 	/**
-	 * Reads a resource from an input stream. This version delegates to {@link #read(RDF, InputStream, URI)} using {@link #createRDF(URI)} to create a new RDF
+	 * Reads a resource from an input stream. This version delegates to {@link #read(RDFModel, InputStream, URI)} using {@link #createRDF(URI)} to create a new RDF
 	 * instance.
 	 * @param inputStream The input stream from which to read the data.
 	 * @param baseURI The base URI of the data, or <code>null</code> if no base URI is available.
@@ -143,7 +143,7 @@ public abstract class AbstractRDFXMLIO<T> implements RDFIO<T> {
 	 * @throws IOException if there is an error reading the data.
 	 * @throws ClassCastException if no appropriate resource factory was installed, and the loaded resource is not of the correct Java class.
 	 */
-	public abstract T read(final RDF rdf, final InputStream inputStream, final URI baseURI) throws IOException;
+	public abstract T read(final RDFModel rdf, final InputStream inputStream, final URI baseURI) throws IOException;
 
 	/**
 	 * Reads RDF data from an input stream.
@@ -153,7 +153,7 @@ public abstract class AbstractRDFXMLIO<T> implements RDFIO<T> {
 	 * @return The RDF instance representing the data read.
 	 * @throws IOException if there is an error reading the data.
 	 */
-	protected RDF readRDF(final RDF rdf, final InputStream inputStream, final URI baseURI) throws IOException {
+	protected RDFModel readRDF(final RDFModel rdf, final InputStream inputStream, final URI baseURI) throws IOException {
 		try {
 			final DocumentBuilder documentBuilder = createDocumentBuilder(); //create a new namespace-aware document builder
 			final Document document = documentBuilder.parse(inputStream); //parse the input stream

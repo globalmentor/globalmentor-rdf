@@ -16,6 +16,8 @@
 
 package com.globalmentor.rdf;
 
+import static com.globalmentor.w3c.spec.RDF.*;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -193,7 +195,7 @@ public class RDFResourceIOKit<R extends RDFResource> extends AbstractIOKit<R> {
 	 */
 	public R load(final InputStream inputStream, final URI baseURI) throws IOException {
 		try {
-			final RDF rdf = new RDF(); //create a new RDF data model
+			final RDFModel rdf = new RDFModel(); //create a new RDF data model
 			final Iterator<Map.Entry<URI, RDFResourceFactory>> resourceFactoryEntryIterator = resourceFactoryMap.entrySet().iterator(); //get an iterator to look through all resource factories
 			while(resourceFactoryEntryIterator.hasNext()) { //while there are more resource factories
 				final Map.Entry<URI, RDFResourceFactory> resourceFactoryEntry = resourceFactoryEntryIterator.next(); //get the next entry
@@ -209,7 +211,7 @@ public class RDFResourceIOKit<R extends RDFResource> extends AbstractIOKit<R> {
 			//get the designated resource from the data model
 			final RDFResource resource = RDFResources.getResourceByType(rdf, getNamespaceURI(), getClassName());
 			if(resource == null) { //if there is no such type of resource
-				throw new IOException("No resource found of type " + RDFResources.createReferenceURI(getNamespaceURI(), getClassName())); //TODO i18n
+				throw new IOException("No resource found of type " + createReferenceURI(getNamespaceURI(), getClassName())); //TODO i18n
 			}
 			return (R)resource; //return the resource we read TODO make sure the resource is of the correct type somehow 
 		} catch(URISyntaxException uriSyntaxException) { //if any of the URIs were incorrect

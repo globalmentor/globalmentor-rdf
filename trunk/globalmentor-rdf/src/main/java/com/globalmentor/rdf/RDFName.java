@@ -23,7 +23,7 @@ import com.globalmentor.net.DefaultResource;
 import com.globalmentor.net.URIs;
 import com.globalmentor.text.xml.XML;
 
-import static com.globalmentor.rdf.RDFResources.*;
+import static com.globalmentor.w3c.spec.RDF.*;
 
 /**
  * The name of an RDF entity, consisting of a namespace URI and a local name.

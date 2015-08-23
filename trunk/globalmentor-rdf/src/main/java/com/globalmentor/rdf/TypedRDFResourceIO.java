@@ -94,7 +94,7 @@ public class TypedRDFResourceIO<T extends RDFResource> extends AbstractRDFXMLIO<
 	 * @throws IOException if there is an error reading the data.
 	 * @throws ClassCastException if no appropriate resource factory was installed, and the loaded resource is not of the correct Java class.
 	 */
-	public T read(final RDF rdf, final InputStream inputStream, final URI baseURI) throws IOException {
+	public T read(final RDFModel rdf, final InputStream inputStream, final URI baseURI) throws IOException {
 		readRDF(rdf, inputStream, baseURI); //read RDF from the input stream
 		final RDFResource resource = getResourceByType(rdf, getResourceNamespaceURI(), getResourceClassName()); //load the correct resource
 		if(resource == null) { //if there is no resource

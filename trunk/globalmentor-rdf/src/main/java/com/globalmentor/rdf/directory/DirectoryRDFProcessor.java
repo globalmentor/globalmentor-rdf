@@ -83,14 +83,14 @@ public class DirectoryRDFProcessor extends AbstractRDFProcessor {
 
 	/** Default constructor. */
 	public DirectoryRDFProcessor() {
-		this(new RDF()); //construct the class with a default RDF data model
+		this(new RDFModel()); //construct the class with a default RDF data model
 	}
 
 	/**
 	 * Constructor that specifies an existing data model to continue filling.
 	 * @param rdf The RDF data model to use.
 	 */
-	public DirectoryRDFProcessor(final RDF rdf) {
+	public DirectoryRDFProcessor(final RDFModel rdf) {
 		super(rdf); //construct the parent class
 		//register the predefined profile as a property value factory for the standard value types
 		registerPropertyValueFactoryByValueType(URI_VALUE_TYPE, getPredefinedProfile());
@@ -121,8 +121,8 @@ public class DirectoryRDFProcessor extends AbstractRDFProcessor {
 	 * @param directory The directory containing information to convert to RDF.
 	 * @return The RDF data model resulting from this processing and any previous processing.
 	 */
-	public RDF process(final RDFResource resource, final Directory directory) {
-		final RDF rdf = getRDF(); //get the RDF data model we're using
+	public RDFModel process(final RDFResource resource, final Directory directory) {
+		final RDFModel rdf = getRDF(); //get the RDF data model we're using
 		final Iterator contentLineIterator = directory.getContentLineList().iterator(); //get an iterator to all the content lines of the directory
 		while(contentLineIterator.hasNext()) { //while there are more content lines
 			final ContentLine contentLine = (ContentLine)contentLineIterator.next(); //get the next content line

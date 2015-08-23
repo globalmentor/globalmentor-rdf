@@ -19,7 +19,7 @@ package com.globalmentor.rdf;
 import java.net.URI;
 import java.util.*;
 
-import static com.globalmentor.rdf.RDF.*;
+import static com.globalmentor.w3c.spec.RDF.*;
 
 import com.globalmentor.model.NameValuePair;
 
@@ -31,7 +31,7 @@ public class RDFSequenceResource extends RDFContainerResource implements Compara
 
 	/** @return The namespace URI of the ontology defining the default type of this resource. */
 	public URI getDefaultTypeNamespaceURI() {
-		return RDF_NAMESPACE_URI;
+		return NAMESPACE_URI;
 	}
 
 	/** @return The local name of the default type of this resource. */
@@ -52,7 +52,7 @@ public class RDFSequenceResource extends RDFContainerResource implements Compara
 	 * @param rdf The data model associated with the container.
 	 * @param newReferenceURI The reference URI for the new resource.
 	 */
-	RDFSequenceResource(final RDF rdf, final URI newReferenceURI) {
+	RDFSequenceResource(final RDFModel rdf, final URI newReferenceURI) {
 		super(rdf, newReferenceURI); //construct the parent class
 	}
 
@@ -100,7 +100,7 @@ public class RDFSequenceResource extends RDFContainerResource implements Compara
 	public int compare(final Object object1, final Object object2) { //TODO we might put this in RDFContainerResource, even though it isn't used by all containers---or maybe even make an internal class that does this comparation
 		//create the URI string that will appear at the beginning of every rdf:li_XXX property
 		//TODO testing; make this constant and static somewhere
-		final String RDF_LI_REFERENCE_URI_PREFIX = RDF_NAMESPACE_URI + CONTAINER_MEMBER_PREFIX;
+		final String RDF_LI_REFERENCE_URI_PREFIX = NAMESPACE_URI + CONTAINER_MEMBER_PREFIX;
 		//TODO testing; make this constant and static somewhere
 		final int RDF_LI_REFERENCE_URI_PREFIX_LENGTH = RDF_LI_REFERENCE_URI_PREFIX.length();
 		//get the reference URIs of the two properties

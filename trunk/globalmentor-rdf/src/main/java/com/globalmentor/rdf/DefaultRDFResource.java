@@ -23,7 +23,9 @@ import java.util.*;
 import com.globalmentor.java.Arrays;
 import com.globalmentor.net.BoundPropertyResource;
 import com.globalmentor.rdf.rdfs.RDFS;
+
 import static com.globalmentor.rdf.RDFResources.*;
+import static com.globalmentor.w3c.spec.RDF.*;
 
 /**
  * Represents the default implementation of an RDF resource.
@@ -40,12 +42,12 @@ public class DefaultRDFResource extends BoundPropertyResource implements RDFReso
 	/**
 	 * The data model that created this resource, or <code>null</code> if the resource was created separate from a data model.
 	 */
-	private Reference<RDF> rdfReference;
+	private Reference<RDFModel> rdfReference;
 
 	/**
 	 * @return The RDF data model with which this resource is associated, or <code>null</code> if this resource is not associated with a data model.
 	 */
-	public RDF getRDF() {
+	public RDFModel getRDF() {
 		return rdfReference != null ? rdfReference.get() : null; //return the RDF, if any, indicated by the reference
 	}
 
@@ -54,8 +56,8 @@ public class DefaultRDFResource extends BoundPropertyResource implements RDFReso
 	 * @param rdf The RDF data model with which to associate this resource, or <code>null</code> if this resource should not be associated with any RDF data
 	 *          model.
 	 */
-	public void setRDF(final RDF rdf) {
-		rdfReference = rdf != null ? new WeakReference<RDF>(rdf) : null; //save the RDF, if any, using a weak reference			
+	public void setRDF(final RDFModel rdf) {
+		rdfReference = rdf != null ? new WeakReference<RDFModel>(rdf) : null; //save the RDF, if any, using a weak reference			
 	}
 
 	/**
@@ -508,7 +510,7 @@ public class DefaultRDFResource extends BoundPropertyResource implements RDFReso
 
 	/**
 	 * Default constructor that creates a resource without a reference URI.
-	 * @see RDF#createResource
+	 * @see RDFModel#createResource
 	 */
 	public DefaultRDFResource() {
 		this((URI)null); //create a resource without a reference URI
@@ -517,17 +519,17 @@ public class DefaultRDFResource extends BoundPropertyResource implements RDFReso
 	/**
 	 * Constructs a resource with a reference URI.
 	 * @param referenceURI The reference URI for the resource.
-	 * @see RDF#createResource
+	 * @see RDFModel#createResource
 	 */
 	public DefaultRDFResource(final URI referenceURI) {
-		this((RDF)null, referenceURI); //construct the class with no data model
+		this((RDFModel)null, referenceURI); //construct the class with no data model
 	}
 
 	/**
 	 * Constructs a resource from a data model.
 	 * @param rdf The data model with which this resource should be associated.
 	 */
-	public DefaultRDFResource(final RDF rdf) {
+	public DefaultRDFResource(final RDFModel rdf) {
 		this(rdf, null); //construct the resource with no reference URI
 	}
 
@@ -535,7 +537,7 @@ public class DefaultRDFResource extends BoundPropertyResource implements RDFReso
 	 * Convenience constructor that constructs a resource using a namespace URI and local name which will be combined to form the reference URI.
 	 * @param newNamespaceURI The XML namespace URI used in the serialization.
 	 * @param newLocalName The XML local name used in the serialization.
-	 * @see RDF#createResource
+	 * @see RDFModel#createResource
 	 */
 	public DefaultRDFResource(final URI newNamespaceURI, final String newLocalName) {
 		this(null, newNamespaceURI, newLocalName); //do the default construction, combining the namespace URI and the local name for the reference URI
@@ -546,9 +548,9 @@ public class DefaultRDFResource extends BoundPropertyResource implements RDFReso
 	 * @param rdf The data model with which this resource should be associated.
 	 * @param newNamespaceURI The XML namespace URI used in the serialization.
 	 * @param newLocalName The XML local name used in the serialization.
-	 * @see RDF#createResource
+	 * @see RDFModel#createResource
 	 */
-	public DefaultRDFResource(final RDF rdf, final URI newNamespaceURI, final String newLocalName) {
+	public DefaultRDFResource(final RDFModel rdf, final URI newNamespaceURI, final String newLocalName) {
 		this(rdf, createReferenceURI(newNamespaceURI, newLocalName)); //do the default construction, combining the namespace URI and the local name for the reference URI
 	}
 
@@ -557,9 +559,9 @@ public class DefaultRDFResource extends BoundPropertyResource implements RDFReso
 	 * @param rdf The data model with which this resource should be associated, or <code>null</code> if this resource should not be associated with any RDF data
 	 *          model.
 	 * @param referenceURI The reference URI for the new resource.
-	 * @see RDF#createResource
+	 * @see RDFModel#createResource
 	 */
-	public DefaultRDFResource(final RDF rdf, final URI referenceURI) {
+	public DefaultRDFResource(final RDFModel rdf, final URI referenceURI) {
 		super(referenceURI); //construct the parent class with the reference URI
 		setRDF(rdf); //associate the resource with the given RDF data model, if any
 	}

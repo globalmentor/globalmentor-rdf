@@ -21,7 +21,7 @@ import java.net.URI;
 /**
  * A factory to create resources.
  * @author Garret Wilson
- * @see RDF
+ * @see RDFModel
  */
 public interface RDFResourceFactory {
 

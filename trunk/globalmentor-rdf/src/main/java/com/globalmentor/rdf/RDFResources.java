@@ -23,7 +23,8 @@ import java.util.*;
 
 import static com.globalmentor.java.Objects.*;
 import com.globalmentor.net.URIs;
-import static com.globalmentor.rdf.RDF.*;
+import static com.globalmentor.w3c.spec.RDF.*;
+
 import com.globalmentor.rdf.rdfs.RDFS;
 import com.globalmentor.rdf.xmlschema.*;
 import com.globalmentor.text.W3CDateFormat;
@@ -38,7 +39,7 @@ import org.w3c.dom.*;
 public class RDFResources {
 
 	/** The start of a reference URI from the rdf:li element qualified name (i.e. "rdfNamespaceURI#li_"), which we'll use to check for items. */
-	protected static final String RDF_LI_REFERENCE_PREFIX = createReferenceURI(RDF_NAMESPACE_URI, CONTAINER_MEMBER_PREFIX).toString();
+	protected static final String RDF_LI_REFERENCE_PREFIX = createReferenceURI(NAMESPACE_URI, CONTAINER_MEMBER_PREFIX).toString();
 
 	/**
 	 * Adds a <code>rdf:type</code> property to the resource.
@@ -50,7 +51,7 @@ public class RDFResources {
 	 * @return The added property value.
 	 */
 	public static RDFResource addType(final RDFResource resource, final URI typeURI) {
-		return resource.addProperty(RDF_NAMESPACE_URI, TYPE_PROPERTY_NAME, locateResource(resource, typeURI)); //get a resource from the type URI and add it as a type
+		return resource.addProperty(NAMESPACE_URI, TYPE_PROPERTY_NAME, locateResource(resource, typeURI)); //get a resource from the type URI and add it as a type
 	}
 
 	/**
@@ -99,7 +100,7 @@ public class RDFResources {
 	 */
 	public static String asString(final RDFObject rdfObject) { //TODO should we check the object's rdf:value?
 		return rdfObject instanceof RDFPlainLiteral || rdfObject instanceof StringLiteral //if this object is a plain literal or a string literal
-		? ((RDFLiteral)rdfObject).getLexicalForm() //return the lexical form of the literal (if the object is a plain literal or a string litera, it's an RDFLiteral)
+				? ((RDFLiteral)rdfObject).getLexicalForm() //return the lexical form of the literal (if the object is a plain literal or a string litera, it's an RDFLiteral)
 				: null; //indicate that the object shouldn't be interpreted as a string
 	}
 
@@ -122,21 +123,6 @@ public class RDFResources {
 			}
 		}
 		return null; //indicate that the object didn't contain a valid URI
-	}
-
-	/**
-	 * Creates a resource reference URI from an RDF namespace URI and an RDF local name.
-	 * @param namespaceURI The RDF namespace URI used in the serialization.
-	 * @param localName The RDF local name used in the serialization.
-	 * @return An RDF reference URI constructed from the given namespace and local name.
-	 * @throws NullPointerException if the given namespace URI and/or local name is <code>null</code>.
-	 */
-	public static URI createReferenceURI(final URI namespaceURI, final String localName) { //TODO del if not needed throws URISyntaxException	//TODO del if not needed with QualifiedName.createReferenceURI
-		//TODO check for local names that aren't valid URI characters---see QualifiedName.createReferenceURI
-		final StringBuilder stringBuilder = new StringBuilder(); //create a string builder to hold the resource URI
-		stringBuilder.append(checkInstance(namespaceURI, "Namespace URI cannot be null.")); //append the namespace URI
-		stringBuilder.append(checkInstance(localName, "Local name cannot be null.")); //append the local name
-		return URI.create(stringBuilder.toString()); //return a URI from the the string we constructed; if somehow concatenating the strings does not create a valid URI, a runtime exception will be thrown
 	}
 
 	/**
@@ -180,7 +166,8 @@ public class RDFResources {
 	 * @return A new resource, optionally with the given type, created from the given resource's RDF data model if possible.
 	 */
 	public static RDFResource locateTypedResource(final RDFResource contextResource, final URI referenceURI, final URI typeURI) {
-		return locateTypedResource(contextResource, referenceURI, typeURI != null ? getNamespaceURI(typeURI) : null, typeURI != null ? getLocalName(typeURI) : null); //locate a typed resource after extracting the type namespace URI and local name
+		return locateTypedResource(contextResource, referenceURI, typeURI != null ? getNamespaceURI(typeURI) : null,
+				typeURI != null ? getLocalName(typeURI) : null); //locate a typed resource after extracting the type namespace URI and local name
 	}
 
 	/**
@@ -194,7 +181,7 @@ public class RDFResources {
 	 */
 	public static RDFResource locateTypedResource(final RDFResource contextResource, final URI referenceURI, final URI typeNamespaceURI,
 			final String typeLocalName) {
-		final RDF rdf = contextResource.getRDF(); //get the RDF data model of the given resource
+		final RDFModel rdf = contextResource.getRDF(); //get the RDF data model of the given resource
 		if(rdf != null) { //if we know which RDF data model to use
 			//locate the resource within the RDF data model 
 			return rdf.locateTypedResource(referenceURI, typeNamespaceURI, typeLocalName);
@@ -215,7 +202,7 @@ public class RDFResources {
 	 */
 	public static RDFResource locateTypeProperty(final RDFResource contextResource) {
 		//TODO pass along the rdf:Property type, maybe, and create a separate method for creating properties
-		return locateResource(contextResource, RDF_NAMESPACE_URI, TYPE_PROPERTY_NAME); //get an rdf:type resource
+		return locateResource(contextResource, NAMESPACE_URI, TYPE_PROPERTY_NAME); //get an rdf:type resource
 	}
 
 	/**
@@ -312,7 +299,7 @@ public class RDFResources {
 	 * @param typeLocalName The XML local name that represents part of the reference URI.
 	 * @return A resource of the requested type, or <code>null</code> if there are no resourcees with the specified type.
 	 */
-	public static RDFResource getResourceByType(final RDF rdf, final URI typeNamespaceURI, final String typeLocalName) { //TODO should we move these to the RDF data model?
+	public static RDFResource getResourceByType(final RDFModel rdf, final URI typeNamespaceURI, final String typeLocalName) { //TODO should we move these to the RDF data model?
 		final Iterator<RDFResource> resourceIterator = getResourcesByType(rdf, typeNamespaceURI, typeLocalName).iterator(); //get an iterator to matching resources
 		return resourceIterator.hasNext() ? (RDFResource)resourceIterator.next() : null; //return the first resource, if there are any at all
 	}
@@ -324,7 +311,7 @@ public class RDFResources {
 	 * @param typeLocalName The XML local name that represents part of the reference URI.
 	 * @return A read-only iterable of resources that are of the requested type.
 	 */
-	public static Iterable<RDFResource> getResourcesByType(final RDF rdf, final URI typeNamespaceURI, final String typeLocalName) {
+	public static Iterable<RDFResource> getResourcesByType(final RDFModel rdf, final URI typeNamespaceURI, final String typeLocalName) {
 		return getResourcesByType(rdf, createReferenceURI(typeNamespaceURI, typeLocalName)); //gather the resources with a type property of the URI from the given namespace and local name
 	}
 
@@ -335,7 +322,7 @@ public class RDFResources {
 	 * @param typeURI The reference URI of the type resource.
 	 * @return A resource of the requested type, or <code>null</code> if there are no resourcees with the specified type.
 	 */
-	public static RDFResource getResourceByType(final RDF rdf, final URI typeURI) {
+	public static RDFResource getResourceByType(final RDFModel rdf, final URI typeURI) {
 		final Iterator<RDFResource> resourceIterator = getResourcesByType(rdf, typeURI).iterator(); //get an iterator to matching resources
 		return resourceIterator.hasNext() ? (RDFResource)resourceIterator.next() : null; //return the first resource, if there are any at all
 	}
@@ -346,7 +333,7 @@ public class RDFResources {
 	 * @param typeURI The reference URI of the type resource.
 	 * @return A read-only iterable of resources that are of the requested type.
 	 */
-	public static Iterable<RDFResource> getResourcesByType(final RDF rdf, final URI typeURI) {
+	public static Iterable<RDFResource> getResourcesByType(final RDFModel rdf, final URI typeURI) {
 		final List<RDFResource> resourceList = new ArrayList<RDFResource>(); //create a list in which to store the resources
 		for(final RDFResource resource : rdf.getResources()) { //for each resource in this data model
 			if(isType(resource, typeURI)) //if this resource is of the given type
@@ -364,7 +351,7 @@ public class RDFResources {
 	 *           indicate that an incorrect value has been stored for the type.
 	 */
 	public static RDFResource getType(final RDFResource resource) throws ClassCastException {
-		return (RDFResource)resource.getPropertyValue(RDF_NAMESPACE_URI, TYPE_PROPERTY_NAME); //return the type property
+		return (RDFResource)resource.getPropertyValue(NAMESPACE_URI, TYPE_PROPERTY_NAME); //return the type property
 	}
 
 	/**
@@ -373,7 +360,7 @@ public class RDFResources {
 	 * @return A read-only iterable the values of <code>rdf:type</code> properties, each item of which is expected to be an <code>RDFResource</code> of the type.
 	 */
 	public static Iterable<RDFObject> getTypes(final RDFResource resource) {
-		return resource.getPropertyValues(RDF_NAMESPACE_URI, TYPE_PROPERTY_NAME); //return an iterable to the type properties		
+		return resource.getPropertyValues(NAMESPACE_URI, TYPE_PROPERTY_NAME); //return an iterable to the type properties		
 	}
 
 	/**
@@ -383,7 +370,7 @@ public class RDFResources {
 	 * @return The value of the resource, or <code>null</code> if there is no value.
 	 */
 	public static RDFObject getValue(final RDFResource resource) {
-		return resource.getPropertyValue(RDF_NAMESPACE_URI, VALUE_PROPERTY_NAME); //get the value of the value property
+		return resource.getPropertyValue(NAMESPACE_URI, VALUE_PROPERTY_NAME); //get the value of the value property
 	}
 
 	/**
@@ -402,7 +389,7 @@ public class RDFResources {
 	 * @param language The language of the plain literal, or <code>null</code> if no language should be specified.
 	 */
 	public static void setValue(final RDFResource resource, final String value, final Locale language) {
-		resource.setProperty(RDF_NAMESPACE_URI, VALUE_PROPERTY_NAME, value, language); //replace all value properties with a literal value
+		resource.setProperty(NAMESPACE_URI, VALUE_PROPERTY_NAME, value, language); //replace all value properties with a literal value
 	}
 
 	/**
@@ -411,7 +398,7 @@ public class RDFResources {
 	 * @param literal A literal value.
 	 */
 	public static void setValue(final RDFResource resource, final RDFLiteral literal) {
-		resource.setProperty(RDF_NAMESPACE_URI, VALUE_PROPERTY_NAME, literal); //replace all value properties with a literal value
+		resource.setProperty(NAMESPACE_URI, VALUE_PROPERTY_NAME, literal); //replace all value properties with a literal value
 	}
 
 	/**
@@ -430,7 +417,7 @@ public class RDFResources {
 	 * @return <code>true</code> if the resource has the indicated type property.
 	 */
 	public static boolean isType(final RDFResource resource, final URI typeURI) {
-		return resource.hasPropertyResourceValue(RDF_NAMESPACE_URI, TYPE_PROPERTY_NAME, typeURI); //determine if the resource has a type property of the given URI
+		return resource.hasPropertyResourceValue(NAMESPACE_URI, TYPE_PROPERTY_NAME, typeURI); //determine if the resource has a type property of the given URI
 	}
 
 	/**
@@ -441,7 +428,7 @@ public class RDFResources {
 	 * @return <code>true</code> if the resource has the indicated type property.
 	 */
 	public static boolean isType(final RDFResource resource, final URI typeNamespaceURI, final String typeLocalName) {
-		return resource.hasPropertyResourceValue(RDF_NAMESPACE_URI, TYPE_PROPERTY_NAME, createReferenceURI(typeNamespaceURI, typeLocalName)); //determine if the resource has a type property of the URI from the given namespace and local name
+		return resource.hasPropertyResourceValue(NAMESPACE_URI, TYPE_PROPERTY_NAME, createReferenceURI(typeNamespaceURI, typeLocalName)); //determine if the resource has a type property of the URI from the given namespace and local name
 	}
 
 	/**
@@ -528,7 +515,7 @@ public class RDFResources {
 	 * @param rdf The RDF data model to convert.
 	 * @return A string representation of an XML serialization of the RDF data model.
 	 */
-	public static String toString(final RDF rdf) {
+	public static String toString(final RDFModel rdf) {
 		final ByteArrayOutputStream outputStream = new ByteArrayOutputStream(); //create an output stream of bytes
 		final RDFXMLGenerator rdfXMLifier = new RDFXMLGenerator(); //create an object to turn the RDF into XML
 		final Document document = rdfXMLifier.createDocument(rdf, XML.createDocumentBuilder(true).getDOMImplementation()); //create an XML document from the RDF

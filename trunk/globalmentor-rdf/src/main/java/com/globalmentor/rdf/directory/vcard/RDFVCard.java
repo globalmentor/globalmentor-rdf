@@ -24,8 +24,9 @@ import com.globalmentor.net.URIs;
 import com.globalmentor.rdf.*;
 import com.globalmentor.rdf.directory.RDFDirectory;
 import com.globalmentor.text.directory.vcard.*;
-import static com.globalmentor.text.directory.vcard.VCard.*;
 
+import static com.globalmentor.text.directory.vcard.VCard.*;
+import static com.globalmentor.w3c.spec.RDF.*;
 import static com.globalmentor.java.Arrays.*;
 import static com.globalmentor.java.Java.*;
 import static com.globalmentor.java.Objects.*;

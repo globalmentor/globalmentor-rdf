@@ -21,8 +21,9 @@ import java.util.*;
 
 import com.globalmentor.java.Arrays;
 import com.globalmentor.java.Objects;
-import static com.globalmentor.rdf.RDF.*;
+
 import static com.globalmentor.rdf.RDFResources.*;
+import static com.globalmentor.w3c.spec.RDF.*;
 
 /**
  * Represents an RDF list resource.
@@ -37,7 +38,7 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 
 	/** @return The namespace URI of the ontology defining the default type of this resource. */
 	public URI getDefaultTypeNamespaceURI() {
-		return RDF_NAMESPACE_URI;
+		return NAMESPACE_URI;
 	}
 
 	/** @return The local name of the default type of this resource. */
@@ -47,7 +48,7 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 
 	/** Default constructor for an empty list with the <code>rdf:nil</code> reference URI. */
 	public RDFListResource() {
-		this((RDF)null); //construct a list resource with no RDF data model
+		this((RDFModel)null); //construct a list resource with no RDF data model
 	}
 
 	/**
@@ -55,7 +56,7 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	 * @param newReferenceURI The reference URI for the new resource.
 	 */
 	public RDFListResource(final URI newReferenceURI) {
-		this((RDF)null, newReferenceURI); //construct the class with no data model 
+		this((RDFModel)null, newReferenceURI); //construct the class with no data model 
 	}
 
 	/**
@@ -63,7 +64,7 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	 * @param rdf The RDF data model to use as a factory for creating properties.
 	 * @param newReferenceURI The reference URI for the new resource.
 	 */
-	protected RDFListResource(final RDF rdf, final URI newReferenceURI) {
+	protected RDFListResource(final RDFModel rdf, final URI newReferenceURI) {
 		this(rdf, newReferenceURI, null, null); //construct the class without a first or next resource
 	}
 
@@ -79,7 +80,7 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	 * Data model constructor.
 	 * @param rdf The RDF data model to use as a factory for creating properties.
 	 */
-	public RDFListResource(final RDF rdf) {
+	public RDFListResource(final RDFModel rdf) {
 		this(rdf, NIL_RESOURCE_URI); //construct the list with a nil reference URI
 	}
 
@@ -88,7 +89,7 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	 * @param rdf The RDF data model to use as a factory for creating properties.
 	 * @param first The first and only element of the list.
 	 */
-	public RDFListResource(final RDF rdf, final E first) {
+	public RDFListResource(final RDFModel rdf, final E first) {
 		this(rdf, (URI)null, first); //create a list with no other elements
 	}
 
@@ -107,7 +108,7 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	 * @param newReferenceURI The reference URI for the new resource.
 	 * @param first The first and only element of the list.
 	 */
-	public RDFListResource(final RDF rdf, final URI newReferenceURI, final E first) {
+	public RDFListResource(final RDFModel rdf, final URI newReferenceURI, final E first) {
 		this(rdf, newReferenceURI, first, new RDFListResource<E>(rdf, NIL_RESOURCE_URI)); //create a list with no other elements
 	}
 
@@ -117,7 +118,7 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	 * @param first The first element of the list.
 	 * @param rest The list resource representing the rest of the list, or <code>null</code> if no rest should be specified.
 	 */
-	public RDFListResource(final RDF rdf, final E first, final RDFResource rest) {
+	public RDFListResource(final RDFModel rdf, final E first, final RDFResource rest) {
 		this(rdf, (URI)null, first, rest); //construct a list with an anonymous reference URI
 	}
 
@@ -138,7 +139,7 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	 * @param first The first element of the list, or <code>null</code> if there should be no first element.
 	 * @param rest The list resource representing the rest of the list, or <code>null</code> if no rest should be specified.
 	 */
-	protected RDFListResource(final RDF rdf, final URI newReferenceURI, final E first, final RDFResource rest) {
+	protected RDFListResource(final RDFModel rdf, final URI newReferenceURI, final E first, final RDFResource rest) {
 		super(rdf, newReferenceURI); //construct the list with the reference URI and namespace URI and local name information
 		if(first != null) //if there is a first element
 			setFirst(first); //set the first element
@@ -151,7 +152,7 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	 * @param rdf The RDF data model to use as a factory for creating properties.
 	 * @param collection The collection with which to populate the list.
 	 */
-	public static <T extends RDFObject> RDFListResource<T> create(final RDF rdf, final Collection<? extends T> collection) {
+	public static <T extends RDFObject> RDFListResource<T> create(final RDFModel rdf, final Collection<? extends T> collection) {
 		return create(rdf, (URI)null, collection); //create and return a list with an anonymous reference URI
 	}
 
@@ -161,7 +162,7 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	 * @param newReferenceURI The reference URI for the new resource.
 	 * @param collection The collection with which to populate the list, each element of which is an {@link RDFObject}.
 	 */
-	public static <T extends RDFObject> RDFListResource<T> create(final RDF rdf, final URI newReferenceURI, final Collection<? extends T> collection) {
+	public static <T extends RDFObject> RDFListResource<T> create(final RDFModel rdf, final URI newReferenceURI, final Collection<? extends T> collection) {
 		//TODO now that we've removed the requirement of passing an RDF data model, maybe this can be optimized---or maybe removed altogether
 		final RDFListResource<T> listResource; //we'll create a list resource for the collection 
 		if(!collection.isEmpty()) { //if there are elements in the collection
@@ -187,7 +188,7 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	 * @return The first element of the list, or <code>null</code> if the resource has no first element specified.
 	 */
 	public static <T extends RDFObject> T getFirst(final RDFResource resource) {
-		return (T)resource.getPropertyValue(RDF_NAMESPACE_URI, FIRST_PROPERTY_NAME); //return the first element property
+		return (T)resource.getPropertyValue(NAMESPACE_URI, FIRST_PROPERTY_NAME); //return the first element property
 	}
 
 	/**
@@ -208,7 +209,7 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	 * @return The resource representing the rest of the list, or <code>null</code> if the resource has no rest of the list specified.
 	 */
 	public static RDFResource getRest(final RDFResource resource) {
-		return asResource(resource.getPropertyValue(RDF_NAMESPACE_URI, REST_PROPERTY_NAME)); //return the rest property
+		return asResource(resource.getPropertyValue(NAMESPACE_URI, REST_PROPERTY_NAME)); //return the rest property
 	}
 
 	/**
@@ -227,9 +228,9 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	 */
 	public static <T extends RDFObject> void setFirst(final RDFResource resource, final T value) {
 		if(value != null) { //if there is a value
-			resource.setProperty(RDF_NAMESPACE_URI, FIRST_PROPERTY_NAME, value); //set the first value
+			resource.setProperty(NAMESPACE_URI, FIRST_PROPERTY_NAME, value); //set the first value
 		} else { //if there is no value
-			resource.removeProperties(RDF_NAMESPACE_URI, FIRST_PROPERTY_NAME); //remove the first value		
+			resource.removeProperties(NAMESPACE_URI, FIRST_PROPERTY_NAME); //remove the first value		
 		}
 	}
 
@@ -248,9 +249,9 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	 */
 	public static void setRest(final RDFResource resource, final RDFResource value) {
 		if(value != null) { //if there is a value
-			resource.setProperty(RDF_NAMESPACE_URI, REST_PROPERTY_NAME, value); //set the first value
+			resource.setProperty(NAMESPACE_URI, REST_PROPERTY_NAME, value); //set the first value
 		} else { //if there is no value
-			resource.removeProperties(RDF_NAMESPACE_URI, REST_PROPERTY_NAME); //remove the rest of the list		
+			resource.removeProperties(NAMESPACE_URI, REST_PROPERTY_NAME); //remove the rest of the list		
 		}
 	}
 
@@ -458,7 +459,7 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	 * @param element The element to be inserted.
 	 * @throws ClassCastException Thrown if the class of the specified element prevents it from being added to this list.
 	 * @throws IndexOutOfBoundsException Thrown if index is out of range <code>(index &le; 0 || index &gt; size())</code>.
-	 * @see #create(RDF, URI, RDFObject, RDFResource)
+	 * @see #create(RDFModel, URI, RDFObject, RDFResource)
 	 */
 	@SuppressWarnings("unchecked")
 	//cast needed so that Sun JDK 1.6.0_03-b05 will know which type we want; not required for Eclipse 3.4M3

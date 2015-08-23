@@ -24,10 +24,12 @@ import com.globalmentor.log.Log;
 import com.globalmentor.model.Locales;
 import com.globalmentor.net.*;
 import static com.globalmentor.net.URIs.*;
-import static com.globalmentor.rdf.RDF.*;
-import static com.globalmentor.rdf.RDFXML.*;
+import static com.globalmentor.w3c.spec.RDF.*;
+import static com.globalmentor.w3c.spec.RDF.XML.*;
+
 import com.globalmentor.text.xml.*;
-import com.globalmentor.util.*;
+import com.globalmentor.text.xml.XML;
+import com.globalmentor.w3c.spec.RDF;
 
 import org.w3c.dom.*;
 
@@ -108,7 +110,7 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 	 * Constructor that specifies an existing data model to continue filling.
 	 * @param newRDF The RDF data model to use.
 	 */
-	public RDFXMLProcessor(final RDF newRDF) {
+	public RDFXMLProcessor(final RDFModel newRDF) {
 		super(newRDF); //construct the parent class
 	}
 
@@ -119,7 +121,7 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 	 * @return The RDF data model resulting from this processing and any previous processing.
 	 * @throws URISyntaxException Thrown if a URI is syntactically incorrect.
 	 */
-	public RDF processRDF(final Document document, final URI baseURI) throws URISyntaxException {
+	public RDFModel processRDF(final Document document, final URI baseURI) throws URISyntaxException {
 		setBaseURI(baseURI); //set the base URI
 		return processRDF(document); //process the data in the document
 	}
@@ -131,7 +133,7 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 	 * @return The RDF data model resulting from this processing and any previous processing.
 	 * @throws URISyntaxException Thrown if a URI is syntactically incorrect.
 	 */
-	public RDF processRDF(final Document document) throws URISyntaxException {
+	public RDFModel processRDF(final Document document) throws URISyntaxException {
 		return processRDF(document.getDocumentElement()); //process the data in the document element
 	}
 
@@ -143,7 +145,7 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 	 * @return The RDF data model resulting from this processing and any previous processing.
 	 * @throws URISyntaxException Thrown if a URI is syntactically incorrect.
 	 */
-	public RDF processRDF(final Element element, final URI baseURI) throws URISyntaxException {
+	public RDFModel processRDF(final Element element, final URI baseURI) throws URISyntaxException {
 		setBaseURI(baseURI); //set the base URI
 		return processRDF(element); //process the element
 	}
@@ -155,7 +157,7 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 	 * @return The RDF data model resulting from this processing and any previous processing.
 	 * @throws URISyntaxException Thrown if a URI is syntactically incorrect.
 	 */
-	public RDF processRDF(final Element element) throws URISyntaxException {
+	public RDFModel processRDF(final Element element) throws URISyntaxException {
 		reset(); //make sure we don't have temporary data left over from last time
 		processRDFIslands(element); //process any internal RDF islands
 		createResources(); //create all proxied resources in the statements we gathered
@@ -186,8 +188,8 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 	 * @return The RDF data model resulting from this processing and any previous processing.
 	 * @throws URISyntaxException Thrown if a URI is syntactically incorrect.
 	 */
-	protected RDF processRDFIslands(final Element element) throws URISyntaxException {
-		if(RDF_NAMESPACE_URI.toString().equals(element.getNamespaceURI()) //if this element is in the RDF namespace TODO fix better
+	protected RDFModel processRDFIslands(final Element element) throws URISyntaxException {
+		if(RDF.NAMESPACE_URI.toString().equals(element.getNamespaceURI()) //if this element is in the RDF namespace TODO fix better
 				&& ELEMENT_RDF.equals(element.getLocalName())) { //if this element indicates that the children are RDF
 			final NodeList childNodeList = element.getChildNodes(); //get a list of child nodes
 			for(int i = 0; i < childNodeList.getLength(); ++i) { //look at each child node
@@ -240,8 +242,8 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 			resource = getResourceProxy(nodeIDValue != null ? nodeIDValue : generateNodeID()); //retrieve or create a resource proxy from the node ID, generating our own node ID if there was none given
 		}
 		//if this is not an <rdf:Description> element, the element name gives its type, so add that type to the resource
-		if(!RDF_NAMESPACE_URI.equals(elementNamespaceURI) || !ELEMENT_DESCRIPTION.equals(elementLocalName)) {
-			final RDFResource typeProperty = getRDF().locateResource(RDF_NAMESPACE_URI, TYPE_PROPERTY_NAME); //get an rdf:type resource
+		if(!RDF.NAMESPACE_URI.equals(elementNamespaceURI) || !ELEMENT_DESCRIPTION.equals(elementLocalName)) {
+			final RDFResource typeProperty = getRDF().locateResource(RDF.NAMESPACE_URI, TYPE_PROPERTY_NAME); //get an rdf:type resource
 			final RDFResource typePropertyValue = getRDF().locateResource(elementNamespaceURI, elementLocalName); //locate the resource representing the type value
 			//TODO del Log.trace("adding type statement for the resource, with type property", typeProperty, "and type property value", typePropertyValue);
 			//add a statement in the form, {resource proxy, rdf:type resource, type value resource}
@@ -392,7 +394,7 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 		final String elementLocalName = element.getLocalName(); //get the element's local name
 		//Log.trace("processing property with XML element namespace: ", elementNamespaceURI, "local name", elementLocalName);
 		final String propertyLocalName; //if this is an rdf:li property, we'll convert it to rdf_X, where X represents the member count plus one
-		if(RDF_NAMESPACE_URI.equals(elementNamespaceURI) && LI_PROPERTY_NAME.equals(elementLocalName)) { //if this is an rdf:li property
+		if(RDF.NAMESPACE_URI.equals(elementNamespaceURI) && LI_PROPERTY_NAME.equals(elementLocalName)) { //if this is an rdf:li property
 			propertyLocalName = CONTAINER_MEMBER_PREFIX + (memberCount + 1); //create a local name in the form "_X", where X is the member count plus one
 		} else { //if this is *not* an rdf:li property, it's a normal property
 			propertyLocalName = elementLocalName; //use the element's local name normally in forming the property reference URI
@@ -404,8 +406,8 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 			//TODO we should make sure there are no other attributes
 			Resource firstItemListResource = null; //we haven't created the first item list resource, yet
 			Resource lastItemListResource = null; //we haven't created the last item list resource, yet
-			final RDFResource typeProperty = getRDF().locateResource(RDF_NAMESPACE_URI, TYPE_PROPERTY_NAME); //get an rdf:type resource
-			final RDFResource listClassResource = getRDF().locateResource(RDF_NAMESPACE_URI, LIST_CLASS_NAME); //locate the resource representing the rdf:list class
+			final RDFResource typeProperty = getRDF().locateResource(RDF.NAMESPACE_URI, TYPE_PROPERTY_NAME); //get an rdf:type resource
+			final RDFResource listClassResource = getRDF().locateResource(RDF.NAMESPACE_URI, LIST_CLASS_NAME); //locate the resource representing the rdf:list class
 			//parse the child elements
 			final NodeList childNodeList = element.getChildNodes(); //get a list of child nodes
 			for(int i = 0; i < childNodeList.getLength(); ++i) { //look at each child node
@@ -415,13 +417,13 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 					final Resource listResource = getResourceProxy(generateNodeID()); //create a new list resource proxy to represent this item in the collection
 					//add a statement in the form, {list, rdf:type, rdf:list}
 					addStatement(new DefaultStatement(listResource, typeProperty, listClassResource));
-					final Resource firstProperty = getRDF().locateResource(RDF_NAMESPACE_URI, FIRST_PROPERTY_NAME); //get a resource representing the rdf:first property
+					final Resource firstProperty = getRDF().locateResource(RDF.NAMESPACE_URI, FIRST_PROPERTY_NAME); //get a resource representing the rdf:first property
 					//add a statement setting the list's rdf:first property to the new element
 					addStatement(new DefaultStatement(listResource, firstProperty, elementValue));
 					if(firstItemListResource == null) { //if this is the first list item
 						firstItemListResource = listResource; //show that we just created a list resource
 					} else if(lastItemListResource != null) { //if this is not the first item, there should have been a previous list item (this check is redundant)
-						final Resource restProperty = getRDF().locateResource(RDF_NAMESPACE_URI, REST_PROPERTY_NAME); //get a resource representing the rdf:rest property
+						final Resource restProperty = getRDF().locateResource(RDF.NAMESPACE_URI, REST_PROPERTY_NAME); //get a resource representing the rdf:rest property
 						//add a statement setting the previous list's rdf:rest property to the new list
 						addStatement(new DefaultStatement(lastItemListResource, restProperty, listResource));
 					}
@@ -432,7 +434,7 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 			//add a statement in the form, {nil list, rdf:type, rdf:list}
 			addStatement(new DefaultStatement(nilListResource, typeProperty, listClassResource));
 			if(lastItemListResource != null) { //if there was a last item
-				final Resource restProperty = getRDF().locateResource(RDF_NAMESPACE_URI, REST_PROPERTY_NAME); //get a resource representing the rdf:rest property
+				final Resource restProperty = getRDF().locateResource(RDF.NAMESPACE_URI, REST_PROPERTY_NAME); //get a resource representing the rdf:rest property
 				//add a statement setting the last list's rdf:rest property to the the rdf:nil list
 				addStatement(new DefaultStatement(lastItemListResource, restProperty, nilListResource));
 			} else if(firstItemListResource == null) { //if we didn't create any list items (logically this check is redundant, because if there is no last resource there is also no first resource)
@@ -539,12 +541,12 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 	protected boolean isRDFAttribute(final String rdfAttributeLocalName, final URI elementNamespaceURI, final URI attributeNamespaceURI,
 			final String attributeLocalName) {
 		if(rdfAttributeLocalName.equals(attributeLocalName)) { //if the attribute has the correct local name
-			if(RDF_NAMESPACE_URI.equals(attributeNamespaceURI)) { //if the attribute is in the RDF namespace
+			if(RDF.NAMESPACE_URI.equals(attributeNamespaceURI)) { //if the attribute is in the RDF namespace
 				return true; //show that this is the expected RDF attribute
 			}
 			switch(getRDFAttributeNamespaceRequirement()) { //see if the RDF attribute namespace is required
 				case RDF_OR_NULL:
-					if(attributeNamespaceURI == null && RDF_NAMESPACE_URI.equals(elementNamespaceURI)) { //accept the null namespace if the element is in the RDF namespace
+					if(attributeNamespaceURI == null && RDF.NAMESPACE_URI.equals(elementNamespaceURI)) { //accept the null namespace if the element is in the RDF namespace
 						return true;
 					}
 					break;
@@ -563,12 +565,12 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 	 * @return The specified RDF attribute, or <code>null</code> if no such attribute was found.
 	 */
 	protected String getRDFAttribute(final Element element, final String attributeLocalName) {
-		if(element.hasAttributeNS(RDF_NAMESPACE_URI.toString(), attributeLocalName)) { //if there is a prefixed attribute value
-			return element.getAttributeNS(RDF_NAMESPACE_URI.toString(), attributeLocalName); //get the prefixed attribute value
+		if(element.hasAttributeNS(RDF.NAMESPACE_URI.toString(), attributeLocalName)) { //if there is a prefixed attribute value
+			return element.getAttributeNS(RDF.NAMESPACE_URI.toString(), attributeLocalName); //get the prefixed attribute value
 		}
 		switch(getRDFAttributeNamespaceRequirement()) { //see if the RDF attribute namespace is required
 			case RDF_OR_NULL:
-				if(RDF_NAMESPACE_URI.toString().equals(element.getNamespaceURI()) && element.hasAttributeNS(null, attributeLocalName)) { //if there is a non-prefixed attribute value
+				if(RDF.NAMESPACE_URI.toString().equals(element.getNamespaceURI()) && element.hasAttributeNS(null, attributeLocalName)) { //if there is a non-prefixed attribute value
 					Log.warn("Non-prefixed rdf:" + attributeLocalName + " attribute deprecated."); //TODO put in a real warning
 					return element.getAttributeNS(null, attributeLocalName); //return the non-prefixed attribute value
 				}

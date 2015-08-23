@@ -16,6 +16,8 @@
 
 package com.globalmentor.rdf.directory;
 
+import static com.globalmentor.w3c.spec.RDF.*;
+
 import java.net.URI;
 import java.util.*;
 
@@ -54,8 +56,8 @@ public class PredefinedRDFProfile extends PredefinedProfile implements RDFProper
 	/** Default constructor. */
 	public PredefinedRDFProfile() {
 		//register property URIs for the predefined types
-		registerPropertyURI(Directory.SOURCE_TYPE, RDFResources.createReferenceURI(RDFDirectory.DIRECTORY_NAMESPACE_URI, Directory.SOURCE_TYPE.toLowerCase())); //SOURCE		
-		registerPropertyURI(Directory.NAME_TYPE, RDFResources.createReferenceURI(RDFDirectory.DIRECTORY_NAMESPACE_URI, Directory.NAME_TYPE.toLowerCase())); //NAME
+		registerPropertyURI(Directory.SOURCE_TYPE, createReferenceURI(RDFDirectory.DIRECTORY_NAMESPACE_URI, Directory.SOURCE_TYPE.toLowerCase())); //SOURCE		
+		registerPropertyURI(Directory.NAME_TYPE, createReferenceURI(RDFDirectory.DIRECTORY_NAMESPACE_URI, Directory.NAME_TYPE.toLowerCase())); //NAME
 	}
 
 	/**
@@ -64,7 +66,7 @@ public class PredefinedRDFProfile extends PredefinedProfile implements RDFProper
 	 * @param contentLine The directory content line to be converted to an RDF property.
 	 * @return An RDF property resource representing the directory content line, or <code>null</code> if an RDF property resource cannot be creatd.
 	 */
-	public RDFResource createProperty(final RDF rdf, final ContentLine contentLine) {
+	public RDFResource createProperty(final RDFModel rdf, final ContentLine contentLine) {
 		final URI propertyURI = getPropertyURI(contentLine.getName()); //get whatever property URI we have associated with this type name, if any
 		return propertyURI != null ? rdf.locateResource(propertyURI) : null; //if we have a property URI, return a resource for it from the RDF data model
 	}
@@ -76,7 +78,7 @@ public class PredefinedRDFProfile extends PredefinedProfile implements RDFProper
 	 * @param valueType The type of directory value the content line represents.
 	 * @return An RDF object representing the value of the directory content line, or <code>null</code> if an RDF object cannot be creatd.
 	 */
-	public RDFObject createPropertyValue(final RDF rdf, final ContentLine contentLine, final String valueType) {
+	public RDFObject createPropertyValue(final RDFModel rdf, final ContentLine contentLine, final String valueType) {
 		if(Directory.TEXT_VALUE_TYPE.equalsIgnoreCase(valueType)) { //if this is the "text" value type
 			return new RDFPlainLiteral(contentLine.getValue().toString()); //return the string value of the content line as a literal
 			/*TODO fix

@@ -74,7 +74,7 @@ public class DictionaryModelIOKit extends AbstractIOKit<ResourceModel<Dictionary
 	 */
 	public ResourceModel<Dictionary> load(final InputStream inputStream, final URI baseURI) throws IOException {
 		try {
-			final RDF rdf = new RDF(); //create a new RDF data model
+			final RDFModel rdf = new RDFModel(); //create a new RDF data model
 			rdf.registerResourceFactory(DICTO_NAMESPACE_URI, new Dicto()); //register a factory for Dicto resource classes
 			final Document document = XML.parse(inputStream, baseURI, true, new URIInputStreamableXMLEntityResolver(this)); //create an XML processor using the correct input streams locator and parse the activity file
 			document.normalize(); //normalize the package description document

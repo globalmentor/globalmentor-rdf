@@ -144,10 +144,10 @@ public abstract class AbstractRDFStorage extends DefaultModifiable implements UR
 	 *         <p>
 	 *         Registered resource factories are registered with the RDF data model.
 	 *         </p>
-	 * @see RDF#registerResourceFactory(URI, RDFResourceFactory)
+	 * @see RDFModel#registerResourceFactory(URI, RDFResourceFactory)
 	 */
 	protected RDFXMLProcessor getRDFXMLProcessor() {
-		final RDF rdf = new RDF(); //create a new RDF data model
+		final RDFModel rdf = new RDFModel(); //create a new RDF data model
 		final Iterator<Map.Entry<URI, RDFResourceFactory>> resourceFactoryEntryIterator = resourceFactoryMap.entrySet().iterator(); //get an iterator to look through all resource factories
 		while(resourceFactoryEntryIterator.hasNext()) { //while there are more resource factories
 			final Map.Entry<URI, RDFResourceFactory> resourceFactoryEntry = resourceFactoryEntryIterator.next(); //get the next entry
@@ -159,13 +159,13 @@ public abstract class AbstractRDFStorage extends DefaultModifiable implements UR
 	}
 
 	/** @return The RDF data model that represents the information to be stored. */
-	public abstract RDF getRDF();
+	public abstract RDFModel getRDF();
 
 	/**
 	 * Extracts the information from the RDF data model.
 	 * @param rdf The RDF data model that has been retrieved from storage.
 	 */
-	public abstract void setRDF(final RDF rdf);
+	public abstract void setRDF(final RDFModel rdf);
 
 	/**
 	 * Stores the information in RDF at the storage URI.
@@ -176,7 +176,7 @@ public abstract class AbstractRDFStorage extends DefaultModifiable implements UR
 	 * @see #getStorageURI()
 	 */
 	public void store() throws IOException {
-		final RDF rdf = getRDF(); //get the RDF data model representing the data
+		final RDFModel rdf = getRDF(); //get the RDF data model representing the data
 		//create an XML document from the RDF
 		final Document document = getRDFXMLGenerator().createDocument(rdf, XML.createDocumentBuilder(true).getDOMImplementation()); //TODO try to make this XML parser agnostic
 		//make sure all the registered namespaces are declared on the document element just to make things look nice in the serialization
@@ -241,7 +241,7 @@ public abstract class AbstractRDFStorage extends DefaultModifiable implements UR
 	public void retrieve(final URI uri) throws IOException {
 		final Document document = retrieveXML(uri); //retrieve an XML document from the storage
 		try {
-			final RDF rdf = retrieveRDF(document); //retrieve the RDF from the document
+			final RDFModel rdf = retrieveRDF(document); //retrieve the RDF from the document
 			setRDF(rdf); //set the RDF we retrieved
 		} catch(URISyntaxException uriSyntaxException) { //if there was a problem retrieving the RDF from the XML
 			final IOException ioException = new IOException(uriSyntaxException.getMessage()); //create an I/O exception from the URI syntax exception
@@ -256,7 +256,7 @@ public abstract class AbstractRDFStorage extends DefaultModifiable implements UR
 	 * @return An RDF data model representing the RDF contained in the XML document.
 	 * @throws URISyntaxException Thrown if a URI is syntactically incorrect.
 	 */
-	protected RDF retrieveRDF(final Document document) throws URISyntaxException {
+	protected RDFModel retrieveRDF(final Document document) throws URISyntaxException {
 		final RDFXMLProcessor rdfXMLProcessor = getRDFXMLProcessor(); //get the processor for processing RDF from the XML document
 		return rdfXMLProcessor.processRDF(document); //process the RDF from the XML and return the RDF data model
 	}

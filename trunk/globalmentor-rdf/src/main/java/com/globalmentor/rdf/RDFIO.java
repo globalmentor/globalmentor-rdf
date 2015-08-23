@@ -37,7 +37,7 @@ public interface RDFIO<T> extends IO<T> {
 	 * @throws NullPointerException if the given RDF instance and/or input stream is <code>null</code>.
 	 * @throws IOException if there is an error reading the data.
 	 */
-	public T read(final RDF rdf, final InputStream inputStream, final URI baseURI) throws IOException;
+	public T read(final RDFModel rdf, final InputStream inputStream, final URI baseURI) throws IOException;
 
 	/**
 	 * Registers a resource factory to be used to create resources with a type from the specified namespace. If a resource factory is already registered for this

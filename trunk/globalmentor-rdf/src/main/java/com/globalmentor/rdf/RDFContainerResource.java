@@ -18,10 +18,11 @@ package com.globalmentor.rdf;
 
 import java.net.URI;
 import java.util.*;
+
 import static java.util.Collections.*;
 
-import static com.globalmentor.rdf.RDF.*;
 import static com.globalmentor.rdf.RDFResources.*;
+import static com.globalmentor.w3c.spec.RDF.*;
 
 /**
  * Represents an RDF resource that is a container, such as a bag or a sequence.
@@ -42,7 +43,7 @@ public abstract class RDFContainerResource extends TypedRDFResource {
 	 * @param rdf The data model associated with the container.
 	 * @param newReferenceURI The reference URI for the new resource.
 	 */
-	RDFContainerResource(final RDF rdf, final URI newReferenceURI) {
+	RDFContainerResource(final RDFModel rdf, final URI newReferenceURI) {
 		super(rdf, newReferenceURI); //construct the parent class
 	}
 
@@ -169,7 +170,7 @@ public abstract class RDFContainerResource extends TypedRDFResource {
 	 */
 	protected URI getMemberPropertyURI(final int number) {
 		final String propertyLocalName = CONTAINER_MEMBER_PREFIX + number; //create a local name for the number
-		return createReferenceURI(RDF_NAMESPACE_URI, propertyLocalName); //use the URI containing the number as the property
+		return createReferenceURI(NAMESPACE_URI, propertyLocalName); //use the URI containing the number as the property
 	}
 
 }

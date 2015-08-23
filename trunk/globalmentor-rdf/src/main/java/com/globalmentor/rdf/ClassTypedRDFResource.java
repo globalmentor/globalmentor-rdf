@@ -20,6 +20,7 @@ import java.net.URI;
 
 import static com.globalmentor.java.Classes.*;
 import static com.globalmentor.rdf.RDFResources.*;
+import static com.globalmentor.w3c.spec.RDF.*;
 
 /**
  * An RDF resource that by default adds an <code>rdf:type</code> property upon creation. By default the type name will be set to the local name of the class.
@@ -45,7 +46,7 @@ public abstract class ClassTypedRDFResource extends DefaultRDFResource {
 	 * @throws NullPointerException if the given type namespace URI is <code>null</code>.
 	 */
 	public ClassTypedRDFResource(final URI namespaceURI, final String localName, final URI typeNamespaceURI) {
-		this((RDF)null, namespaceURI, localName, typeNamespaceURI); //do the default construction, combining the namespace URI and the local name for the reference URI
+		this((RDFModel)null, namespaceURI, localName, typeNamespaceURI); //do the default construction, combining the namespace URI and the local name for the reference URI
 	}
 
 	/**
@@ -56,7 +57,7 @@ public abstract class ClassTypedRDFResource extends DefaultRDFResource {
 	 * @param typeNamespaceURI The namespace of the type URI to be added after construction of the object.
 	 * @throws NullPointerException if the given type namespace URI is <code>null</code>.
 	 */
-	public ClassTypedRDFResource(final RDF rdf, final URI namespaceURI, final String localName, final URI typeNamespaceURI) {
+	public ClassTypedRDFResource(final RDFModel rdf, final URI namespaceURI, final String localName, final URI typeNamespaceURI) {
 		this(rdf, createReferenceURI(namespaceURI, localName), typeNamespaceURI); //do the default construction, combining the namespace URI and the local name for the reference URI
 	}
 
@@ -67,7 +68,7 @@ public abstract class ClassTypedRDFResource extends DefaultRDFResource {
 	 * @param typeNamespaceURI The namespace of the type URI to be added after construction of the object.
 	 * @throws NullPointerException if the given type namespace URI is <code>null</code>.
 	 */
-	public ClassTypedRDFResource(final RDF rdf, final URI referenceURI, final URI typeNamespaceURI) {
+	public ClassTypedRDFResource(final RDFModel rdf, final URI referenceURI, final URI typeNamespaceURI) {
 		super(rdf, referenceURI); //construct the parent class
 		addType(this, typeNamespaceURI, getLocalName(getClass())); //add the default type based upon the given type namespace URI and the class name
 	}
