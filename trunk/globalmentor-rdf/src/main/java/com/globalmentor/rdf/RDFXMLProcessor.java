@@ -24,12 +24,13 @@ import com.globalmentor.log.Log;
 import com.globalmentor.model.Locales;
 import com.globalmentor.net.*;
 import static com.globalmentor.net.URIs.*;
+import static com.globalmentor.text.xml.XML.*;
 import static com.globalmentor.w3c.spec.RDF.*;
 import static com.globalmentor.w3c.spec.RDF.XML.*;
 
-import com.globalmentor.text.xml.*;
-import com.globalmentor.text.xml.XML;
+import com.globalmentor.text.xml.XMLBase;
 import com.globalmentor.w3c.spec.RDF;
+import com.globalmentor.w3c.spec.XML;
 
 import org.w3c.dom.*;
 
@@ -447,10 +448,10 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 			processChildElementProperties((Resource)propertyValue, element); //parse the child elements as properties
 		} else if(LITERAL_PARSE_TYPE.equals(parseType)) { //if this is an XMLLiteral
 			//TODO process the attributes to make sure there are no unexpected attributes
-			final Document document = XML.createDocument(element); //create a new document from a copy of the given element
+			final Document document = createDocument(element); //create a new document from a copy of the given element
 			//TODO do we want to ensure namespace declarations?
 			final Element documentElement = document.getDocumentElement(); //get a reference to the document element
-			final DocumentFragment documentFragment = XML.extractChildren(documentElement); //extract the children of the document element to a document fragment TODO important probably reset the owner document, so that this won't keep the entire original document tree around
+			final DocumentFragment documentFragment = extractChildren(documentElement); //extract the children of the document element to a document fragment TODO important probably reset the owner document, so that this won't keep the entire original document tree around
 			propertyValue = new RDFXMLLiteral(documentFragment); //create an XML literal containing the document fragment, which now contains a copy of the information of the XML tree below the given element
 		} else { //by default assume that we're parsing a resource as the property value
 		//Log.trace("we must be parsing a resource as the property value");
@@ -515,13 +516,13 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 			//TODO del Log.trace("found child element; ready to process as resource");
 			return processResource(childElement); //process the child element as an RDF resource, the value of the property in this case
 		} else { //if we didn't find any child elements, the content is a literal
-			final String childText = XML.getText(propertyNode, true); //retrieve the child text
+			final String childText = getText(propertyNode, true); //retrieve the child text
 			final String datatype = propertyNode instanceof Element ? getRDFAttribute((Element)propertyNode, ATTRIBUTE_DATATYPE) : null; //get the datatype, if there is one TODO check elsewhere to make sure a datatype isn't given for non-literal content
 			if(datatype != null) { //if a datatype is present
 				return getRDF().createTypedLiteral(childText, new URI(datatype)); //create a typed literal from the typed literal text
 			} else { //if a datatype is not present, this is a plain literal
 				//get the xml:lang language tag, if there is one
-				final String languageTag = propertyNode instanceof Element ? XML.getDefinedAttributeNS((Element)propertyNode, XML.XML_NAMESPACE_URI.toString(),
+				final String languageTag = propertyNode instanceof Element ? getDefinedAttributeNS((Element)propertyNode, XML.XML_NAMESPACE_URI.toString(),
 						XML.ATTRIBUTE_LANG) : null;
 				//create a locale for the language if there is a language tag
 				final Locale languageLocale = languageTag != null ? Locales.createLocale(languageTag) : null;

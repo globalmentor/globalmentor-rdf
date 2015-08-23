@@ -22,13 +22,15 @@ import java.text.*;
 import java.util.*;
 
 import static com.globalmentor.java.Objects.*;
+import static com.globalmentor.text.xml.XML.*;
+
 import com.globalmentor.net.URIs;
 import static com.globalmentor.w3c.spec.RDF.*;
 
 import com.globalmentor.rdf.rdfs.RDFS;
 import com.globalmentor.rdf.xmlschema.*;
 import com.globalmentor.text.W3CDateFormat;
-import com.globalmentor.text.xml.XML;
+import com.globalmentor.w3c.spec.XML;
 
 import org.w3c.dom.*;
 
@@ -518,8 +520,8 @@ public class RDFResources {
 	public static String toString(final RDFModel rdf) {
 		final ByteArrayOutputStream outputStream = new ByteArrayOutputStream(); //create an output stream of bytes
 		final RDFXMLGenerator rdfXMLifier = new RDFXMLGenerator(); //create an object to turn the RDF into XML
-		final Document document = rdfXMLifier.createDocument(rdf, XML.createDocumentBuilder(true).getDOMImplementation()); //create an XML document from the RDF
-		return XML.toString(document); //convert the XML document to a string and return it
+		final Document document = rdfXMLifier.createDocument(rdf, createDocumentBuilder(true).getDOMImplementation()); //create an XML document from the RDF
+		return com.globalmentor.text.xml.XML.toString(document); //convert the XML document to a string and return it
 	}
 
 	/**
@@ -531,8 +533,8 @@ public class RDFResources {
 	public static String toString(final RDFResource resource) {
 		final ByteArrayOutputStream outputStream = new ByteArrayOutputStream(); //create an output stream of bytes
 		final RDFXMLGenerator rdfXMLifier = new RDFXMLGenerator(); //create an object to turn the RDF into XML
-		final Document document = rdfXMLifier.createDocument(resource, XML.createDocumentBuilder(true).getDOMImplementation()); //create an XML document from the RDF
-		return XML.toString(document); //convert the XML document to a string and return it
+		final Document document = rdfXMLifier.createDocument(resource, createDocumentBuilder(true).getDOMImplementation()); //create an XML document from the RDF
+		return com.globalmentor.text.xml.XML.toString(document); //convert the XML document to a string and return it
 	}
 
 }

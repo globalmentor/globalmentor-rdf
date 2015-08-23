@@ -25,15 +25,15 @@ import static com.globalmentor.java.Objects.*;
 import com.globalmentor.collections.IdentityHashSet;
 import com.globalmentor.model.Locales;
 import com.globalmentor.text.xml.XMLNamespacePrefixManager;
-import com.globalmentor.text.xml.XML;
 import static com.globalmentor.rdf.RDFModel.*;
 import static com.globalmentor.rdf.RDFResources.*;
 import static com.globalmentor.text.xml.XML.*;
 import static com.globalmentor.w3c.spec.RDF.*;
 import static com.globalmentor.w3c.spec.RDF.XML.*;
+import static com.globalmentor.w3c.spec.XML.*;
 
-import com.globalmentor.util.*;
 import com.globalmentor.w3c.spec.RDF;
+import com.globalmentor.w3c.spec.XML;
 
 import org.w3c.dom.*;
 
@@ -612,7 +612,7 @@ public class RDFXMLGenerator //TODO fix bug that doesn't serialize property valu
 				final Node importedDocumentFragment = document.importNode(valueXMLLiteral.getValue(), true);
 				propertyElement.appendChild(importedDocumentFragment); //append the children of the document fragment to this node
 				//make sure all namespaces are properly declared for all child elements, declaring the namespaces on the property element itself if possible
-				XML.ensureChildNamespaceDeclarations(propertyElement);
+				ensureChildNamespaceDeclarations(propertyElement);
 			} else { //for all other XML literals, just store their lexical form as a text child to the property element
 				appendText(propertyElement, valueLiteral.getLexicalForm()); //append the literal value as content of the property element
 				if(valueLiteral instanceof RDFPlainLiteral) { //if this is a plain literal
