@@ -24,11 +24,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.xml.parsers.*;
 
 import static com.globalmentor.java.Objects.*;
-import com.globalmentor.text.xml.XMLSerializer;
-import com.globalmentor.text.xml.XML;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+
+import com.globalmentor.xml.XML;
+import com.globalmentor.xml.XMLSerializer;
 
 /**
  * Base functionality for loading and saving information stored in RDF+XML.

@@ -25,8 +25,8 @@ import javax.xml.parsers.DocumentBuilder;
 import com.globalmentor.io.*;
 import com.globalmentor.model.DefaultModifiable;
 import com.globalmentor.model.Modifiable;
-import com.globalmentor.text.xml.XMLSerializer;
-import com.globalmentor.text.xml.XML;
+import com.globalmentor.xml.XML;
+import com.globalmentor.xml.XMLSerializer;
 
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;

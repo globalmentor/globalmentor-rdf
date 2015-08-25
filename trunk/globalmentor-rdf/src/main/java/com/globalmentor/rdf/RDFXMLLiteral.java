@@ -19,13 +19,13 @@ package com.globalmentor.rdf;
 import java.io.*;
 
 import static com.globalmentor.w3c.spec.RDF.*;
+import static com.globalmentor.xml.XML.*;
 import static java.nio.charset.StandardCharsets.*;
-
-import com.globalmentor.text.xml.*;
-import com.globalmentor.text.xml.XML;
 
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
+
+import com.globalmentor.xml.*;
 
 /**
  * An encapsulation of <code>rdf:XMLLiteral</code> that holds a <code>DocumentFragment</code> containing the literal value.
@@ -104,8 +104,8 @@ public class RDFXMLLiteral extends RDFTypedLiteral<DocumentFragment> {
 	protected static DocumentFragment createDocumentFragment(final String lexicalForm) {
 		final String xmlDocumentLexicalForm = "<dummy>" + lexicalForm + "</dummy>"; //wrap the lexical form in a dummy element
 		try {
-			final Document document = XML.createDocumentBuilder(true).parse(new ByteArrayInputStream(xmlDocumentLexicalForm.getBytes(UTF_8))); //parse the document, recognizing namespaces
-			return XML.extractChildren(document.getDocumentElement()); //extract the children of the document element to a document fragment and return that fragment
+			final Document document = createDocumentBuilder(true).parse(new ByteArrayInputStream(xmlDocumentLexicalForm.getBytes(UTF_8))); //parse the document, recognizing namespaces
+			return extractChildren(document.getDocumentElement()); //extract the children of the document element to a document fragment and return that fragment
 		} catch(final IOException ioException) { //there should never be an I/O exception reading from a string
 			throw new AssertionError(ioException);
 		} catch(final SAXException saxException) {

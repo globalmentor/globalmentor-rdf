@@ -24,13 +24,13 @@ import com.globalmentor.log.Log;
 import com.globalmentor.model.Locales;
 import com.globalmentor.net.*;
 import static com.globalmentor.net.URIs.*;
-import static com.globalmentor.text.xml.XML.*;
 import static com.globalmentor.w3c.spec.RDF.*;
 import static com.globalmentor.w3c.spec.RDF.XML.*;
+import static com.globalmentor.xml.XML.*;
 
-import com.globalmentor.text.xml.XMLBase;
 import com.globalmentor.w3c.spec.RDF;
 import com.globalmentor.w3c.spec.XML;
+import com.globalmentor.xml.XMLBase;
 
 import org.w3c.dom.*;
 

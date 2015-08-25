@@ -22,10 +22,10 @@ import java.text.*;
 import java.util.*;
 
 import static com.globalmentor.java.Objects.*;
-import static com.globalmentor.text.xml.XML.*;
 
 import com.globalmentor.net.URIs;
 import static com.globalmentor.w3c.spec.RDF.*;
+import static com.globalmentor.xml.XML.*;
 
 import com.globalmentor.rdf.rdfs.RDFS;
 import com.globalmentor.rdf.xmlschema.*;
@@ -521,7 +521,7 @@ public class RDFResources {
 		final ByteArrayOutputStream outputStream = new ByteArrayOutputStream(); //create an output stream of bytes
 		final RDFXMLGenerator rdfXMLifier = new RDFXMLGenerator(); //create an object to turn the RDF into XML
 		final Document document = rdfXMLifier.createDocument(rdf, createDocumentBuilder(true).getDOMImplementation()); //create an XML document from the RDF
-		return com.globalmentor.text.xml.XML.toString(document); //convert the XML document to a string and return it
+		return com.globalmentor.xml.XML.toString(document); //convert the XML document to a string and return it
 	}
 
 	/**
@@ -534,7 +534,7 @@ public class RDFResources {
 		final ByteArrayOutputStream outputStream = new ByteArrayOutputStream(); //create an output stream of bytes
 		final RDFXMLGenerator rdfXMLifier = new RDFXMLGenerator(); //create an object to turn the RDF into XML
 		final Document document = rdfXMLifier.createDocument(resource, createDocumentBuilder(true).getDOMImplementation()); //create an XML document from the RDF
-		return com.globalmentor.text.xml.XML.toString(document); //convert the XML document to a string and return it
+		return com.globalmentor.xml.XML.toString(document); //convert the XML document to a string and return it
 	}
 
 }

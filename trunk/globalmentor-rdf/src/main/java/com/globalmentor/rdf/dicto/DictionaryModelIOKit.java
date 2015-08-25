@@ -24,8 +24,8 @@ import static com.globalmentor.rdf.dicto.Dicto.*;
 import com.globalmentor.io.*;
 import com.globalmentor.net.ResourceModel;
 import com.globalmentor.rdf.*;
-import com.globalmentor.text.xml.URIInputStreamableXMLEntityResolver;
-import com.globalmentor.text.xml.XML;
+import com.globalmentor.xml.URIInputStreamableXMLEntityResolver;
+import com.globalmentor.xml.XML;
 
 import org.w3c.dom.Document;
 
