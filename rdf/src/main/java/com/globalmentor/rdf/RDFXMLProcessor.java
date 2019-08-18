@@ -19,17 +19,16 @@ package com.globalmentor.rdf;
 import java.net.*;
 import java.util.*;
 
-import com.globalmentor.log.Log;
 import com.globalmentor.model.Locales;
 import com.globalmentor.net.*;
-import static com.globalmentor.net.URIs.*;
-import static com.globalmentor.w3c.spec.RDF.*;
-import static com.globalmentor.w3c.spec.RDF.XML.*;
-import static com.globalmentor.xml.XML.*;
+import com.globalmentor.rdf.spec.RDF;
+import com.globalmentor.xml.XmlBaseDom;
+import com.globalmentor.xml.spec.XML;
 
-import com.globalmentor.w3c.spec.RDF;
-import com.globalmentor.w3c.spec.XML;
-import com.globalmentor.xml.XMLBase;
+import static com.globalmentor.net.URIs.*;
+import static com.globalmentor.rdf.spec.RDF.*;
+import static com.globalmentor.rdf.spec.RDF.XML.*;
+import static com.globalmentor.xml.XmlDom.*;
 
 import org.w3c.dom.*;
 
@@ -232,7 +231,7 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 		if(referenceURIValue != null) { //if there is a reference URI
 			referenceURI = resolveURI(element, new URI(referenceURIValue)); //resolve the reference URI to the base URI
 		} else if(anchorID != null) { //if there is an anchor ID
-			referenceURI = new URI(XMLBase.getBaseURI(element, getBaseURI()).toString() + FRAGMENT_SEPARATOR + anchorID); //create a reference URI from the document base URI and the anchor ID	//TODO make better with new URI methods
+			referenceURI = new URI(XmlBaseDom.getBaseURI(element, getBaseURI()).toString() + FRAGMENT_SEPARATOR + anchorID); //create a reference URI from the document base URI and the anchor ID	//TODO make better with new URI methods
 		} else { //if there is neither a resource ID nor an anchor ID
 			referenceURI = null; //this is a blank node
 		}
@@ -509,7 +508,7 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 				if(childElement == null) { //if we haven't already found a child element
 					childElement = (Element)childNode; //cast the child node to an element
 				} else if(childElement != null) { //if we've already found a child element
-					Log.warn("Only one property value allowed for property element " + propertyNode.getNodeName()); //TODO with real error handling
+					//TODO fix logging Log.warn("Only one property value allowed for property element " + propertyNode.getNodeName()); //TODO with real error handling
 				}
 			}
 		}
@@ -523,8 +522,9 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 				return getRDF().createTypedLiteral(childText, new URI(datatype)); //create a typed literal from the typed literal text
 			} else { //if a datatype is not present, this is a plain literal
 				//get the xml:lang language tag, if there is one
-				final String languageTag = propertyNode instanceof Element ? getDefinedAttributeNS((Element)propertyNode, XML.XML_NAMESPACE_URI.toString(),
-						XML.ATTRIBUTE_LANG) : null;
+				final String languageTag = propertyNode instanceof Element
+						? findAttributeNS((Element)propertyNode, XML.XML_NAMESPACE_URI.toString(), XML.ATTRIBUTE_LANG).orElse(null)
+						: null;
 				//create a locale for the language if there is a language tag
 				final Locale languageLocale = languageTag != null ? Locales.createLocale(languageTag) : null;
 				return new RDFPlainLiteral(childText, languageLocale); //create a literal from the element's text, noting the specified language if any
@@ -573,7 +573,7 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 		switch(getRDFAttributeNamespaceRequirement()) { //see if the RDF attribute namespace is required
 			case RDF_OR_NULL:
 				if(RDF.NAMESPACE_URI.toString().equals(element.getNamespaceURI()) && element.hasAttributeNS(null, attributeLocalName)) { //if there is a non-prefixed attribute value
-					Log.warn("Non-prefixed rdf:" + attributeLocalName + " attribute deprecated."); //TODO put in a real warning
+					//TODO fix logging Log.warn("Non-prefixed rdf:" + attributeLocalName + " attribute deprecated."); //TODO put in a real warning
 					return element.getAttributeNS(null, attributeLocalName); //return the non-prefixed attribute value
 				}
 			case ANY:
@@ -597,11 +597,11 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 	 * @return A URI resolved to the in-scope base URI of the given element.
 	 * @throws NullPointerException if the given element and/or URI is <code>null</code>.
 	 * @throws URISyntaxException Thrown if the constructed URI is invalid.
-	 * @see XMLBase
+	 * @see XmlBaseDom
 	 * @see #resolveURI(URI, URI)
 	 */
 	protected URI resolveURI(final Element element, final URI uri) throws URISyntaxException {
-		final URI baseURI = XMLBase.getBaseURI(element, getBaseURI()); //get the base URI of the element
+		final URI baseURI = XmlBaseDom.getBaseURI(element, getBaseURI()); //get the base URI of the element
 		return baseURI != null ? resolveURI(baseURI, uri) : uri; //resolve the given URI to the base URI we determine
 	}
 

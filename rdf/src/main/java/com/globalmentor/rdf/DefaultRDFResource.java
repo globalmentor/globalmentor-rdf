@@ -22,10 +22,11 @@ import java.util.*;
 
 import com.globalmentor.java.Arrays;
 import com.globalmentor.net.BoundPropertyResource;
-import com.globalmentor.rdf.rdfs.RDFS;
+import com.globalmentor.rdf.rdfs.RDFSResources;
+import com.globalmentor.rdf.spec.RDFS;
 
 import static com.globalmentor.rdf.RDFResources.*;
-import static com.globalmentor.w3c.spec.RDF.*;
+import static com.globalmentor.rdf.spec.RDF.*;
 
 /**
  * Represents the default implementation of an RDF resource.
@@ -662,14 +663,14 @@ public class DefaultRDFResource extends BoundPropertyResource implements RDFReso
 	 * @param resource The resource with which to compare this resource. This must be another <code>Resource</code> object.
 	 * @return A negative integer, zero, or a positive integer as this resource reference URI is less than, equal to, or greater than the reference URI of the
 	 *         specified resource, respectively.
-	 * @see RDFS#getLabel(RDFResource)
+	 * @see RDFSResources#getLabel(RDFResource)
 	 */
 	//TODO fix compare and Comparable; maybe remove, and use custom Comparable elsewhere (as in Collections.sort())
 	public int compareTo(final RDFResource resource) { //TODO is it correct to compare on different things? will this violate comparison rules? (e.g. two RDFResources with labels may compare differently than each of them compared against a normal Resource)
 	//TODO del when works		if(resource instanceof RDFResource)	//if this resource is an RDF resource
 		{
-			final RDFLiteral label1 = RDFS.getLabel(this); //see if this resource has a label
-			final RDFLiteral label2 = RDFS.getLabel((RDFResource)resource); //see if there is a label for the other resource
+			final RDFLiteral label1 = RDFSResources.getLabel(this); //see if this resource has a label
+			final RDFLiteral label2 = RDFSResources.getLabel((RDFResource)resource); //see if there is a label for the other resource
 			if(label1 != null && label2 != null) { //if we have two labels to compare
 				return label1.compareTo(label2); //compare labels
 			}

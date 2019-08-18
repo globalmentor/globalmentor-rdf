@@ -23,7 +23,7 @@ import com.globalmentor.java.Arrays;
 import com.globalmentor.java.Objects;
 
 import static com.globalmentor.rdf.RDFResources.*;
-import static com.globalmentor.w3c.spec.RDF.*;
+import static com.globalmentor.rdf.spec.RDF.*;
 
 /**
  * Represents an RDF list resource.

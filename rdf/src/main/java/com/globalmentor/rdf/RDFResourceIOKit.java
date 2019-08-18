@@ -16,7 +16,7 @@
 
 package com.globalmentor.rdf;
 
-import static com.globalmentor.w3c.spec.RDF.*;
+import static com.globalmentor.rdf.spec.RDF.*;
 
 import java.io.*;
 import java.net.*;
@@ -26,8 +26,8 @@ import javax.xml.parsers.DocumentBuilder;
 
 import com.globalmentor.io.*;
 import com.globalmentor.xml.URIInputStreamableXMLEntityResolver;
-import com.globalmentor.xml.XML;
 import com.globalmentor.xml.XMLSerializer;
+import com.globalmentor.xml.XmlDom;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -184,7 +184,7 @@ public class RDFResourceIOKit<R extends RDFResource> extends AbstractIOKit<R> {
 
 	/** @return An XML processor appropriately configured for parsing XML. */
 	protected DocumentBuilder getDocumentBuilder() {
-		return XML.createDocumentBuilder(true, new URIInputStreamableXMLEntityResolver(this)); //create an XML processor using the correct input stream locator
+		return XmlDom.createDocumentBuilder(true, new URIInputStreamableXMLEntityResolver(this)); //create an XML processor using the correct input stream locator
 	}
 
 	/**
@@ -230,7 +230,7 @@ public class RDFResourceIOKit<R extends RDFResource> extends AbstractIOKit<R> {
 	 */
 	public void save(final R resource, final OutputStream outputStream) throws IOException {
 		//create an XML document containing the resource
-		final Document document = getRDFXMLGenerator().createDocument((RDFResource)resource, XML.createDocumentBuilder(true).getDOMImplementation()); //TODO get the XMLDOMImplementation from some common source
+		final Document document = getRDFXMLGenerator().createDocument((RDFResource)resource, XmlDom.createDocumentBuilder(true).getDOMImplementation()); //TODO get the XMLDOMImplementation from some common source
 		getXMLSerializer().serialize(document, outputStream); //serialize the document to the output stream
 	}
 

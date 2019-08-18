@@ -23,17 +23,17 @@ import static com.globalmentor.collections.Collections.*;
 
 import com.globalmentor.collections.IdentityHashSet;
 import com.globalmentor.model.Locales;
+import com.globalmentor.rdf.spec.RDF;
 
 import static com.globalmentor.rdf.RDFModel.*;
 import static com.globalmentor.rdf.RDFResources.*;
-import static com.globalmentor.w3c.spec.RDF.*;
-import static com.globalmentor.w3c.spec.RDF.XML.*;
-import static com.globalmentor.w3c.spec.XML.*;
-import static com.globalmentor.xml.XML.*;
+import static com.globalmentor.rdf.spec.RDF.*;
+import static com.globalmentor.rdf.spec.RDF.XML.*;
+import static com.globalmentor.xml.XmlDom.*;
+import static com.globalmentor.xml.spec.XML.*;
 
-import com.globalmentor.w3c.spec.RDF;
-import com.globalmentor.w3c.spec.XML;
 import com.globalmentor.xml.XMLNamespacePrefixManager;
+import com.globalmentor.xml.spec.XML;
 
 import org.w3c.dom.*;
 

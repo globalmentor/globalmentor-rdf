@@ -16,13 +16,14 @@
 
 package com.globalmentor.rdf;
 
+import static com.globalmentor.rdf.spec.RDF.*;
+
 import java.net.URI;
 
 import com.globalmentor.model.IDed;
 import com.globalmentor.net.DefaultResource;
 import com.globalmentor.net.URIs;
-
-import static com.globalmentor.w3c.spec.RDF.*;
+import com.globalmentor.xml.spec.XML;
 
 /**
  * The name of an RDF entity, consisting of a namespace URI and a local name.
@@ -77,7 +78,7 @@ public class RDFName extends DefaultResource implements IDed<URI> {
 		int delimiterIndex = -1; //we'll determine the index of the delimiter; so far, we don't know what it is
 		for(int i = referenceURILength - 1; i >= 0; --i) { //look at each character in the reference URI, starting at the end
 			final char character = referenceURIString.charAt(i); //get this character
-			if(!com.globalmentor.w3c.spec.XML.isNameChar(character) && character != URIs.ESCAPE_CHAR) { //if this is not a name character (but it isn't the URI escape character, either)
+			if(!XML.isNameChar(character) && character != URIs.ESCAPE_CHAR) { //if this is not a name character (but it isn't the URI escape character, either)
 				delimiterIndex = i; //record the delimiter index
 				break; //stop looking for a delimtier
 			}

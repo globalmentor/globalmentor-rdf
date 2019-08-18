@@ -33,13 +33,13 @@ public class RDFSLabelComparator implements Comparator {
 	 * @return A negative integer, zero, or a positive integer if the first resource label is less than, equal to, or greater than the label of the second
 	 *         resource, respectively.
 	 * @throws ClassCastException Thrown if the specified objects' types are not <code>RDFResource</code>.
-	 * @see RDFS#getLabel(RDFResource)
+	 * @see RDFSResources#getLabel(RDFResource)
 	 */
 	public int compare(final Object object1, final Object object2) throws ClassCastException {
 		final RDFResource resource1 = (RDFResource)object1; //cast the objects to resources
 		final RDFResource resource2 = (RDFResource)object2;
-		final RDFLiteral label1 = RDFS.getLabel(resource1); //get the labels, if any
-		final RDFLiteral label2 = RDFS.getLabel(resource2);
+		final RDFLiteral label1 = RDFSResources.getLabel(resource1); //get the labels, if any
+		final RDFLiteral label2 = RDFSResources.getLabel(resource2);
 		if(label1 != null && label2 != null) { //if both resources have labels
 			return label1.compareTo(label2); //let the labels compare themselves---they know how to correctly use collators for comparison
 		} else { //if both resources don't have labels

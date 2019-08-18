@@ -23,7 +23,7 @@ import com.globalmentor.java.Java;
 import com.globalmentor.net.*;
 
 import static com.globalmentor.rdf.RDFResources.*;
-import static com.globalmentor.w3c.spec.RDF.*;
+import static com.globalmentor.rdf.spec.RDF.*;
 
 /**
  * Base class for RDF processors. Each instance of an RDF processor maintains an internal RDF data model throughout its lifetime that is continually updated

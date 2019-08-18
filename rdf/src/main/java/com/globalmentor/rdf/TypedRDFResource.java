@@ -16,7 +16,7 @@
 
 package com.globalmentor.rdf;
 
-import static com.globalmentor.w3c.spec.RDF.*;
+import static com.globalmentor.rdf.spec.RDF.*;
 
 import java.net.URI;
 

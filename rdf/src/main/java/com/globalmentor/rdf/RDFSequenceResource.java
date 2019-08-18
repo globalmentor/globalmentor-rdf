@@ -19,7 +19,7 @@ package com.globalmentor.rdf;
 import java.net.URI;
 import java.util.*;
 
-import static com.globalmentor.w3c.spec.RDF.*;
+import static com.globalmentor.rdf.spec.RDF.*;
 
 import com.globalmentor.model.NameValuePair;
 

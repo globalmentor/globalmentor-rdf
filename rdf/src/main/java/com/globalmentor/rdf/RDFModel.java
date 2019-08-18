@@ -24,11 +24,11 @@ import static java.util.Collections.*;
 import com.globalmentor.collections.IdentityHashSet;
 import com.globalmentor.net.URIs;
 import static com.globalmentor.rdf.RDFResources.*;
-import static com.globalmentor.w3c.spec.RDF.*;
+import static com.globalmentor.rdf.spec.RDF.*;
 
-import com.globalmentor.rdf.rdfs.RDFS;
+import com.globalmentor.rdf.rdfs.RDFSResources;
 import com.globalmentor.rdf.xmlschema.XMLSchemaRDFTypedLiteralFactory;
-import com.globalmentor.w3c.spec.XMLSchema;
+import com.globalmentor.xml.spec.XMLSchema;
 
 /**
  * An RDF data model.
@@ -204,7 +204,7 @@ public class RDFModel
 	 */
 	public boolean isRootResource(final RDFResource resource) {
 		final URI referenceURI = resource.getURI(); //get the resource reference URI
-		final RDFLiteral label = RDFS.getLabel(resource); //see if this resource has a label
+		final RDFLiteral label = RDFSResources.getLabel(resource); //see if this resource has a label
 		//TODO eventually we'll probably have to determine if something is actually a property---i.e. this doesn't work: if(resource.getReferenceURI()!=null || resource.getPropertyCount()>0)	//only show resources that have reference URIs or have properties, thereby not showing property resources and literals at the root
 		//if this is not a blank node and this resource actually has properties (even properties such as type identifiers are resources, but they don't have properties)
 		return (referenceURI != null && resource.getPropertyCount() > 0) || label != null; //if a resource is labeled, it's probably important enough to show at the top of the hierarchy as well 

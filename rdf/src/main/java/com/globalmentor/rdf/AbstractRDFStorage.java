@@ -25,8 +25,8 @@ import javax.xml.parsers.DocumentBuilder;
 import com.globalmentor.io.*;
 import com.globalmentor.model.DefaultModifiable;
 import com.globalmentor.model.Modifiable;
-import com.globalmentor.xml.XML;
 import com.globalmentor.xml.XMLSerializer;
+import com.globalmentor.xml.XmlDom;
 
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
@@ -137,7 +137,7 @@ public abstract class AbstractRDFStorage extends DefaultModifiable implements UR
 
 	/** @return An XML processor appropriately configured for parsing XML. */
 	protected DocumentBuilder getDocumentBuilder() {
-		return XML.createDocumentBuilder(true); //create an XML processor
+		return XmlDom.createDocumentBuilder(true); //create an XML processor
 	}
 
 	/**
@@ -179,7 +179,7 @@ public abstract class AbstractRDFStorage extends DefaultModifiable implements UR
 	public void store() throws IOException {
 		final RDFModel rdf = getRDF(); //get the RDF data model representing the data
 		//create an XML document from the RDF
-		final Document document = getRDFXMLGenerator().createDocument(rdf, XML.createDocumentBuilder(true).getDOMImplementation()); //TODO try to make this XML parser agnostic
+		final Document document = getRDFXMLGenerator().createDocument(rdf, XmlDom.createDocumentBuilder(true).getDOMImplementation()); //TODO try to make this XML parser agnostic
 		//make sure all the registered namespaces are declared on the document element just to make things look nice in the serialization
 		final Element documentElement = document.getDocumentElement(); //get the XML document element
 		final Iterator<Map.Entry<URI, String>> namespaceURIPrefixEntryIterator = namespaceURIPrefixMap.entrySet().iterator(); //get an iterator to look through all namespace URIs and prefixes
@@ -188,7 +188,7 @@ public abstract class AbstractRDFStorage extends DefaultModifiable implements UR
 			final URI namespaceURI = namespaceURIPrefixEntry.getKey(); //get the namespace URI
 			final String namespacePrefix = namespaceURIPrefixEntry.getValue(); //get the namespace prefix
 			//make sure this xmlns:prefix attribute is declared
-			XML.ensureNamespaceDeclaration(document.getDocumentElement(), namespacePrefix, namespaceURI.toString());
+			XmlDom.ensureNamespaceDeclaration(document.getDocumentElement(), namespacePrefix, namespaceURI.toString());
 		}
 		store(document); //store the XML document
 		setModified(false); //show that we are no longer modified

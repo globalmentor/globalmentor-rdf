@@ -22,7 +22,7 @@ import java.util.*;
 import static java.util.Collections.*;
 
 import static com.globalmentor.rdf.RDFResources.*;
-import static com.globalmentor.w3c.spec.RDF.*;
+import static com.globalmentor.rdf.spec.RDF.*;
 
 /**
  * Represents an RDF resource that is a container, such as a bag or a sequence.

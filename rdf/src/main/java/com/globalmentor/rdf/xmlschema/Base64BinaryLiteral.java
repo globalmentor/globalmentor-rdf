@@ -16,11 +16,12 @@
 
 package com.globalmentor.rdf.xmlschema;
 
-import static com.globalmentor.w3c.spec.XMLSchema.*;
+import static com.globalmentor.xml.spec.XMLSchema.*;
+
+import java.util.Base64;
 
 import com.globalmentor.java.Objects;
 import com.globalmentor.rdf.*;
-import com.globalmentor.util.Base64;
 
 /**
  * An RDF literal that represents an XML Schema base64-encoded binary value.
@@ -42,7 +43,7 @@ public class Base64BinaryLiteral extends RDFTypedLiteral<byte[]> {
 	 * @param lexicalForm The lexical form of the binary value.
 	 */
 	public Base64BinaryLiteral(final String lexicalForm) {
-		super(Base64.decode(lexicalForm), BASE64_BINARY_DATATYPE_URI); //save binary data constructed from the text as the value, specifying the XML base64-encoded binary datatype URI
+		super(Base64.getDecoder().decode(lexicalForm), BASE64_BINARY_DATATYPE_URI); //save binary data constructed from the text as the value, specifying the XML base64-encoded binary datatype URI
 	}
 
 	/**
@@ -51,7 +52,7 @@ public class Base64BinaryLiteral extends RDFTypedLiteral<byte[]> {
 	 * @see #getValue()
 	 */
 	public String getLexicalForm() {
-		return Base64.encodeBytes(getValue());
+		return Base64.getEncoder().encodeToString(getValue());
 	}
 
 	/**

@@ -26,8 +26,8 @@ import javax.xml.parsers.*;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import com.globalmentor.xml.XML;
 import com.globalmentor.xml.XMLSerializer;
+import com.globalmentor.xml.XmlDom;
 
 import static java.util.Objects.*;
 
@@ -118,7 +118,7 @@ public abstract class AbstractRDFXMLIO<T> implements RDFIO<T> {
 	 * @throws ParserConfigurationException if a document builder cannot be created which satisfies the configuration requested.
 	 */
 	protected DocumentBuilder createDocumentBuilder() throws ParserConfigurationException {
-		return XML.createDocumentBuilder(true); //create a document builder that understands namespaces
+		return XmlDom.createDocumentBuilder(true); //create a document builder that understands namespaces
 	}
 
 	/**

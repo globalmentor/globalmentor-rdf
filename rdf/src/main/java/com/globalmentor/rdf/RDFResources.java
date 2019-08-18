@@ -24,13 +24,14 @@ import java.util.*;
 import static com.globalmentor.java.Objects.*;
 
 import com.globalmentor.net.URIs;
-import static com.globalmentor.w3c.spec.RDF.*;
-import static com.globalmentor.xml.XML.*;
+import static com.globalmentor.rdf.spec.RDF.*;
+import static com.globalmentor.xml.XmlDom.createDocumentBuilder;
 
-import com.globalmentor.rdf.rdfs.RDFS;
+import com.globalmentor.rdf.rdfs.RDFSResources;
 import com.globalmentor.rdf.xmlschema.*;
 import com.globalmentor.text.W3CDateFormat;
-import com.globalmentor.w3c.spec.XML;
+import com.globalmentor.xml.XmlDom;
+import com.globalmentor.xml.spec.XML;
 
 import org.w3c.dom.*;
 
@@ -444,7 +445,7 @@ public class RDFResources {
 	 * @return The label of the resource, or <code>null</code> if there is no label or the label is not a literal.
 	 */
 	public static String getDisplayLabel(final RDFResource resource) {
-		final RDFLiteral labelLiteral = RDFS.getLabel(resource); //see if there is an rdfs:label property
+		final RDFLiteral labelLiteral = RDFSResources.getLabel(resource); //see if there is an rdfs:label property
 		if(labelLiteral != null) { //if a rdfs:label property was provided
 			return labelLiteral.getLexicalForm(); //return the rdfs:label property's lexical form
 		}
@@ -520,7 +521,7 @@ public class RDFResources {
 		final ByteArrayOutputStream outputStream = new ByteArrayOutputStream(); //create an output stream of bytes
 		final RDFXMLGenerator rdfXMLifier = new RDFXMLGenerator(); //create an object to turn the RDF into XML
 		final Document document = rdfXMLifier.createDocument(rdf, createDocumentBuilder(true).getDOMImplementation()); //create an XML document from the RDF
-		return com.globalmentor.xml.XML.toString(document); //convert the XML document to a string and return it
+		return XmlDom.toString(document); //convert the XML document to a string and return it
 	}
 
 	/**
@@ -533,7 +534,7 @@ public class RDFResources {
 		final ByteArrayOutputStream outputStream = new ByteArrayOutputStream(); //create an output stream of bytes
 		final RDFXMLGenerator rdfXMLifier = new RDFXMLGenerator(); //create an object to turn the RDF into XML
 		final Document document = rdfXMLifier.createDocument(resource, createDocumentBuilder(true).getDOMImplementation()); //create an XML document from the RDF
-		return com.globalmentor.xml.XML.toString(document); //convert the XML document to a string and return it
+		return XmlDom.toString(document); //convert the XML document to a string and return it
 	}
 
 }

@@ -18,8 +18,8 @@ package com.globalmentor.rdf;
 
 import java.io.*;
 
-import static com.globalmentor.w3c.spec.RDF.*;
-import static com.globalmentor.xml.XML.*;
+import static com.globalmentor.rdf.spec.RDF.*;
+import static com.globalmentor.xml.XmlDom.*;
 import static java.nio.charset.StandardCharsets.*;
 
 import org.w3c.dom.*;
