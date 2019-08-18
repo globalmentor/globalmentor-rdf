@@ -61,7 +61,7 @@ public class Base64BinaryLiteral extends RDFTypedLiteral<byte[]> {
 	 *         <code>null</code>.
 	 */
 	public static Base64BinaryLiteral asBase64BinaryLiteral(final RDFObject rdfObject) {
-		return Objects.asInstance(rdfObject, Base64BinaryLiteral.class); //cast the object to an integer literal if we can
+		return Objects.asInstance(rdfObject, Base64BinaryLiteral.class).orElse(null); //cast the object to an integer literal if we can
 	}
 
 	/**

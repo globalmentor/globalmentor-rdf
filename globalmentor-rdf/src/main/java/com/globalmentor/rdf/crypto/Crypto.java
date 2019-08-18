@@ -73,7 +73,7 @@ public class Crypto implements RDFResourceFactory {
 	 * @return The digest of the resource, or <code>null</code> if there is no algorithm or the algorithm is not of the correct type.
 	 */
 	public static Digest getDigest(final RDFResource resource) {
-		return Objects.asInstance(resource.getPropertyValue(CRYPTO_NAMESPACE_URI, DIGEST_PROPERTY_NAME), Digest.class); //get the value of the digest property as the correct type
+		return Objects.asInstance(resource.getPropertyValue(CRYPTO_NAMESPACE_URI, DIGEST_PROPERTY_NAME), Digest.class).orElse(null); //get the value of the digest property as the correct type
 	}
 
 	/**

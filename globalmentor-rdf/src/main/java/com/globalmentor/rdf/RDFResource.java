@@ -97,6 +97,7 @@ public interface RDFResource extends RDFObject, Resource, Cloneable {
 	/**
 	 * Searches and returns an iterable of all property values of the requested type that appear as RDF statement objects with a predicate of
 	 * <var>propertyURI</var>.
+	 * @param <T> The type of the iterable.
 	 * @param propertyURI The reference URI of the property resources.
 	 * @param valueType The type of values to include
 	 * @return A read-only iterable of values of properties.
@@ -115,6 +116,7 @@ public interface RDFResource extends RDFObject, Resource, Cloneable {
 	/**
 	 * Searches and returns an iterable of all property values of the requested type that appear as RDF statement objects with a predicate of a property URI
 	 * formed by the given namespace URI and local name.
+	 * @param <T> The type of the iterable.
 	 * @param namespaceURI The XML namespace URI that represents part of the reference URI.
 	 * @param localName The XML local name that represents part of the reference URI.
 	 * @param valueType The type of values to include
@@ -141,6 +143,7 @@ public interface RDFResource extends RDFObject, Resource, Cloneable {
 
 	/**
 	 * Adds a property by creating a {@link RDFPropertyValuePair} from the given property and value. If an equivalent property already exists, no action is taken.
+	 * @param <T> The type of the {@link RDFObject}.
 	 * @param property A property resource; the predicate of an RDF statement.
 	 * @param value A property value; the object of an RDF statement.
 	 * @return The added property value.
@@ -150,6 +153,7 @@ public interface RDFResource extends RDFObject, Resource, Cloneable {
 	/**
 	 * Adds a property by creating a {@link RDFPropertyValuePair} from the given property URI and value. If an equivalent property already exists, no action is
 	 * taken.
+	 * @param <T> The type of the {@link RDFObject}.
 	 * @param propertyURI The reference URI of a property resource; the predicate of an RDF statement.
 	 * @param value A property value; the object of an RDF statement.
 	 * @return The added property value.
@@ -159,6 +163,7 @@ public interface RDFResource extends RDFObject, Resource, Cloneable {
 	/**
 	 * Adds a property by creating a {@link RDFPropertyValuePair} from the given property URI and value. If an equivalent property already exists, no action is
 	 * taken.
+	 * @param <T> The type of the {@link RDFObject}.
 	 * @param propertyNamespaceURI The namespace URI of the property resource that is the predicate of an RDF statement.
 	 * @param propertyLocalName The local name of the property resource that is the predicate of an RDF statement.
 	 * @param value A property value; the object of an RDF statement.
@@ -226,7 +231,7 @@ public interface RDFResource extends RDFObject, Resource, Cloneable {
 	/**
 	 * Removes the property with the given property URI and property value.
 	 * @param propertyURI The reference URI of the property resource of the property to be removed.
-	 * @param propertyvalue The value of the property to be removed.
+	 * @param propertyValue The value of the property to be removed.
 	 * @throws NullPointerException if the given property URI and/or property value is <code>null</code>.
 	 */
 	public void removeProperty(final URI propertyURI, final RDFObject propertyValue);
@@ -265,6 +270,7 @@ public interface RDFResource extends RDFObject, Resource, Cloneable {
 	/**
 	 * Sets a property by removing all property values for the given property and creating a new {@link RDFPropertyValuePair} from the given property URI and
 	 * value. If no value is given, all such properties are removed.
+	 * @param <T> The type of the {@link RDFObject}.
 	 * @param propertyURI The reference URI of a property resource; the predicate of an RDF statement.
 	 * @param value A property value&mdash;the object of an RDF statement&mdash;or <code>null</code> if all such properties should be removed with nothing to
 	 *          replace them.
@@ -276,6 +282,7 @@ public interface RDFResource extends RDFObject, Resource, Cloneable {
 
 	/**
 	 * Sets a property by first removing all such properties and then adding a new property. If no value is given, all such properties are removed.
+	 * @param <T> The type of the {@link RDFObject}.
 	 * @param propertyNamespaceURI The namespace URI of the property resource that is the predicate of an RDF statement.
 	 * @param propertyLocalName The local name of the property resource that is the predicate of an RDF statement.
 	 * @param value A property value&mdash;the object of an RDF statement&mdash;or <code>null</code> if all such properties should be removed with nothing to

@@ -95,7 +95,7 @@ public class RDFSequenceResource extends RDFContainerResource implements Compara
 	 * @param object1 The first object to be compared, a <code>NameValuePair</code>.
 	 * @param object2 The second object to be compared, a <code>NameValuePair</code>.
 	 * @return A negative integer, zero, or a positive integer as the first argument is less than, equal to, or greater than the second.
-	 * @throws ClassCastException If the arguments are not <cod>NameValuePair</code>s.
+	 * @throws ClassCastException If the arguments are not <code>NameValuePair</code>s.
 	 */
 	public int compare(final Object object1, final Object object2) { //TODO we might put this in RDFContainerResource, even though it isn't used by all containers---or maybe even make an internal class that does this comparation
 		//create the URI string that will appear at the beginning of every rdf:li_XXX property

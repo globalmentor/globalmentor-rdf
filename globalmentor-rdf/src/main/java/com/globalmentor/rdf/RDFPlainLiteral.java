@@ -19,7 +19,7 @@ package com.globalmentor.rdf;
 import java.text.Collator;
 import java.util.Locale;
 
-import static com.globalmentor.java.Objects.*;
+import static java.util.Objects.*;
 
 import com.globalmentor.model.LocaledText;
 
@@ -42,9 +42,7 @@ public class RDFPlainLiteral extends RDFLiteral {
 	 */
 	private Locale language;
 
-	/**
-	 * The language of the plain literal, or <code>null</code> if there is no language specified.
-	 */
+	/** @return The language of the plain literal, or <code>null</code> if there is no language specified. */
 	public Locale getLanguage() {
 		return language;
 	}
@@ -70,7 +68,7 @@ public class RDFPlainLiteral extends RDFLiteral {
 	 * @throws NullPointerException if the given lexical value is <code>null</code>.
 	 */
 	public RDFPlainLiteral(final String lexicalValue, final Locale languageLocale) {
-		lexicalForm = checkInstance(lexicalValue, "Lexical value cannot be null."); //set the lexical form
+		lexicalForm = requireNonNull(lexicalValue, "Lexical value cannot be null."); //set the lexical form
 		language = languageLocale; //set the language locale
 	}
 

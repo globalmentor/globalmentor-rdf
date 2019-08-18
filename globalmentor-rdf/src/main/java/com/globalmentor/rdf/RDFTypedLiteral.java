@@ -18,7 +18,7 @@ package com.globalmentor.rdf;
 
 import java.net.URI;
 
-import static com.globalmentor.java.Objects.*;
+import static java.util.Objects.*;
 
 /**
  * The base class for all RDF typed literals.
@@ -38,7 +38,7 @@ public class RDFTypedLiteral<T> extends RDFLiteral {
 	/** The reference URI identifying the datatype of this literal. */
 	private final URI datatypeURI;
 
-	/** The reference URI identifying the datatype of this literal. */
+	/** @return The reference URI identifying the datatype of this literal. */
 	public final URI getDatatypeURI() {
 		return datatypeURI;
 	}
@@ -59,14 +59,14 @@ public class RDFTypedLiteral<T> extends RDFLiteral {
 	 * @throws NullPointerException if the value and/or the datatype URI is <code>null</code>.
 	 */
 	public RDFTypedLiteral(final T literalValue, final URI literalDatatypeURI) {
-		value = checkInstance(literalValue, "Literal value cannot be null."); //save the value
-		datatypeURI = checkInstance(literalDatatypeURI, "Literal datatype cannot be null."); //save the datatype URI
+		value = requireNonNull(literalValue, "Literal value cannot be null."); //save the value
+		datatypeURI = requireNonNull(literalDatatypeURI, "Literal datatype cannot be null."); //save the datatype URI
 	}
 
 	/**
 	 * If <code>object</code> is another {@link RDFTypedLiteral}, compares the datatype URI and value objects.
 	 * @param object The object with which to compare this typed literal.
-	 * @return <code>true<code> if this literal equals that specified in <code>object</code>.
+	 * @return <code>true</code> if this literal equals that specified in <code>object</code>.
 	 * @see #getValue()
 	 */
 	public boolean equals(final Object object) {

@@ -142,6 +142,7 @@ public class DefaultRDFResource extends BoundPropertyResource implements RDFReso
 	/**
 	 * Searches and returns an iterable of all property values of the requested type that appear as RDF statement objects with a predicate of
 	 * <var>propertyURI</var>.
+	 * @param <T> The type of the iterable.
 	 * @param propertyURI The reference URI of the property resources.
 	 * @param valueType The type of values to include
 	 * @return A read-only iterable of values of properties.
@@ -173,6 +174,7 @@ public class DefaultRDFResource extends BoundPropertyResource implements RDFReso
 	/**
 	 * Searches and returns an iterable of all property values of the requested type that appear as RDF statement objects with a predicate of a property URI
 	 * formed by the given namespace URI and local name.
+	 * @param <T> The type of the iterable.
 	 * @param namespaceURI The XML namespace URI that represents part of the reference URI.
 	 * @param localName The XML local name that represents part of the reference URI.
 	 * @param valueType The type of values to include
@@ -322,7 +324,7 @@ public class DefaultRDFResource extends BoundPropertyResource implements RDFReso
 	/**
 	 * Removes the property with the given property URI and property value.
 	 * @param propertyURI The reference URI of the property resource of the property to be removed.
-	 * @param propertyvalue The value of the property to be removed.
+	 * @param propertyValue The value of the property to be removed.
 	 * @throws NullPointerException if the given property URI and/or property value is <code>null</code>.
 	 */
 	public void removeProperty(final URI propertyURI, final RDFObject propertyValue) {
@@ -622,9 +624,9 @@ public class DefaultRDFResource extends BoundPropertyResource implements RDFReso
 	 * If this resource has a reference URI, compares using the superclass functionality (comparing reference URIs). Otherwise, if the other object is also an RDF
 	 * resource, compares properties.
 	 * @param object The object with which to compare this RDF resource; should be another resource.
-	 * @return <code>true<code> if this resource equals that specified in
+	 * @return <code>true</code> if this resource equals that specified in
 		<code>object</code>.
-	 * @see #getReferenceURI
+	 * @see #getURI()
 	 * @see RDFResources#getValue(RDFResource)
 	 */
 	public boolean equals(final Object object) {

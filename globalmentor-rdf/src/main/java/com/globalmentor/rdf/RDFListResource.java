@@ -149,8 +149,10 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 
 	/**
 	 * Constructs an anonymous RDF list resource with the contents of a collection.
+	 * @param <T> The type of the {@link RDFObject}.
 	 * @param rdf The RDF data model to use as a factory for creating properties.
 	 * @param collection The collection with which to populate the list.
+	 * @return The anonymous list resource.
 	 */
 	public static <T extends RDFObject> RDFListResource<T> create(final RDFModel rdf, final Collection<? extends T> collection) {
 		return create(rdf, (URI)null, collection); //create and return a list with an anonymous reference URI
@@ -158,9 +160,11 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 
 	/**
 	 * Constructs an RDF list resource with the contents of a collection.
+	 * @param <T> The type of the {@link RDFObject}.
 	 * @param rdf The RDF data model to use as a factory for creating properties.
 	 * @param newReferenceURI The reference URI for the new resource.
 	 * @param collection The collection with which to populate the list, each element of which is an {@link RDFObject}.
+	 * @return The RDF list resource containing the collection.
 	 */
 	public static <T extends RDFObject> RDFListResource<T> create(final RDFModel rdf, final URI newReferenceURI, final Collection<? extends T> collection) {
 		//TODO now that we've removed the requirement of passing an RDF data model, maybe this can be optimized---or maybe removed altogether
@@ -184,6 +188,7 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	/**
 	 * Retrieves the first element of the list. If this resource has more than one property of <code>rdf:first</code>, it is undefined which of those property
 	 * values will be returned.
+	 * @param <T> The type of the {@link RDFObject}.
 	 * @param resource The list resource for which the first element will be returned.
 	 * @return The first element of the list, or <code>null</code> if the resource has no first element specified.
 	 */
@@ -223,6 +228,7 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 
 	/**
 	 * Replaces all <code>rdf:first</code> properties of the resource with a new property with the given value.
+	 * @param <T> The type of the {@link RDFObject}.
 	 * @param resource The resource for which the first property should be set.
 	 * @param value The first element of the list, or <code>null</code> if the element should be removed.
 	 */
@@ -315,10 +321,10 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 
 	/**
 	 * Returns a list iterator of the elements in this list (in proper sequence), starting at the specified position in this list. The specified index indicates
-	 * the first element that would be returned by an initial call to the <tt>next</tt> method. An initial call to the <tt>previous</tt> method would return the
+	 * the first element that would be returned by an initial call to the <code>next</code> method. An initial call to the <code>previous</code> method would return the
 	 * element with the specified index minus one.
 	 *
-	 * @param index index of first element to be returned from the list iterator (by a call to the <tt>next</tt> method).
+	 * @param index index of first element to be returned from the list iterator (by a call to the <code>next</code> method).
 	 * @return a list iterator of the elements in this list (in proper sequence), starting at the specified position in this list.
 	 * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt; size()).
 	 */
@@ -364,7 +370,7 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 
 	/**
 	 * Returns the first contained resource with the specified reference URI.
-	 * @param referenceURI The reference URI of the resource to retrieve.
+	 * @param uri The reference URI of the resource to retrieve.
 	 * @return The first contained resource with the given reference URI, or <code>null</code> if the list does not contain a resource with the given reference
 	 *         URI.
 	 */
@@ -438,7 +444,7 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	 * <p>
 	 * This implementation calls <code>add(size(), o)</code>.
 	 * <p>
-	 * @param element The element to be appended to this list.
+	 * @param object The object to be appended to this list.
 	 * @return <code>true</code> if this collection changed as a result of the call.
 	 * @throws ClassCastException Thrown if the class of the specified element prevents it from being added to this list.
 	 * @throws IllegalArgumentException Thrown some aspect of this element prevents it from being added to this collection.
@@ -456,10 +462,10 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	 * list with the new element and this list as parameters.
 	 * </p>
 	 * @param index The index at which the specified element is to be inserted.
-	 * @param element The element to be inserted.
+	 * @param object The element to be inserted.
 	 * @throws ClassCastException Thrown if the class of the specified element prevents it from being added to this list.
 	 * @throws IndexOutOfBoundsException Thrown if index is out of range <code>(index &le; 0 || index &gt; size())</code>.
-	 * @see #create(RDFModel, URI, RDFObject, RDFResource)
+	 * @see #create(RDFModel, URI, Collection)
 	 */
 	@SuppressWarnings("unchecked")
 	//cast needed so that Sun JDK 1.6.0_03-b05 will know which type we want; not required for Eclipse 3.4M3
@@ -582,13 +588,13 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	 * is in progress. (Note that this will occur if the specified collection is this list, and it's nonempty.)
 	 *
 	 * @param index index at which to insert first element from the specified collection.
-	 * @param c elements to be inserted into this list.
-	 * @return <tt>true</tt> if this list changed as a result of the call.
+	 * @param collection elements to be inserted into this list.
+	 * @return <code>true</code> if this list changed as a result of the call.
 	 * 
-	 * @throws UnsupportedOperationException if the <tt>addAll</tt> method is not supported by this list.
+	 * @throws UnsupportedOperationException if the <code>addAll</code> method is not supported by this list.
 	 * @throws ClassCastException if the class of one of elements of the specified collection prevents it from being added to this list.
 	 * @throws NullPointerException if the specified collection contains one or more null elements and this list does not support null elements, or if the
-	 *           specified collection is <tt>null</tt>.
+	 *           specified collection is <code>null</code>.
 	 * @throws IllegalArgumentException if some aspect of one of elements of the specified collection prevents it from being added to this list.
 	 * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt; size()).
 	 */
@@ -683,8 +689,8 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	}
 
 	/**
-	 * Returns a view of the portion of this list between the specified <tt>fromIndex</tt>, inclusive, and <tt>toIndex</tt>, exclusive. (If <tt>fromIndex</tt> and
-	 * <tt>toIndex</tt> are equal, the returned list is empty.) The returned list is backed by this list, so non-structural changes in the returned list are
+	 * Returns a view of the portion of this list between the specified <code>fromIndex</code>, inclusive, and <code>toIndex</code>, exclusive. (If <code>fromIndex</code> and
+	 * <code>toIndex</code> are equal, the returned list is empty.) The returned list is backed by this list, so non-structural changes in the returned list are
 	 * reflected in this list, and vice-versa. The returned list supports all of the optional list operations supported by this list.
 	 * <p>
 	 *
@@ -695,7 +701,7 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	 * list.subList(from, to).clear();
 	 * </pre>
 	 * 
-	 * Similar idioms may be constructed for <tt>indexOf</tt> and <tt>lastIndexOf</tt>, and all of the algorithms in the <tt>Collections</tt> class can be applied
+	 * Similar idioms may be constructed for <code>indexOf</code> and <code>lastIndexOf</code>, and all of the algorithms in the <code>Collections</code> class can be applied
 	 * to a subList.
 	 * <p>
 	 *

@@ -20,7 +20,6 @@ import java.net.URI;
 import java.util.*;
 
 import static com.globalmentor.collections.Collections.*;
-import static com.globalmentor.java.Objects.*;
 
 import com.globalmentor.collections.IdentityHashSet;
 import com.globalmentor.model.Locales;
@@ -37,6 +36,8 @@ import com.globalmentor.w3c.spec.XML;
 import com.globalmentor.xml.XMLNamespacePrefixManager;
 
 import org.w3c.dom.*;
+
+import static java.util.Objects.*;
 
 /**
  * Class that creates an XML representation of RDF through DOM.
@@ -132,7 +133,7 @@ public class RDFXMLGenerator //TODO fix bug that doesn't serialize property valu
 	 * Retrieves a node ID appropriate for the given resource. If the resource has already been assigned a node ID, it will be returned; otherwise, a new node ID
 	 * will be generated.
 	 * @param resource The resource for which a node ID should be returned
-	 * @return
+	 * @return The appropriate node ID.
 	 */
 	protected String getNodeID(final RDFResource resource) {
 		String nodeID = nodeIDMap.get(resource); //get a node ID for the given resource
@@ -246,7 +247,7 @@ public class RDFXMLGenerator //TODO fix bug that doesn't serialize property valu
 	/**
 	 * XML namespace prefix manager constructor with no base URI and compact serialization.
 	 * @param xmlNamespacePrefixManager The object managing XML namespaces and prefixes.
-	 * @excepion NullPointerException if the given XML namespace prefix manager is <code>null</code>.
+	 * @throws NullPointerException if the given XML namespace prefix manager is <code>null</code>.
 	 */
 	public RDFXMLGenerator(final XMLNamespacePrefixManager xmlNamespacePrefixManager) {
 		this(null, xmlNamespacePrefixManager); //create the class with no base URI
@@ -264,11 +265,11 @@ public class RDFXMLGenerator //TODO fix bug that doesn't serialize property valu
 	 * Base URI and XML namespace prefix manager constructor with compact serialization.
 	 * @param baseURI The base URI of the RDF data model, or <code>null</code> if the base URI is unknown.
 	 * @param xmlNamespacePrefixManager The object managing XML namespaces and prefixes.
-	 * @excepion NullPointerException if the given XML namespace prefix manager is <code>null</code>.
+	 * @throws NullPointerException if the given XML namespace prefix manager is <code>null</code>.
 	 */
 	public RDFXMLGenerator(final URI baseURI, final XMLNamespacePrefixManager xmlNamespacePrefixManager) {
 		this.baseURI = baseURI; //save the base URI
-		this.xmlNamespacePrefixManager = checkInstance(xmlNamespacePrefixManager, "XML namespace prefix manager cannot be null.");
+		this.xmlNamespacePrefixManager = requireNonNull(xmlNamespacePrefixManager, "XML namespace prefix manager cannot be null.");
 		serializedResourceSet = new IdentityHashSet<RDFResource>(); //create a map that will determine whether resources have been serialized, based upon the identity of resources
 		resourceReferenceMap = new IdentityHashMap<RDFResource, Set<RDFResource>>(); //create a map of sets of referring resources for each referant resource, using identity rather than equality for equivalence
 		nodeIDMap = new IdentityHashMap<RDFResource, String>(); //create a map of node IDs keyed to resources, using identity rather than equality to determine associated resource
@@ -344,12 +345,12 @@ public class RDFXMLGenerator //TODO fix bug that doesn't serialize property valu
 	}
 
 	/**
-	 * Creates the <rdf:RDF> element needed in an XML serialization of RDF.
+	 * Creates the <code>&lt;rdf:RDF&gt;</code> element needed in an XML serialization of RDF.
 	 * @param document The document to use as an element factory for the element.
-	 * @return An <rdf:RDF> element for the given document.
+	 * @return An <code>&lt;rdf:RDF&gt;</code> element for the given document.
 	 */
 	public static Element createRDFElement(final Document document) {
-		return document.createElementNS(RDF.NAMESPACE_URI.toString(), createQName(RDF.NAMESPACE_PREFIX, ELEMENT_RDF)); //create an <rdf:RDF> element for the given document
+		return document.createElementNS(RDF.NAMESPACE_URI.toString(), createQName(RDF.NAMESPACE_PREFIX, ELEMENT_RDF)); //create an <code>&lt;rdf:RDF&gt;</code> element for the given document
 	}
 
 	/**
@@ -362,7 +363,7 @@ public class RDFXMLGenerator //TODO fix bug that doesn't serialize property valu
 		initialize(); //make sure we don't have information left over from other calls to this method
 		rdf.getReferences(resourceReferenceMap); //get all the references to resources in the RDF data model
 		try {
-			//create an <rdf:RDF> element
+			//create an <code>&lt;rdf:RDF&gt;</code> element
 			final Element rdfElement = document.createElementNS(RDF.NAMESPACE_URI.toString(), createQName(RDF.NAMESPACE_PREFIX, ELEMENT_RDF));
 			createElements(rdf, rdfElement); //XMLify the resource as elements under the RDF element
 			return rdfElement; //return the element we constructed with RDF resources as child elements

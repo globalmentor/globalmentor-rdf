@@ -135,7 +135,6 @@ public class RDFDublinCore {
 	/**
 	 * Returns the value of the first <code>dc:date</code> property parsed as a date, using the default W3C full date style.
 	 * @param resource The resource the property of which should be located.
-	 * @param style The style of the date formatting.
 	 * @return The value of the first <code>dc:date</code> property, or <code>null</code> if no such property exists or it does not contain a date.
 	 * @see W3CDateFormat.Style#DATE_TIME
 	 */

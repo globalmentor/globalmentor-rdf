@@ -20,7 +20,8 @@ import java.lang.reflect.*;
 import java.net.URI;
 
 import static com.globalmentor.java.Java.*;
-import static com.globalmentor.java.Objects.*;
+
+import static java.util.Objects.*;
 
 /**
  * An RDF resource factory that can create Java classes within a certain package based upon the type local name. The class of the resource to be created should
@@ -53,7 +54,7 @@ public class DefaultRDFResourceFactory implements RDFResourceFactory {
 	 * @throws NullPointerException if the given package name is <code>null</code>.
 	 */
 	public DefaultRDFResourceFactory(final String packageName) {
-		this.packageName = checkInstance(packageName, "Package name cannot be null.");
+		this.packageName = requireNonNull(packageName, "Package name cannot be null.");
 	}
 
 	/**

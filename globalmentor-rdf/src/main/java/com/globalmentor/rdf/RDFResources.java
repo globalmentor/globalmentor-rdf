@@ -73,7 +73,7 @@ public class RDFResources {
 	 * @return The RDF object as a list, or <code>null</code> if the object is not a list or the object is <code>null</code>.
 	 */
 	public static RDFListResource<?> asListResource(final RDFObject rdfObject) {
-		return asInstance(rdfObject, RDFListResource.class); //cast the object to a list if we can
+		return asInstance(rdfObject, RDFListResource.class).orElse(null); //cast the object to a list if we can
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class RDFResources {
 	 * @return The RDF object as a literal, or <code>null</code> if the object is not a literal or the object is <code>null</code>.
 	 */
 	public static RDFLiteral asLiteral(final RDFObject rdfObject) {
-		return asInstance(rdfObject, RDFLiteral.class); //cast the object to a literal if we can
+		return asInstance(rdfObject, RDFLiteral.class).orElse(null); //cast the object to a literal if we can
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class RDFResources {
 	 * @return The RDF object as a resource, or <code>null</code> if the object is not a resource or the object is <code>null</code>.
 	 */
 	public static RDFResource asResource(final RDFObject rdfObject) {
-		return asInstance(rdfObject, RDFResource.class); //cast the object to a resource if we can
+		return asInstance(rdfObject, RDFResource.class).orElse(null); //cast the object to a resource if we can
 	}
 
 	/**
@@ -212,7 +212,6 @@ public class RDFResources {
 	 * @param resource The resource the property of which should be located.
 	 * @param typeNamespaceURI The XML namespace URI that represents part of the reference URI.
 	 * @param typeLocalName The XML local name that represents part of the reference URI.
-	 * @param style The style of the date formatting.
 	 * @return The value of the first indicated property, or <code>null</code> if no such property exists or it does not contain a date.
 	 * @see W3CDateFormat.Style#DATE_TIME
 	 */
@@ -405,7 +404,7 @@ public class RDFResources {
 
 	/**
 	 * Determines if the given resource is the empty list.
-	 * @param rdf The RDF data model in which to locate the resource.
+	 * @param listResource The RDF data model in which to locate the resource.
 	 * @return A list resource with the reference URI &amp;rdf;nil.
 	 */
 	public static boolean isNil(final RDFResource listResource) {

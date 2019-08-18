@@ -29,10 +29,11 @@ import static com.globalmentor.text.directory.vcard.VCard.*;
 import static com.globalmentor.w3c.spec.RDF.*;
 import static com.globalmentor.java.Arrays.*;
 import static com.globalmentor.java.Java.*;
-import static com.globalmentor.java.Objects.*;
 import static com.globalmentor.java.Strings.NO_STRINGS;
 import static com.globalmentor.net.URIs.*;
 import static com.globalmentor.rdf.RDFResources.*;
+
+import static java.util.Objects.*;
 
 /**
  * An ontology to represent a vCard <code>text/directory</code> profile as defined in <a href="http://www.ietf.org/rfc/rfc2426.txt">RFC 2426</a>,
@@ -83,7 +84,7 @@ public class RDFVCard extends RDFDirectory {
 	 * @throws NullPointerException if the given resource and/or name is <code>null</code>.
 	 */
 	public static void setName(final RDFResource resource, final Name name) {
-		checkInstance(name, "Name cannot be null.");
+		requireNonNull(name, "Name cannot be null.");
 		final RDFResource nResource = locateTypedResource(resource, null, VCARD_NAMESPACE_URI, N_TYPE_NAME); //create the vcard:N resource
 		final Locale locale = name.getLocale(); //get the name locale, if any
 		if(locale != null) { //if there is a locale
@@ -168,7 +169,7 @@ public class RDFVCard extends RDFDirectory {
 	}
 
 	/**
-	 * Sets the email of a resource using the vCard {@value #EMAIL_PROPERTY_NAME} property.
+	 * Sets the email of a resource using the vCard {@link #EMAIL_PROPERTY_NAME} property.
 	 * @param resource The resource the email of which to set.
 	 * @param emailURI The URI expressing the email to set.
 	 * @return The resource value used to represent the email.
@@ -176,7 +177,7 @@ public class RDFVCard extends RDFDirectory {
 	 * @throws IllegalArgumentException if the given email URI does not have a scheme of {@value URIs#MAILTO_SCHEME}.
 	 */
 	public static RDFResource setEmail(final RDFResource resource, final URI emailURI) {
-		if(!checkInstance(emailURI, "Email URI cannot be null.").getScheme().equals(MAILTO_SCHEME)) { //if the email doesn't have the mailto URI scheme
+		if(!requireNonNull(emailURI, "Email URI cannot be null.").getScheme().equals(MAILTO_SCHEME)) { //if the email doesn't have the mailto URI scheme
 			throw new IllegalArgumentException("Email URI " + emailURI + " does not have the " + MAILTO_SCHEME + " scheme.");
 		}
 		return resource.addProperty(VCARD_NAMESPACE_URI, EMAIL_PROPERTY_NAME, locateResource(resource, emailURI)); //add a new resource with the email as the URI

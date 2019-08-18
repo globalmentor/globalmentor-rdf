@@ -20,13 +20,14 @@ import java.net.URI;
 import java.util.*;
 
 import static com.globalmentor.java.Java.*;
-import static com.globalmentor.java.Objects.*;
 import static com.globalmentor.model.Locales.*;
 import static com.globalmentor.rdf.RDFResources.*;
 import static com.globalmentor.text.directory.Directory.*;
 
 import com.globalmentor.model.LocaledText;
 import com.globalmentor.rdf.*;
+
+import static java.util.Objects.*;
 
 /**
  * Constants used in RDF processing of a directory of type <code>text/directory</code> as defined in <a href="http://www.ietf.org/rfc/rfc2425.txt">RFC 2425</a>,
@@ -59,7 +60,7 @@ public class RDFDirectory {
 	 * @throws NullPointerException if the given RDF object is <code>null</code>.
 	 */
 	public static LocaledText getText(final RDFObject rdfObject) {
-		checkInstance(rdfObject, "RDF object cannot be null.");
+		requireNonNull(rdfObject, "RDF object cannot be null.");
 		if(rdfObject instanceof RDFLiteral) { //if the object is a literal
 			final Locale language = rdfObject instanceof RDFPlainLiteral ? ((RDFPlainLiteral)rdfObject).getLanguage() : null; //save the language if this is a plain literal
 			return new LocaledText(((RDFLiteral)rdfObject).getLexicalForm(), language); //use the lexical form as text
@@ -87,7 +88,7 @@ public class RDFDirectory {
 	 * @throws NullPointerException if the given RDF object is <code>null</code>.
 	 */
 	public static LocaledText[] getTexts(final RDFObject rdfObject) {
-		checkInstance(rdfObject, "RDF object cannot be null.");
+		requireNonNull(rdfObject, "RDF object cannot be null.");
 		if(rdfObject instanceof RDFListResource) { //if the object is a list
 			final RDFListResource<?> rdfList = (RDFListResource<?>)rdfObject; //get the object as a list
 			final List<LocaledText> texts = new ArrayList<LocaledText>(rdfList.size()); //create a list of locale texts

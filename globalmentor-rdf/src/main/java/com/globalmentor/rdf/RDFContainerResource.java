@@ -84,7 +84,7 @@ public abstract class RDFContainerResource extends TypedRDFResource {
 	 * Creates a list of item property values from the name/value pairs stored in the given list. The list will maintain the order of the item values.
 	 * @param itemPropertyList A list of name/value pairs, with the name holding the property resource and the value holding the property value.
 	 * @return A list of values in the same order as the name/value pairs.
-	 * @see PropertyValuePair
+	 * @see RDFPropertyValuePair
 	 */
 	protected List getItemList(final List itemPropertyList) {
 		final List itemList = new ArrayList(itemPropertyList.size()); //create a list in which to store the actual values, making it the same length as the property list
@@ -147,7 +147,9 @@ public abstract class RDFContainerResource extends TypedRDFResource {
 
 	/**
 	 * Adds an item to the container as an <code>&lt;rdf:li</code> property, using the next available item number.
+	 * @param <T> The type of the {@link RDFObject}.
 	 * @param propertyValue The item to add to the container.
+	 * @return The container with the property.
 	 */
 	public <T extends RDFObject> T add(final T propertyValue) { //TODO should we replace all this with "member" instead of "item"?
 		return add(propertyValue, getNextItemNumber()); //store the item at the next available number
@@ -155,8 +157,10 @@ public abstract class RDFContainerResource extends TypedRDFResource {
 
 	/**
 	 * Adds an item to the container as an <code>&lt;rdf:li</code> property, using the given item number.
+	 * @param <T> The type of the {@link RDFObject}.
 	 * @param propertyValue The item to add to the container.
 	 * @param number The number to give to the item.
+	 * @return The container with the property.
 	 */
 	public <T extends RDFObject> T add(final T propertyValue, final int number) {
 		changeNumbers(number, 1); //increment by one any members that have this number or higher

@@ -58,7 +58,7 @@ public class DoubleLiteral extends NumberLiteral<Double> {
 	 * @return The RDF object as a float literal, or <code>null</code> if the object is not a float literal or the object is <code>null</code>.
 	 */
 	public static DoubleLiteral asDoubleLiteral(final RDFObject rdfObject) {
-		return asInstance(rdfObject, DoubleLiteral.class); //cast the object to a double literal if we can
+		return asInstance(rdfObject, DoubleLiteral.class).orElse(null); //cast the object to a double literal if we can
 	}
 
 }

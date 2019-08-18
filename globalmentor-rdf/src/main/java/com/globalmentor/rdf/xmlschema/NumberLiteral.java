@@ -46,7 +46,7 @@ public abstract class NumberLiteral<T extends Number> extends RDFTypedLiteral<T>
 	 * @return The RDF object as a number literal, or <code>null</code> if the object is not a number literal or the object is <code>null</code>.
 	 */
 	public static NumberLiteral asNumberLiteral(final RDFObject rdfObject) {
-		return asInstance(rdfObject, NumberLiteral.class); //cast the object to a number literal if we can
+		return asInstance(rdfObject, NumberLiteral.class).orElse(null); //cast the object to a number literal if we can
 	}
 
 }

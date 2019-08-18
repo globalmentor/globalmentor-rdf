@@ -20,8 +20,9 @@ import java.io.*;
 import java.net.*;
 
 import static com.globalmentor.java.Classes.*;
-import static com.globalmentor.java.Objects.*;
 import static com.globalmentor.rdf.RDFResources.*;
+
+import static java.util.Objects.*;
 
 /**
  * Class for loading and saving a particular type of RDF resource. Custom classes can be added using {@link #registerResourceFactory(URI, RDFResourceFactory)}.
@@ -66,8 +67,8 @@ public class TypedRDFResourceIO<T extends RDFResource> extends AbstractRDFXMLIO<
 	 */
 	public TypedRDFResourceIO(final Class<T> resourceClass, final URI resourceNamespaceURI, final String resourceClassName) {
 		super(resourceClass); //construct the parent class
-		this.resourceNamespaceURI = checkInstance(resourceNamespaceURI, "Resource namespace URI must be provided.");
-		this.resourceClassName = checkInstance(resourceClassName, "Resource class name must be provided.");
+		this.resourceNamespaceURI = requireNonNull(resourceNamespaceURI, "Resource namespace URI must be provided.");
+		this.resourceClassName = requireNonNull(resourceClassName, "Resource class name must be provided.");
 	}
 
 	/**
@@ -75,13 +76,13 @@ public class TypedRDFResourceIO<T extends RDFResource> extends AbstractRDFXMLIO<
 	 * @param resourceClass The class representing the type of resource expected from the RDF instance.
 	 * @param resourceNamespaceURI The namespace of the RDF resource supported.
 	 * @param resourceClassName The class name of the RDF resource supported.
-	 * @param resouceFactory The resource factory to register with the given namespace.
+	 * @param resourceFactory The resource factory to register with the given namespace.
 	 * @throws NullPointerException if the given class, namespace URI, class name, and/or resource factory is <code>null</code>.
 	 */
 	public TypedRDFResourceIO(final Class<T> resourceClass, final URI resourceNamespaceURI, final String resourceClassName,
 			final RDFResourceFactory resourceFactory) {
 		this(resourceClass, resourceNamespaceURI, resourceClassName); //construct the class
-		registerResourceFactory(resourceNamespaceURI, checkInstance(resourceFactory, "Resource factory cannot be null.")); //register the factory for the given namespace
+		registerResourceFactory(resourceNamespaceURI, requireNonNull(resourceFactory, "Resource factory cannot be null.")); //register the factory for the given namespace
 	}
 
 	/**

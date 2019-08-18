@@ -62,7 +62,7 @@ public class RDFXMLLiteral extends RDFTypedLiteral<DocumentFragment> {
 
 	/**
 	 * Constructs an XML literal from the given lexical from of an XML document fragment.
-	 * @param lexicalForm The lexical form of the XML document fragment.
+	 * @param text The lexical form of the XML document fragment.
 	 * @throws IllegalArgumentException If there is a problem parsing the given string as an XML document fragment.
 	 */
 	public RDFXMLLiteral(final String text) {
@@ -100,6 +100,7 @@ public class RDFXMLLiteral extends RDFTypedLiteral<DocumentFragment> {
 	 * Creates a document fragment from the given lexical form.
 	 * @param lexicalForm The lexical form of the document fragment.
 	 * @throws IllegalArgumentException If there is a problem parsing the given string as an XML document fragment.
+	 * @return The document fragment.
 	 */
 	protected static DocumentFragment createDocumentFragment(final String lexicalForm) {
 		final String xmlDocumentLexicalForm = "<dummy>" + lexicalForm + "</dummy>"; //wrap the lexical form in a dummy element

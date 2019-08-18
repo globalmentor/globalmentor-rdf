@@ -94,6 +94,7 @@ public abstract class AbstractRDFProcessor {
 	 * Retrieves a resource proxy to represent a resource with the given reference URI. If such a proxy already exists, it will be returned; otherwise, a new one
 	 * will be created.
 	 * @param referenceURI The reference URI of the resource the proxy should represent.
+	 * @return The object standing in for the resource.
 	 */
 	protected ResourceProxy getResourceProxy(final URI referenceURI) {
 		ResourceProxy resourceProxy = referenceURIResourceProxyMap.get(referenceURI); //see if there is a proxy associated with the reference URI
@@ -111,6 +112,7 @@ public abstract class AbstractRDFProcessor {
 	 * Retrieves a resource proxy to represent a resource with the given node ID. If such a proxy already exists, it will be returned; otherwise, a new one will
 	 * be created.
 	 * @param nodeID The node ID of the resource the proxy should represent.
+	 * @return The object standing in for the resource.
 	 */
 	protected ResourceProxy getResourceProxy(final String nodeID) {
 		ResourceProxy resourceProxy = nodeIDResourceProxyMap.get(nodeID); //see if there is a proxy associated with the node ID
@@ -200,7 +202,7 @@ public abstract class AbstractRDFProcessor {
 	/**
 	 * Iterates through all collected statements and, for any resources in the statement that are only proxies for RDF resources, creates appropriate resources,
 	 * using any provided types in other statements if possible.
-	 * @see #ResourceProxy
+	 * @see ResourceProxy
 	 */
 	public void createResources() {
 		createResources(null); //create resources without keeping track of any resource in particular
@@ -385,7 +387,7 @@ public abstract class AbstractRDFProcessor {
 		/**
 		 * Compares statements based upon reference URI and node ID.
 		 * @param object The object with which to compare this statement; should be another resource proxy.
-		 * @return <code>true<code> if the reference URI or node IDs of the two
+		 * @return <code>true</code> if the reference URI or node IDs of the two
 			statements are equal.
 		 */
 		public boolean equals(final Object object) {

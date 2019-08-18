@@ -58,7 +58,7 @@ public class FloatLiteral extends NumberLiteral<Float> {
 	 * @return The RDF object as a float literal, or <code>null</code> if the object is not a float literal or the object is <code>null</code>.
 	 */
 	public static FloatLiteral asFloatLiteral(final RDFObject rdfObject) {
-		return asInstance(rdfObject, FloatLiteral.class); //cast the object to a float literal if we can
+		return asInstance(rdfObject, FloatLiteral.class).orElse(null); //cast the object to a float literal if we can
 	}
 
 }

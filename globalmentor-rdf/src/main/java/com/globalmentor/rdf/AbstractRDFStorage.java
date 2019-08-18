@@ -72,6 +72,7 @@ public abstract class AbstractRDFStorage extends DefaultModifiable implements UR
 	/**
 	 * Unregisters the prefix for the given namespace URI. If no prefix is registered for the given namespace, no action occurs.
 	 * @param namespaceURI The XML namespace URI.
+	 * @param prefix The serialization prefix to use with the given namespace.
 	 */
 	public void unregisterNamespacePrefix(final String namespaceURI, final String prefix) {
 		namespaceURIPrefixMap.remove(namespaceURI); //remove whatever prefix is registered with this namespace, if any

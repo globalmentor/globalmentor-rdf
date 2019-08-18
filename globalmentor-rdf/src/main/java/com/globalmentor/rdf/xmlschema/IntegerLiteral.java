@@ -58,7 +58,7 @@ public class IntegerLiteral extends NumberLiteral<Long> {
 	 * @return The RDF object as an integer literal, or <code>null</code> if the object is not an integer literal or the object is <code>null</code>.
 	 */
 	public static IntegerLiteral asIntegerLiteral(final RDFObject rdfObject) {
-		return asInstance(rdfObject, IntegerLiteral.class); //cast the object to an integer literal if we can
+		return asInstance(rdfObject, IntegerLiteral.class).orElse(null); //cast the object to an integer literal if we can
 	}
 
 	/**

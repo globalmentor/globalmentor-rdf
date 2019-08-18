@@ -19,7 +19,7 @@ package com.globalmentor.rdf;
 import java.io.*;
 import java.net.*;
 
-import static com.globalmentor.java.Objects.*;
+import static java.util.Objects.*;
 
 /**
  * Class for saving and loading a RDF resource by its reference URI. Whenever an RDF instance is read, a resource will be retrieved using the given reference
@@ -47,7 +47,7 @@ public class NamedRDFResourceIO<T extends RDFResource> extends AbstractRDFXMLIO<
 	 */
 	public NamedRDFResourceIO(final Class<T> resourceClass, final URI resourceURI) {
 		super(resourceClass); //construct the parent class
-		this.resourceURI = checkInstance(resourceURI, "Resource URI must be provided.");
+		this.resourceURI = requireNonNull(resourceURI, "Resource URI must be provided.");
 	}
 
 	/**

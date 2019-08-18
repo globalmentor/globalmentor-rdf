@@ -58,7 +58,7 @@ public class BooleanLiteral extends RDFTypedLiteral<Boolean> {
 	 * @return The RDF object as a boolean literal, or <code>null</code> if the object is not a boolean literal or the object is <code>null</code>.
 	 */
 	public static BooleanLiteral asBooleanLiteral(final RDFObject rdfObject) {
-		return asInstance(rdfObject, BooleanLiteral.class); //cast the object to a boolean literal if we can
+		return asInstance(rdfObject, BooleanLiteral.class).orElse(null); //cast the object to a boolean literal if we can
 	}
 
 	/**

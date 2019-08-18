@@ -19,7 +19,6 @@ package com.globalmentor.rdf;
 import java.net.*;
 import java.util.*;
 
-import static com.globalmentor.java.Objects.*;
 import com.globalmentor.log.Log;
 import com.globalmentor.model.Locales;
 import com.globalmentor.net.*;
@@ -33,6 +32,8 @@ import com.globalmentor.w3c.spec.XML;
 import com.globalmentor.xml.XMLBase;
 
 import org.w3c.dom.*;
+
+import static java.util.Objects.*;
 
 /**
  * Class that is able to construct an RDF data model from an XML-based RDF serialization. Each instance of an RDF processor maintains an internal RDF data model
@@ -99,7 +100,7 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 	 * @throws NullPointerException if the given namespace requirement is <code>null</code>.
 	 */
 	public void setRDFAttributeNamespaceRequirement(final NamespaceRequirement namespaceRequirement) {
-		this.rdfAttributeNamespaceRequirement = checkInstance(namespaceRequirement, "Namespace requirement cannot be null.");
+		this.rdfAttributeNamespaceRequirement = requireNonNull(namespaceRequirement, "Namespace requirement cannot be null.");
 	}
 
 	/** Default constructor. */
@@ -596,7 +597,7 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 	 * @return A URI resolved to the in-scope base URI of the given element.
 	 * @throws NullPointerException if the given element and/or URI is <code>null</code>.
 	 * @throws URISyntaxException Thrown if the constructed URI is invalid.
-	 * @see XBase
+	 * @see XMLBase
 	 * @see #resolveURI(URI, URI)
 	 */
 	protected URI resolveURI(final Element element, final URI uri) throws URISyntaxException {
@@ -613,7 +614,7 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 	 * @see <a href="http://www.w3.org/TR/2003/PR-rdf-syntax-grammar-20031215/#section-baseURIs">RDF/XML Syntax Specification (Revised) 5.3 Resolving URIs</a>
 	 */
 	public static URI resolveURI(final URI baseURI, final URI uri) {
-		checkInstance(baseURI, "Base URI cannot be null.");
+		requireNonNull(baseURI, "Base URI cannot be null.");
 		if(isPathURI(uri)) { //if the given URI is only a path
 			final String path = uri.getPath(); //get the path of the URI
 			if(path.length() == 0) { //if this URI is ""

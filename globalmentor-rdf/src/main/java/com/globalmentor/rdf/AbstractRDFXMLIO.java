@@ -23,13 +23,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.parsers.*;
 
-import static com.globalmentor.java.Objects.*;
-
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import com.globalmentor.xml.XML;
 import com.globalmentor.xml.XMLSerializer;
+
+import static java.util.Objects.*;
 
 /**
  * Base functionality for loading and saving information stored in RDF+XML.
@@ -84,6 +84,7 @@ public abstract class AbstractRDFXMLIO<T> implements RDFIO<T> {
 	/**
 	 * Unregisters the XML serialization prefix for the given namespace URI. If no prefix is registered for the given namespace, no action occurs.
 	 * @param namespaceURI The namespace URI.
+	 * @param prefix The XML serialization prefix to use with the given namespace.
 	 */
 	public void unregisterNamespacePrefix(final String namespaceURI, final String prefix) {
 		namespaceURIPrefixMap.remove(namespaceURI); //remove whatever prefix is registered with this namespace, if any
@@ -95,7 +96,7 @@ public abstract class AbstractRDFXMLIO<T> implements RDFIO<T> {
 	 * @throws NullPointerException if the given class is <code>null</code>.
 	 */
 	public AbstractRDFXMLIO(final Class<T> objectClass) {
-		this.objectClass = checkInstance(objectClass, "Object class must be provided.");
+		this.objectClass = requireNonNull(objectClass, "Object class must be provided.");
 	}
 
 	/**

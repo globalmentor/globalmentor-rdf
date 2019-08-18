@@ -53,7 +53,7 @@ public class URILiteral extends RDFTypedLiteral<URI> {
 	 * @return The RDF object as a URI literal, or <code>null</code> if the object is not a URI literal or the object is <code>null</code>.
 	 */
 	public static URILiteral asURILiteral(final RDFObject rdfObject) {
-		return asInstance(rdfObject, URILiteral.class); //cast the object to a boolean literal if we can
+		return asInstance(rdfObject, URILiteral.class).orElse(null); //cast the object to a boolean literal if we can
 	}
 
 }

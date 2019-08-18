@@ -58,7 +58,7 @@ public class RDFResourceIOKit<R extends RDFResource> extends AbstractIOKit<R> {
 	 * @param namespaceURI The XML namespace.
 	 * @param prefix The serialization prefix to use with the given namespace.
 	 * @see #getRDFXMLGenerator()
-	 * @see #store()
+	 * @see AbstractRDFStorage#store()
 	 */
 	public void registerNamespacePrefix(final URI namespaceURI, final String prefix) {
 		namespacePrefixMap.put(namespaceURI, prefix); //store the prefix in the map, keyed to the URI
@@ -67,6 +67,7 @@ public class RDFResourceIOKit<R extends RDFResource> extends AbstractIOKit<R> {
 	/**
 	 * Unregisters the prefix for the given namespace URI. If no prefix is registered for the given namespace, no action occurs.
 	 * @param namespaceURI The XML namespace.
+	 * @param prefix The serialization prefix to use with the given namespace.
 	 */
 	public void unregisterNamespacePrefix(final URI namespaceURI, final String prefix) {
 		namespacePrefixMap.remove(namespaceURI); //remove whatever prefix is registered with this namespace, if any

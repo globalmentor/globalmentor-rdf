@@ -39,7 +39,7 @@ import org.w3c.dom.*;
  * <li><code>Modifiable.MODIFIED_PROPERTY</code> ("modified")</li>
  * </ul>
  * @author Garret Wilson
- * @see Modifiable#MODIFIED_PROPERTY
+ * @see com.globalmentor.model.Modifiable#MODIFIED_PROPERTY
  * @deprecated
  */
 public abstract class AbstractFileRDFStorage extends AbstractRDFStorage {

@@ -37,7 +37,7 @@ public abstract class RDFLiteral implements RDFObject, Comparable<RDFLiteral> {
 	/**
 	 * Determines whether the given object is another literal with the same lexical form.
 	 * @param object The object with which to compare this literal.
-	 * @return <code>true<code> if this literal equals that specified in <code>object</code>.
+	 * @return <code>true</code> if this literal equals that specified in <code>object</code>.
 	 * @see #getLexicalForm()
 	 */
 	public boolean equals(Object object) {
@@ -74,6 +74,7 @@ public abstract class RDFLiteral implements RDFObject, Comparable<RDFLiteral> {
 	 * <p>
 	 * This version returns the default collator for the default locale.
 	 * </p>
+	 * @param literal The object with which to compare the object. This must be another <code>RDFLiteral</code> object.
 	 * @return A collator appropriate for comparing this literal to the given literal.
 	 * @see #initializeCollator(Collator)
 	 */

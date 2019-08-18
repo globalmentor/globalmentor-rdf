@@ -97,7 +97,7 @@ public class Digest extends TypedRDFResource {
 	 * @return The digest method of the resource, or <code>null</code> if there is no digest method or the digest method is not of the correct type.
 	 */
 	public DigestMethod getDigestMethod() {
-		return Objects.asInstance(getPropertyValue(CRYPTO_NAMESPACE_URI, DIGEST_METHOD_PROPERTY_NAME), DigestMethod.class); //get the value of the digest method property as the correct type
+		return Objects.asInstance(getPropertyValue(CRYPTO_NAMESPACE_URI, DIGEST_METHOD_PROPERTY_NAME), DigestMethod.class).orElse(null); //get the value of the digest method property as the correct type
 	}
 
 	/**

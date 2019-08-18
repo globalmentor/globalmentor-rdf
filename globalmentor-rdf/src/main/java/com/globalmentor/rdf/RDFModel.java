@@ -249,8 +249,6 @@ public class RDFModel
 	 * URI derived from the namespace URI and local name will be added as a type property. If the resource already exists, no checks are performed to ensure that
 	 * the existing resource is of the requested type.
 	 * @param referenceURI The reference URI of the resource to retrieve.
-	 * @param namespaceURI The XML namespace URI used in the serialization, or <code>null</code> if the namespace URI is not known.
-	 * @param localName The XML local name used in the serialization, or <code>null</code> if the local name is not known.
 	 * @param typeNamespaceURI The XML namespace used in the serialization of the type URI, or <code>null</code> if the type is not known.
 	 * @param typeLocalName The XML local name used in the serialization of the type URI, or <code>null</code> if the type is not known.
 	 * @return A resource with the given reference URI.
@@ -266,7 +264,7 @@ public class RDFModel
 	/**
 	 * Creates an anonymous resource and stores it in this RDF data model.
 	 * @return An anonymous resource with a generated anonymous reference URI.
-	 * @see #createAnonymousReferenceURI
+	 * @see #createResource(URI)
 	 */
 	public RDFResource createResource() {
 		return createResource(null); //create a resource with an anonymous reference URI
