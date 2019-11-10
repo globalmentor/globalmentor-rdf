@@ -16,10 +16,13 @@
 
 package com.globalmentor.rdfa.spec;
 
-import static java.util.Collections.*;
+import static java.util.function.Function.*;
 
 import java.net.URI;
 import java.util.*;
+import java.util.stream.*;
+
+import com.globalmentor.vocab.*;
 
 /**
  * Definition of the Resource Description Framework through Attributes (RDFa).
@@ -35,71 +38,46 @@ public class RDFa {
 	 */
 	public static final class InitialContext {
 
-		/** Vocabulary prefixes predefined for RDFa Core 1.1. */
-		public static final Map<String, URI> VOCABULARY_PREFIXES;
+		/** Vocabularies predefined for RDFa Core 1.1. */
+		public static final VocabularyRegistry VOCABULARIES;
 
-		/** Vocabulary terms predefined for RDFa Core 1.1. */
-		public static final Map<String, URI> VOCABULARY_TERMS;
+		/** Vocabulary terms predefined for RDFa Core 1.1, mapped to their names. */
+		public static final Map<String, VocabularyTerm> VOCABULARY_TERMS;
 
 		static {
-			final Map<String, URI> vocabularyPrefixes = new HashMap<>();
-			vocabularyPrefixes.put("as", URI.create("https://www.w3.org/ns/activitystreams#"));
-			vocabularyPrefixes.put("csvw", URI.create("http://www.w3.org/ns/csvw#"));
-			vocabularyPrefixes.put("cat", URI.create("http://www.w3.org/ns/dcat#"));
-			vocabularyPrefixes.put("cc", URI.create("http://creativecommons.org/ns#"));
-			vocabularyPrefixes.put("cnt", URI.create("http://www.w3.org/2008/content#"));
-			vocabularyPrefixes.put("ctag", URI.create("http://commontag.org/ns#"));
-			vocabularyPrefixes.put("dc", URI.create("http://purl.org/dc/terms/"));
-			vocabularyPrefixes.put("dc11", URI.create("http://purl.org/dc/elements/1.1/"));
-			vocabularyPrefixes.put("dcat", URI.create("http://www.w3.org/ns/dcat#"));
-			vocabularyPrefixes.put("dcterms", URI.create("http://purl.org/dc/terms/"));
-			vocabularyPrefixes.put("dqv", URI.create("http://www.w3.org/ns/dqv#"));
-			vocabularyPrefixes.put("duv", URI.create("https://www.w3.org/TR/vocab-duv#"));
-			vocabularyPrefixes.put("earl", URI.create("http://www.w3.org/ns/earl#"));
-			vocabularyPrefixes.put("foaf", URI.create("http://xmlns.com/foaf/0.1/"));
-			vocabularyPrefixes.put("gldp", URI.create("http://www.w3.org/ns/people#"));
-			vocabularyPrefixes.put("gr", URI.create("http://purl.org/goodrelations/v1#"));
-			vocabularyPrefixes.put("grddl", URI.create("http://www.w3.org/2003/g/data-view#"));
-			vocabularyPrefixes.put("ht", URI.create("http://www.w3.org/2006/http#"));
-			vocabularyPrefixes.put("ical", URI.create("http://www.w3.org/2002/12/cal/icaltzd#"));
-			vocabularyPrefixes.put("ldp", URI.create("http://www.w3.org/ns/ldp#"));
-			vocabularyPrefixes.put("ma", URI.create("http://www.w3.org/ns/ma-ont#"));
-			vocabularyPrefixes.put("oa", URI.create("http://www.w3.org/ns/oa#"));
-			vocabularyPrefixes.put("odrl", URI.create("http://www.w3.org/ns/odrl/2/"));
-			vocabularyPrefixes.put("og", URI.create("http://ogp.me/ns#"));
-			vocabularyPrefixes.put("org", URI.create("http://www.w3.org/ns/org#"));
-			vocabularyPrefixes.put("owl", URI.create("http://www.w3.org/2002/07/owl#"));
-			vocabularyPrefixes.put("prov", URI.create("http://www.w3.org/ns/prov#"));
-			vocabularyPrefixes.put("ptr", URI.create("http://www.w3.org/2009/pointers#"));
-			vocabularyPrefixes.put("qb", URI.create("http://purl.org/linked-data/cube#"));
-			vocabularyPrefixes.put("rev", URI.create("http://purl.org/stuff/rev#"));
-			vocabularyPrefixes.put("rdf", URI.create("http://www.w3.org/1999/02/22-rdf-syntax-ns#"));
-			vocabularyPrefixes.put("rdfa", URI.create("http://www.w3.org/ns/rdfa#"));
-			vocabularyPrefixes.put("rdfs", URI.create("http://www.w3.org/2000/01/rdf-schema#"));
-			vocabularyPrefixes.put("rif", URI.create("http://www.w3.org/2007/rif#"));
-			vocabularyPrefixes.put("rr", URI.create("http://www.w3.org/ns/r2rml#"));
-			vocabularyPrefixes.put("schema", URI.create("http://schema.org/"));
-			vocabularyPrefixes.put("sd", URI.create("http://www.w3.org/ns/sparql-service-description#"));
-			vocabularyPrefixes.put("sioc", URI.create("http://rdfs.org/sioc/ns#"));
-			vocabularyPrefixes.put("skos", URI.create("http://www.w3.org/2004/02/skos/core#"));
-			vocabularyPrefixes.put("skosxl", URI.create("http://www.w3.org/2008/05/skos-xl#"));
-			vocabularyPrefixes.put("ssn", URI.create("http://www.w3.org/ns/ssn/"));
-			vocabularyPrefixes.put("sosa", URI.create("http://www.w3.org/ns/sosa/"));
-			vocabularyPrefixes.put("time", URI.create("http://www.w3.org/2006/time#"));
-			vocabularyPrefixes.put("v", URI.create("http://rdf.data-vocabulary.org/#"));
-			vocabularyPrefixes.put("vcard", URI.create("http://www.w3.org/2006/vcard/ns#"));
-			vocabularyPrefixes.put("void", URI.create("http://rdfs.org/ns/void#"));
-			vocabularyPrefixes.put("wdr", URI.create("http://www.w3.org/2007/05/powder#"));
-			vocabularyPrefixes.put("wdrs", URI.create("http://www.w3.org/2007/05/powder-s#"));
-			vocabularyPrefixes.put("xhv", URI.create("http://www.w3.org/1999/xhtml/vocab#"));
-			vocabularyPrefixes.put("xml", URI.create("http://www.w3.org/XML/1998/namespace"));
-			vocabularyPrefixes.put("xsd", URI.create("http://www.w3.org/2001/XMLSchema#"));
-			VOCABULARY_PREFIXES = unmodifiableMap(vocabularyPrefixes);
-			final Map<String, URI> vocabularyTerms = new HashMap<>();
-			vocabularyTerms.put("describedby", URI.create("http://www.w3.org/2007/05/powder-s#describedby"));
-			vocabularyTerms.put("license", URI.create("http://www.w3.org/1999/xhtml/vocab#license"));
-			vocabularyTerms.put("role", URI.create("http://www.w3.org/1999/xhtml/vocab#role"));
-			VOCABULARY_TERMS = unmodifiableMap(vocabularyTerms);
+			final URI wdrsNamespace = URI.create("http://www.w3.org/2007/05/powder-s#");
+			final URI xhvNamespace = URI.create("http://www.w3.org/1999/xhtml/vocab#");
+
+			VOCABULARIES = VocabularyRegistry.builder().registerPrefix("as", URI.create("https://www.w3.org/ns/activitystreams#"))
+					.registerPrefix("csvw", URI.create("http://www.w3.org/ns/csvw#")).registerPrefix("cat", URI.create("http://www.w3.org/ns/dcat#"))
+					.registerPrefix("cc", URI.create("http://creativecommons.org/ns#")).registerPrefix("cnt", URI.create("http://www.w3.org/2008/content#"))
+					.registerPrefix("ctag", URI.create("http://commontag.org/ns#")).registerPrefix("dc", URI.create("http://purl.org/dc/terms/"))
+					.registerPrefix("dc11", URI.create("http://purl.org/dc/elements/1.1/")).registerPrefix("dcat", URI.create("http://www.w3.org/ns/dcat#"))
+					.registerPrefix("dcterms", URI.create("http://purl.org/dc/terms/")).registerPrefix("dqv", URI.create("http://www.w3.org/ns/dqv#"))
+					.registerPrefix("duv", URI.create("https://www.w3.org/TR/vocab-duv#")).registerPrefix("earl", URI.create("http://www.w3.org/ns/earl#"))
+					.registerPrefix("foaf", URI.create("http://xmlns.com/foaf/0.1/")).registerPrefix("gldp", URI.create("http://www.w3.org/ns/people#"))
+					.registerPrefix("gr", URI.create("http://purl.org/goodrelations/v1#")).registerPrefix("grddl", URI.create("http://www.w3.org/2003/g/data-view#"))
+					.registerPrefix("ht", URI.create("http://www.w3.org/2006/http#")).registerPrefix("ical", URI.create("http://www.w3.org/2002/12/cal/icaltzd#"))
+					.registerPrefix("ldp", URI.create("http://www.w3.org/ns/ldp#")).registerPrefix("ma", URI.create("http://www.w3.org/ns/ma-ont#"))
+					.registerPrefix("oa", URI.create("http://www.w3.org/ns/oa#")).registerPrefix("odrl", URI.create("http://www.w3.org/ns/odrl/2/"))
+					.registerPrefix("og", URI.create("http://ogp.me/ns#")).registerPrefix("org", URI.create("http://www.w3.org/ns/org#"))
+					.registerPrefix("owl", URI.create("http://www.w3.org/2002/07/owl#")).registerPrefix("prov", URI.create("http://www.w3.org/ns/prov#"))
+					.registerPrefix("ptr", URI.create("http://www.w3.org/2009/pointers#")).registerPrefix("qb", URI.create("http://purl.org/linked-data/cube#"))
+					.registerPrefix("rev", URI.create("http://purl.org/stuff/rev#")).registerPrefix("rdf", URI.create("http://www.w3.org/1999/02/22-rdf-syntax-ns#"))
+					.registerPrefix("rdfa", URI.create("http://www.w3.org/ns/rdfa#")).registerPrefix("rdfs", URI.create("http://www.w3.org/2000/01/rdf-schema#"))
+					.registerPrefix("rif", URI.create("http://www.w3.org/2007/rif#")).registerPrefix("rr", URI.create("http://www.w3.org/ns/r2rml#"))
+					.registerPrefix("schema", URI.create("http://schema.org/")).registerPrefix("sd", URI.create("http://www.w3.org/ns/sparql-service-description#"))
+					.registerPrefix("sioc", URI.create("http://rdfs.org/sioc/ns#")).registerPrefix("skos", URI.create("http://www.w3.org/2004/02/skos/core#"))
+					.registerPrefix("skosxl", URI.create("http://www.w3.org/2008/05/skos-xl#")).registerPrefix("ssn", URI.create("http://www.w3.org/ns/ssn/"))
+					.registerPrefix("sosa", URI.create("http://www.w3.org/ns/sosa/")).registerPrefix("time", URI.create("http://www.w3.org/2006/time#"))
+					.registerPrefix("v", URI.create("http://rdf.data-vocabulary.org/#")).registerPrefix("vcard", URI.create("http://www.w3.org/2006/vcard/ns#"))
+					.registerPrefix("void", URI.create("http://rdfs.org/ns/void#")).registerPrefix("wdr", URI.create("http://www.w3.org/2007/05/powder#"))
+					.registerPrefix("wdrs", wdrsNamespace).registerPrefix("xhv", xhvNamespace).registerPrefix("xml", URI.create("http://www.w3.org/XML/1998/namespace"))
+					.registerPrefix("xsd", URI.create("http://www.w3.org/2001/XMLSchema#")).build();
+
+			VOCABULARY_TERMS = Stream
+					.of(VocabularyTerm.of(wdrsNamespace, "describedby"), VocabularyTerm.of(xhvNamespace, "license"), VocabularyTerm.of(xhvNamespace, "role"))
+					.collect(Collectors.toMap(VocabularyTerm::getName, identity()));
 		}
 
 	}
