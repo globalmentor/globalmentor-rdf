@@ -28,8 +28,64 @@ import com.globalmentor.vocab.*;
  * Definition of the Resource Description Framework through Attributes (RDFa).
  * @author Garret Wilson
  * @see <a href="https://www.w3.org/TR/rdfa-core/">RDFa Core 1.1</a>
+ * @see <a href="https://www.w3.org/TR/rdfa-core/#s_syntax">RDFa Core 1.1, § 5. Attributes and Syntax</a>
+ * @see <a href="https://www.w3.org/TR/html-rdfa/#extensions-to-the-html5-syntax">HTML+RDFa 1.1, § 4. Extensions to the HTML5 Syntax.</a>
  */
 public class RDFa {
+
+	/** A SafeCURIEorCURIEorIRI, used for stating what the data is about (a <dfn>subject</dfn> in RDF terminology). */
+	public static final String ATTRIBUTE_ABOUT = "about";
+
+	/** A CDATA string, for supplying machine-readable content for a literal (a <dfn>literal object</dfn>, in RDF terminology). */
+	public static final String ATTRIBUTE_CONTENT = "content";
+
+	/** A TERMorCURIEorAbsIRI representing a datatype, to express the datatype of a literal. */
+	public static final String ATTRIBUTE_DATATYPE = "datatype";
+
+	/** (optional) A traditionally navigable IRI for expressing the partner resource of a relationship (a <dfn>resource object</dfn>, in RDF terminology). */
+	public static final String ATTRIBUTE_HREF = "href";
+
+	/**
+	 * An attribute used to indicate that the object associated with a <code>rel</code> or <code>property</code> attribute on the same element is to be added to
+	 * the list for that predicate. The value of this attribute MUST be ignored. Presence of this attribute causes a list to be created if it does not already
+	 * exist.
+	 */
+	public static final String ATTRIBUTE_INLIST = "inlist";
+
+	/** A white space separated list of prefix-name IRI pairs of the form <code>NCName ':' ' '+ xsd:anyURI</code>. */
+	public static final String ATTRIBUTE_PREFIX = "prefix";
+
+	/**
+	 * A white space separated list of TERMorCURIEorAbsIRIs, used for expressing relationships between a subject and either a resource object if given or some
+	 * literal text (also a <dfn>predicate</dfn>).
+	 */
+	public static final String ATTRIBUTE_PROPERTY = "property";
+
+	/**
+	 * A white space separated list of TERMorCURIEorAbsIRIs, used for expressing relationships between two resources (<dfn>predicates</dfn> in RDF terminology).
+	 */
+	public static final String ATTRIBUTE_REL = "rel";
+
+	/**
+	 * A SafeCURIEorCURIEorIRI for expressing the partner resource of a relationship that is not intended to be navigable (e.g., a <dfn>clickable</dfn> link)
+	 * (also an <dfn>object</dfn>).
+	 */
+	public static final String ATTRIBUTE_RESOURCE = "resource";
+
+	/** A white space separated list of TERMorCURIEorAbsIRIs, used for expressing reverse relationships between two resources (also <dfn>predicates</dfn>). */
+	public static final String ATTRIBUTE_REF = "rev";
+
+	/** (optional) An IRI for expressing the partner resource of a relationship when the resource is embedded (also a <dfn>resource object</dfn>). */
+	public static final String ATTRIBUTE_SRC = "src";
+
+	/** A white space separated list of TERMorCURIEorAbsIRIs that indicate the RDF type(s) to associate with a subject. */
+	public static final String ATTRIBUTE_TYPEOF = "typeof";
+
+	/**
+	 * An IRI that defines the mapping to use when a TERM is referenced in an attribute value. See General Use of Terms in Attributes and the section on
+	 * Vocabulary Expansion.
+	 */
+	public static final String ATTRIBUTE_VOCAB = "vocab";
 
 	/**
 	 * Definitions predefined for RDFa Core 1.1, so that "… RDFa users can use these … without having the obligation of defining [them] …".
