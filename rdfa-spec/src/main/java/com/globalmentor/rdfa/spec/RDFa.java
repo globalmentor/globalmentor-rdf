@@ -16,11 +16,14 @@
 
 package com.globalmentor.rdfa.spec;
 
+import static com.globalmentor.java.Characters.*;
 import static java.util.function.Function.*;
 
 import java.net.URI;
 import java.util.*;
 import java.util.stream.*;
+
+import javax.annotation.*;
 
 import com.globalmentor.vocab.*;
 
@@ -86,6 +89,32 @@ public class RDFa {
 	 * Vocabulary Expansion.
 	 */
 	public static final String ATTRIBUTE_VOCAB = "vocab";
+
+	/**
+	 * Generates an appropriate value for the {@value #ATTRIBUTE_PREFIX} attribute from the registrations in a vocabulary registry.
+	 * @implSpec The registrations are retrieved by calling {@link VocabularyRegistry#getRegisteredVocabulariesByPrefix()}.
+	 * @implNote No validation of the prefix is performed; it is assumed that the caller uses an appropriate {@link VocabularySpecification} in the registry.
+	 * @param registry The registry potentially containing prefix to namespace associations.
+	 * @return A string, potentially empty, containing the registered prefixes and namespaces in the form <code><var>prefix</var>: <var>namespace</var></code>.
+	 * @see #ATTRIBUTE_PREFIX
+	 * @see VocabularyRegistry#getRegisteredVocabulariesByPrefix()
+	 */
+	public static String toPrefixAttributeValue(@Nonnull final VocabularyRegistry registry) {
+		final Set<Map.Entry<String, URI>> registrations = registry.getRegisteredVocabulariesByPrefix();
+		if(registrations.isEmpty()) {
+			return "";
+		}
+		final StringBuilder stringBuilder = new StringBuilder();
+		for(final Map.Entry<String, URI> registration : registrations) {
+			if(stringBuilder.length() > 0) { //separate previous entries
+				stringBuilder.append(SPACE_CHAR);
+			}
+			stringBuilder.append(registration.getKey()).append(Curie.PREFIX_DELIMITER); //prefix:
+			stringBuilder.append(SPACE_CHAR);
+			stringBuilder.append(registration.getValue()); //namespace
+		}
+		return stringBuilder.toString();
+	}
 
 	/**
 	 * Definitions predefined for RDFa Core 1.1, so that "… RDFa users can use these … without having the obligation of defining [them] …".
