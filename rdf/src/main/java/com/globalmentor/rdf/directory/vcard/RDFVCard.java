@@ -27,7 +27,6 @@ import com.globalmentor.text.directory.vcard.*;
 
 import static com.globalmentor.text.directory.vcard.VCard.*;
 import static com.globalmentor.rdf.spec.RDF.*;
-import static com.globalmentor.java.Arrays.*;
 import static com.globalmentor.java.Java.*;
 import static com.globalmentor.java.Strings.NO_STRINGS;
 import static com.globalmentor.net.URIs.*;
@@ -143,6 +142,26 @@ public class RDFVCard extends RDFDirectory {
 		} else { //if there is no name resource
 			return null; //indicate that there was no name specified
 		}
+	}
+
+	/**
+	 * Creates an array of the string representations of all non-<code>null</code> objects in the given array.
+	 * @apiNote Moved from <code>com.globalmentor.java.Arrays</code>.
+	 * @param array The array to convert to a string array.
+	 * @return A string array, each element of which contains the string version of the corresponding object array element or <code>null</code> if the
+	 *         corresponding object is <code>null</code>.
+	 * @throws NullPointerException if the given array is <code>null</code>.
+	 * @deprecated Replace all the low-level array processing with collections.
+	 */
+	@Deprecated
+	private static String[] toStringArray(final Object[] array) {
+		final int length = array.length; //get the length of the array
+		final String[] strings = new String[length]; //create a string array
+		for(int i = 0; i < length; ++i) { //for each index
+			final Object object = array[i]; //get this object
+			strings[i] = object != null ? object.toString() : null; //store the object or null in the new array
+		}
+		return strings; //return the new array of strings
 	}
 
 	/**
