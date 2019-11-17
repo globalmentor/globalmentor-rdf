@@ -38,6 +38,12 @@
 		<dependencies>
 			<dependency>
 				<groupId>com.globalmentor</groupId>
+				<artifactId>globalmentor-html-spec</artifactId>
+				<version>${globalmentor-web.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-metadata</artifactId>
 				<version>0.6.1</version>
 			</dependency>

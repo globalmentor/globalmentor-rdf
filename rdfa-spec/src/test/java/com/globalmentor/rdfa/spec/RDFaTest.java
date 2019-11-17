@@ -16,11 +16,13 @@
 
 package com.globalmentor.rdfa.spec;
 
+import static java.util.Collections.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.net.URI;
-import java.util.Map;
+import java.util.*;
 
 import org.junit.jupiter.api.*;
 
@@ -32,28 +34,53 @@ import com.globalmentor.vocab.VocabularyRegistry;
  */
 public class RDFaTest {
 
+	private static final URI CC_NAMESPACE = URI.create("http://creativecommons.org/ns#");
 	private static final URI DC_NAMESPACE = URI.create("http://purl.org/dc/terms/");
 	private static final URI OG_NAMESPACE = URI.create("http://ogp.me/ns#");
 
+	/** @see RDFa#toPrefixAttributeValue(Iterable)) */
+	@Test
+	public void testToPrefixAttributeValue() {
+		assertThat(RDFa.toPrefixAttributeValue(emptyList()), is(""));
+		assertThat(RDFa.toPrefixAttributeValue(List.of(Map.entry("dc", DC_NAMESPACE))), is("dc: http://purl.org/dc/terms/"));
+		assertThat(RDFa.toPrefixAttributeValue(List.of(Map.entry("dc", DC_NAMESPACE), Map.entry("og", OG_NAMESPACE))),
+				is("dc: http://purl.org/dc/terms/ og: http://ogp.me/ns#"));
+		assertThat(RDFa.toPrefixAttributeValue(List.of(Map.entry("dc", DC_NAMESPACE), Map.entry("og", OG_NAMESPACE), Map.entry("cc", CC_NAMESPACE))),
+				is("dc: http://purl.org/dc/terms/ og: http://ogp.me/ns# cc: http://creativecommons.org/ns#"));
+	}
+
 	/** @see RDFa#toPrefixAttributeValue(VocabularyRegistry) */
 	@Test
-	public void testToPrefixAttributeValueEmpty() {
+	public void testToPrefixAttributeValueRegistryEmpty() {
 		assertThat(RDFa.toPrefixAttributeValue(VocabularyRegistry.EMPTY), is(""));
 	}
 
 	/** @see RDFa#toPrefixAttributeValue(VocabularyRegistry) */
 	@Test
-	public void testToPrefixAttributeValueOneRegistration() {
+	public void testToPrefixAttributeValueRegistryOneRegistration() {
 		final VocabularyRegistry registry = VocabularyRegistry.of(Map.entry("dc", DC_NAMESPACE));
 		assertThat(RDFa.toPrefixAttributeValue(registry), is("dc: http://purl.org/dc/terms/"));
 	}
 
 	/** @see RDFa#toPrefixAttributeValue(VocabularyRegistry) */
 	@Test
-	public void testToPrefixAttributeValueTwoRegistrations() {
+	public void testToPrefixAttributeValueRegistryTwoRegistrations() {
 		final VocabularyRegistry registry = VocabularyRegistry.of(Map.entry("dc", DC_NAMESPACE), Map.entry("og", OG_NAMESPACE));
 		assertThat(RDFa.toPrefixAttributeValue(registry),
 				oneOf("dc: http://purl.org/dc/terms/ og: http://ogp.me/ns#", "og: http://ogp.me/ns# dc: http://purl.org/dc/terms/"));
+	}
+
+	/** @see RDFa#fromPrefixAttributeValue(CharSequence) */
+	public void testFromPrefixAttributeValue() {
+		assertThat(RDFa.fromPrefixAttributeValue(""), is(emptyList()));
+		assertThat(RDFa.fromPrefixAttributeValue("dc: http://purl.org/dc/terms/"), is(List.of(Map.entry("dc", DC_NAMESPACE))));
+		assertThat(RDFa.fromPrefixAttributeValue("dc: http://purl.org/dc/terms/ og: http://ogp.me/ns#"),
+				is(List.of(Map.entry("dc", DC_NAMESPACE), Map.entry("og", OG_NAMESPACE))));
+		assertThat(RDFa.fromPrefixAttributeValue("dc: http://purl.org/dc/terms/ og: http://ogp.me/ns# cc: http://creativecommons.org/ns#"),
+				is(List.of(Map.entry("dc", DC_NAMESPACE), Map.entry("og", OG_NAMESPACE), Map.entry("cc", CC_NAMESPACE))));
+		assertThrows(IllegalArgumentException.class, () -> RDFa.fromPrefixAttributeValue("dc: http://purl.org/dc/terms/ og: http://ogp.me/ns# cc:"));
+		assertThrows(IllegalArgumentException.class,
+				() -> RDFa.fromPrefixAttributeValue("dc: http://purl.org/dc/terms/ : http://ogp.me/ns# cc: http://creativecommons.org/ns#"));
 	}
 
 }
