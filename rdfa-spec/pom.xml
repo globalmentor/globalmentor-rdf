@@ -20,11 +20,6 @@
 
 		<dependency>
 			<groupId>com.globalmentor</groupId>
-			<artifactId>globalmentor-html-spec</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.globalmentor</groupId>
 			<artifactId>globalmentor-vocab</artifactId>
 		</dependency>
 	</dependencies>
