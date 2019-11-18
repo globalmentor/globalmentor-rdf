@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.globalmentor</groupId>
 		<artifactId>globalmentor-opensource-parent</artifactId>
-		<version>8.5.0</version>
+		<version>8.5.4-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>globalmentor-rdf-parent</artifactId>
@@ -38,6 +38,12 @@
 		<dependencies>
 			<dependency>
 				<groupId>com.globalmentor</groupId>
+				<artifactId>globalmentor-html-spec</artifactId>
+				<version>${globalmentor-web.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-metadata</artifactId>
 				<version>0.6.1</version>
 			</dependency>
@@ -63,7 +69,7 @@
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-xml</artifactId>
-				<version>0.6.0</version>
+				<version>${globalmentor-web.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

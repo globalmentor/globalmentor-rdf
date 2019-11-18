@@ -16,12 +16,19 @@
 
 package com.globalmentor.rdfa.spec;
 
+import static com.globalmentor.java.CharSequences.*;
+import static com.globalmentor.java.Characters.*;
+import static com.globalmentor.java.Conditions.*;
+import static java.util.Collections.*;
 import static java.util.function.Function.*;
 
 import java.net.URI;
 import java.util.*;
 import java.util.stream.*;
 
+import javax.annotation.*;
+
+import com.globalmentor.html.spec.HTML;
 import com.globalmentor.vocab.*;
 
 /**
@@ -86,6 +93,104 @@ public class RDFa {
 	 * Vocabulary Expansion.
 	 */
 	public static final String ATTRIBUTE_VOCAB = "vocab";
+
+	/**
+	 * Generates an appropriate value for the {@value #ATTRIBUTE_PREFIX} attribute from the given registrations..
+	 * @implNote No validation of the prefix is performed..
+	 * @param registrations The associations of prefix to namespace.
+	 * @return A string, potentially empty, containing the prefixes and namespaces in the form <code><var>prefix</var>: <var>namespace</var></code>.
+	 * @see #ATTRIBUTE_PREFIX
+	 */
+	public static String toPrefixAttributeValue(@Nonnull final Iterable<Map.Entry<String, URI>> registrations) {
+		final Iterator<Map.Entry<String, URI>> registrationIterator = registrations.iterator();
+		if(!registrationIterator.hasNext()) {
+			return "";
+		}
+		final StringBuilder stringBuilder = new StringBuilder();
+		do {
+			final Map.Entry<String, URI> registration = registrationIterator.next();
+			if(stringBuilder.length() > 0) { //separate previous entries
+				stringBuilder.append(SPACE_CHAR);
+			}
+			stringBuilder.append(registration.getKey()).append(Curie.PREFIX_DELIMITER); //prefix:
+			stringBuilder.append(SPACE_CHAR);
+			stringBuilder.append(registration.getValue()); //namespace
+		} while(registrationIterator.hasNext());
+		return stringBuilder.toString();
+	}
+
+	/**
+	 * Generates an appropriate value for the {@value #ATTRIBUTE_PREFIX} attribute from the registrations in a vocabulary registry.
+	 * @implSpec This implementation retrieves the registrations by calling {@link VocabularyRegistry#getRegisteredVocabulariesByPrefix()} and then delegates to
+	 *           {@link #toPrefixAttributeValue(Iterable)}.
+	 * @implNote No validation of the prefix is performed; it is assumed that the caller uses an appropriate {@link VocabularySpecification} in the registry.
+	 * @param registry The registry potentially containing prefix to namespace associations.
+	 * @return A string, potentially empty, containing the registered prefixes and namespaces in the form <code><var>prefix</var>: <var>namespace</var></code>.
+	 * @see #ATTRIBUTE_PREFIX
+	 * @see VocabularyRegistry#getRegisteredVocabulariesByPrefix()
+	 */
+	public static String toPrefixAttributeValue(@Nonnull final VocabularyRegistry registry) {
+		return toPrefixAttributeValue(registry.getRegisteredVocabulariesByPrefix());
+	}
+
+	/**
+	 * Parses the given value as if it were of a {@value #ATTRIBUTE_PREFIX} attribute, and registers the prefix associations with the given registrar.
+	 * @implNote Other than requiring a prefix not to be empty, no validation of the prefix is performed.
+	 * @param prefixAttributeValue A string, potentially empty, containing the registered prefixes and namespaces in the form
+	 *          <code><var>prefix</var>: <var>namespace</var></code>.
+	 * @return A list of prefix namespace associations.
+	 * @throws IllegalArgumentException if a prefix does not end with the {@value Curie#PREFIX_DELIMITER} or the actual prefix before the delimiter is the empty
+	 *           string.
+	 * @throws IllegalArgumentException if there is a prefix with no assigned namespace.
+	 * @throws IllegalArgumentException if the associated namespace is not a valid URI.
+	 */
+	public static List<Map.Entry<String, URI>> fromPrefixAttributeValue(@Nonnull final CharSequence prefixAttributeValue) {
+		final List<String> tokens = HTML.SPACE_CHARACTERS.split(prefixAttributeValue);
+		if(tokens.isEmpty()) {
+			return emptyList();
+		}
+		final int tokenCount = tokens.size();
+		checkArgument((tokenCount & 0b1) == 0, "RDFa prefix attribute value %s must have a namespace associated with each prefix.", prefixAttributeValue);
+		final int registrationCount = tokenCount / 2;
+		final List<Map.Entry<String, URI>> registrations = new ArrayList<>(registrationCount);
+		final Iterator<String> tokenIterator = tokens.iterator();
+		while(tokenIterator.hasNext()) {
+			final String prefixToken = tokenIterator.next();
+			assert tokenIterator.hasNext() : "Expected even number of tokens.";
+			final String namespaceToken = tokenIterator.next();
+			checkArgument(endsWith(prefixToken, Curie.PREFIX_DELIMITER), "Prefix in definition `%s %s` must end with the %s delimiter.", prefixToken, namespaceToken,
+					Curie.PREFIX_DELIMITER);
+			final int prefixTokenLength = prefixToken.length();
+			checkArgument(prefixTokenLength > 1, "Prefix definition `%s %s` must not contain an empty prefix.", prefixToken, namespaceToken, Curie.PREFIX_DELIMITER);
+			final String prefix = prefixToken.substring(0, prefixTokenLength);
+			final URI namespace = URI.create(namespaceToken);
+			registrations.add(Map.entry(prefix, namespace));
+		}
+		assert registrations.size() == registrationCount;
+		return registrations;
+	}
+
+	/**
+	 * Parses the given value as if it were of a {@value #ATTRIBUTE_PREFIX} attribute, and registers the prefix associations with the given registrar.
+	 * @implSpec The default implementation calls {@link #fromPrefixAttributeValue(CharSequence)} to parse the value and the delegates to
+	 *           {@link VocabularyRegistrar#registerPrefix(Map.Entry)} to register the prefixes.
+	 * @implNote Other than requiring a prefix not to be empty, no validation of the prefix is performed; it is assumed that the caller uses an appropriate
+	 *           {@link VocabularySpecification} in the registrar.
+	 * @param <R> The type of registrar being used.
+	 * @param registrar The registrar in which to register the prefix namespace associations.
+	 * @param prefixAttributeValue A string, potentially empty, containing the registered prefixes and namespaces in the form
+	 *          <code><var>prefix</var>: <var>namespace</var></code>.
+	 * @return The given registrar.
+	 * @throws IllegalArgumentException if a prefix does not end with the {@value Curie#PREFIX_DELIMITER} or the actual prefix before the delimiter is the empty
+	 *           string.
+	 * @throws IllegalArgumentException if there is a prefix with no assigned namespace.
+	 * @throws IllegalArgumentException if the associated namespace is not a valid URI.
+	 */
+	public static <R extends VocabularyRegistrar> R registerPrefixesFromAttributeValue(@Nonnull final R registrar,
+			@Nonnull final CharSequence prefixAttributeValue) {
+		fromPrefixAttributeValue(prefixAttributeValue).forEach(registrar::registerPrefix);
+		return registrar;
+	}
 
 	/**
 	 * Definitions predefined for RDFa Core 1.1, so that "… RDFa users can use these … without having the obligation of defining [them] …".
