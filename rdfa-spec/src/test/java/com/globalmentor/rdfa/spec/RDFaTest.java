@@ -71,6 +71,7 @@ public class RDFaTest {
 	}
 
 	/** @see RDFa#fromPrefixAttributeValue(CharSequence) */
+	@Test
 	public void testFromPrefixAttributeValue() {
 		assertThat(RDFa.fromPrefixAttributeValue(""), is(emptyList()));
 		assertThat(RDFa.fromPrefixAttributeValue("dc: http://purl.org/dc/terms/"), is(List.of(Map.entry("dc", DC_NAMESPACE))));

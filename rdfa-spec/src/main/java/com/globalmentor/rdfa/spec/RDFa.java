@@ -168,7 +168,7 @@ public class RDFa {
 					Curie.PREFIX_DELIMITER);
 			final int prefixTokenLength = prefixToken.length();
 			checkArgument(prefixTokenLength > 1, "Prefix definition `%s %s` must not contain an empty prefix.", prefixToken, namespaceToken, Curie.PREFIX_DELIMITER);
-			final String prefix = prefixToken.substring(0, prefixTokenLength);
+			final String prefix = prefixToken.substring(0, prefixTokenLength - 1);
 			final URI namespace = URI.create(namespaceToken);
 			registrations.add(Map.entry(prefix, namespace));
 		}
