@@ -84,4 +84,17 @@ public class RDFaTest {
 				() -> RDFa.fromPrefixAttributeValue("dc: http://purl.org/dc/terms/ : http://ogp.me/ns# cc: http://creativecommons.org/ns#"));
 	}
 
+	/** @see RDFa#fromPrefixAttributeValue(CharSequence) */
+	@Test
+	public void testFromPrefixAttributeValueIgnoresWhiteSpace() {
+		assertThat(RDFa.fromPrefixAttributeValue("\t\r\n    dc: http://purl.org/dc/terms/ og: http://ogp.me/ns#"),
+				is(List.of(Map.entry("dc", DC_NAMESPACE), Map.entry("og", OG_NAMESPACE))));
+		assertThat(RDFa.fromPrefixAttributeValue("dc: http://purl.org/dc/terms/ og:\t\r\nhttp://ogp.me/ns#"),
+				is(List.of(Map.entry("dc", DC_NAMESPACE), Map.entry("og", OG_NAMESPACE))));
+		assertThat(RDFa.fromPrefixAttributeValue("    dc: http://purl.org/dc/terms/ og: http://ogp.me/ns#    \t\r\n"),
+				is(List.of(Map.entry("dc", DC_NAMESPACE), Map.entry("og", OG_NAMESPACE))));
+		assertThat(RDFa.fromPrefixAttributeValue("    dc: http://purl.org/dc/terms/ og:\r\nhttp://ogp.me/ns#\t \t"),
+				is(List.of(Map.entry("dc", DC_NAMESPACE), Map.entry("og", OG_NAMESPACE))));
+	}
+
 }
