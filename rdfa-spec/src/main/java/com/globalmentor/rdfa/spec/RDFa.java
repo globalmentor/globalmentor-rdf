@@ -28,7 +28,7 @@ import java.util.stream.*;
 
 import javax.annotation.*;
 
-import com.globalmentor.html.spec.HTML;
+import com.globalmentor.java.Characters;
 import com.globalmentor.vocab.*;
 
 /**
@@ -95,6 +95,12 @@ public class RDFa {
 	public static final String ATTRIBUTE_VOCAB = "vocab";
 
 	/**
+	 * Characters considered <dfn>white space</dfn> by RDFa.
+	 * @see <a href="https://www.w3.org/TR/rdfa-core/#white_space">RDFa Core 1.1, § 5.2 White space within attribute values</a>
+	 */
+	public static final Characters WHITESPACE_CHARACTERS = Characters.of(SPACE_CHAR, CHARACTER_TABULATION_CHAR, CARRIAGE_RETURN_CHAR, LINE_FEED_CHAR);
+
+	/**
 	 * Generates an appropriate value for the {@value #ATTRIBUTE_PREFIX} attribute from the given registrations..
 	 * @implNote No validation of the prefix is performed..
 	 * @param registrations The associations of prefix to namespace.
@@ -145,7 +151,7 @@ public class RDFa {
 	 * @throws IllegalArgumentException if the associated namespace is not a valid URI.
 	 */
 	public static List<Map.Entry<String, URI>> fromPrefixAttributeValue(@Nonnull final CharSequence prefixAttributeValue) {
-		final List<String> tokens = HTML.SPACE_CHARACTERS.split(prefixAttributeValue);
+		final List<String> tokens = WHITESPACE_CHARACTERS.split(prefixAttributeValue);
 		if(tokens.isEmpty()) {
 			return emptyList();
 		}
