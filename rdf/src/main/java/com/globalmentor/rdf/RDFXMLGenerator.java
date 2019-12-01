@@ -622,13 +622,14 @@ public class RDFXMLGenerator //TODO fix bug that doesn't serialize property valu
 					if(valuePlainLiteral.getLanguage() != null) { //if there is a language indication
 						final String languageTag = Locales.getLanguageTag(valuePlainLiteral.getLanguage()); //create a language tag from the locale
 						//store the language tag in the xml:lang attribute
-						propertyElement.setAttributeNS(XML.XML_NAMESPACE_URI.toString(), createQName(XML.XML_NAMESPACE_PREFIX, XML.ATTRIBUTE_LANG), languageTag);
+						propertyElement.setAttributeNS(XML.ATTRIBUTE_LANG.getNamespaceString(), createQName(XML.XML_NAMESPACE_PREFIX, XML.ATTRIBUTE_LANG.getLocalName()),
+								languageTag);
 					}
 				} else if(valueLiteral instanceof RDFTypedLiteral) { //if this is a typed literal
 					final RDFTypedLiteral<?> valueTypedLiteral = (RDFTypedLiteral<?>)valueLiteral; //cast the literal to a typed literal
 					//store the datatype reference URI in the rdf:datatype attribute
-					propertyElement.setAttributeNS(RDF.NAMESPACE_URI.toString(), createQName(RDF.NAMESPACE_PREFIX, ATTRIBUTE_DATATYPE), valueTypedLiteral
-							.getDatatypeURI().toString());
+					propertyElement.setAttributeNS(RDF.NAMESPACE_URI.toString(), createQName(RDF.NAMESPACE_PREFIX, ATTRIBUTE_DATATYPE),
+							valueTypedLiteral.getDatatypeURI().toString());
 				}
 			}
 		}
@@ -645,9 +646,9 @@ public class RDFXMLGenerator //TODO fix bug that doesn't serialize property valu
 		{
 			String prefix=(String)namespacePrefixMap.get(namespaceURI);  //get the prefix keyed by the namespace
 			if(prefix==null) {	//if there is no prefix for this namespace
-
+	
 			}
-
+	
 			//TODO fix to detect unknown namespaces and assign new prefixes
 		  return (String)namespacePrefixMap.get(namespaceURI);  //return a prefix keyed by the namespace
 		}

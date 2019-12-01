@@ -454,7 +454,7 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 			final DocumentFragment documentFragment = extractChildren(documentElement); //extract the children of the document element to a document fragment TODO important probably reset the owner document, so that this won't keep the entire original document tree around
 			propertyValue = new RDFXMLLiteral(documentFragment); //create an XML literal containing the document fragment, which now contains a copy of the information of the XML tree below the given element
 		} else { //by default assume that we're parsing a resource as the property value
-		//Log.trace("we must be parsing a resource as the property value");
+			//Log.trace("we must be parsing a resource as the property value");
 			final String referenceURIValue = getRDFAttribute(element, ATTRIBUTE_RESOURCE); //get the reference URI of the referenced resource, if there is one
 			final String nodeIDValue = getRDFAttribute(element, ATTRIBUTE_NODE_ID); //get the node ID attribute value, if there is one
 			assert referenceURIValue == null || nodeIDValue == null : "Resource cannot have both reference URI " + referenceURIValue + " and node ID " + nodeIDValue
@@ -522,9 +522,7 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 				return getRDF().createTypedLiteral(childText, new URI(datatype)); //create a typed literal from the typed literal text
 			} else { //if a datatype is not present, this is a plain literal
 				//get the xml:lang language tag, if there is one
-				final String languageTag = propertyNode instanceof Element
-						? findAttributeNS((Element)propertyNode, XML.XML_NAMESPACE_URI.toString(), XML.ATTRIBUTE_LANG).orElse(null)
-						: null;
+				final String languageTag = propertyNode instanceof Element ? findAttributeNS((Element)propertyNode, XML.ATTRIBUTE_LANG).orElse(null) : null;
 				//create a locale for the language if there is a language tag
 				final Locale languageLocale = languageTag != null ? Locales.createLocale(languageTag) : null;
 				return new RDFPlainLiteral(childText, languageLocale); //create a literal from the element's text, noting the specified language if any
