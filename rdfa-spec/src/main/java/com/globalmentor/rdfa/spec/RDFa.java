@@ -21,6 +21,7 @@ import static com.globalmentor.java.Characters.*;
 import static com.globalmentor.java.Conditions.*;
 import static java.util.Collections.*;
 import static java.util.function.Function.*;
+import static java.util.stream.Collectors.*;
 
 import java.net.URI;
 import java.util.*;
@@ -244,7 +245,7 @@ public class RDFa {
 
 			VOCABULARY_TERMS = Stream
 					.of(VocabularyTerm.of(wdrsNamespace, "describedby"), VocabularyTerm.of(xhvNamespace, "license"), VocabularyTerm.of(xhvNamespace, "role"))
-					.collect(Collectors.toMap(VocabularyTerm::getName, identity()));
+					.collect(toUnmodifiableMap(VocabularyTerm::getName, identity()));
 		}
 
 	}
