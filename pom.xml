@@ -38,12 +38,6 @@
 		<dependencies>
 			<dependency>
 				<groupId>com.globalmentor</groupId>
-				<artifactId>globalmentor-metadata</artifactId>
-				<version>0.6.1</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-text-directory-vcard</artifactId>
 				<version>0.6.1</version>
 			</dependency>
@@ -57,6 +51,12 @@
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-vocab</artifactId>
+				<version>${globalmentor-web.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.globalmentor</groupId>
+				<artifactId>globalmentor-vocab-dcmi</artifactId>
 				<version>${globalmentor-web.version}</version>
 			</dependency>
 

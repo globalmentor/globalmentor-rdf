@@ -21,11 +21,6 @@
 
 		<dependency>
 			<groupId>com.globalmentor</groupId>
-			<artifactId>globalmentor-metadata</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.globalmentor</groupId>
 			<artifactId>globalmentor-text-directory-vcard</artifactId>
 		</dependency>
 
@@ -37,6 +32,11 @@
 		<dependency>
 			<groupId>com.globalmentor</groupId>
 			<artifactId>globalmentor-xml</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.globalmentor</groupId>
+			<artifactId>globalmentor-vocab-dcmi</artifactId>
 		</dependency>
 	</dependencies>
 </project>
