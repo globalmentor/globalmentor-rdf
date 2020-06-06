@@ -22,8 +22,9 @@ import java.util.*;
 import com.globalmentor.model.Locales;
 import com.globalmentor.rdf.*;
 
-import static com.globalmentor.metadata.DCMI.*;
 import static com.globalmentor.rdf.RDFResources.*;
+import static com.globalmentor.vocab.dcmi.DCMES.*;
+
 import com.globalmentor.text.*;
 
 /**
@@ -39,7 +40,7 @@ public class RDFDublinCore {
 	 * @return The added literal property value.
 	 */
 	public static RDFLiteral addCreator(final RDFResource resource, final String value) {
-		return resource.addProperty(DCMI11_ELEMENTS_NAMESPACE_URI, CREATOR_PROPERTY_NAME, value);
+		return resource.addProperty(TERM_CREATOR.getNamespace(), TERM_CREATOR.getName(), value);
 	}
 
 	/**
@@ -49,7 +50,7 @@ public class RDFDublinCore {
 	 * @return The added literal property value.
 	 */
 	public static RDFLiteral addContributor(final RDFResource resource, final String value) {
-		return resource.addProperty(DCMI11_ELEMENTS_NAMESPACE_URI, CONTRIBUTOR_PROPERTY_NAME, value);
+		return resource.addProperty(TERM_CONTRIBUTOR.getNamespace(), TERM_CONTRIBUTOR.getName(), value);
 	}
 
 	/**
@@ -59,7 +60,7 @@ public class RDFDublinCore {
 	 * @return The added literal property value.
 	 */
 	public static RDFLiteral addDescription(final RDFResource resource, final String value) {
-		return resource.addProperty(DCMI11_ELEMENTS_NAMESPACE_URI, DESCRIPTION_PROPERTY_NAME, value);
+		return resource.addProperty(TERM_DESCRIPTION.getNamespace(), TERM_DESCRIPTION.getName(), value);
 	}
 
 	/**
@@ -69,7 +70,7 @@ public class RDFDublinCore {
 	 * @return The added literal property value.
 	 */
 	public static RDFLiteral addIdentifier(final RDFResource resource, final String value) {
-		return resource.addProperty(DCMI11_ELEMENTS_NAMESPACE_URI, IDENTIFIER_PROPERTY_NAME, value);
+		return resource.addProperty(TERM_IDENTIFIER.getNamespace(), TERM_IDENTIFIER.getName(), value);
 	}
 
 	/**
@@ -80,7 +81,7 @@ public class RDFDublinCore {
 	 */
 	public static RDFLiteral addLanguage(final RDFResource resource, final Locale locale) {
 		//add the literal language tag for this locale
-		return resource.addProperty(DCMI11_ELEMENTS_NAMESPACE_URI, LANGUAGE_PROPERTY_NAME, Locales.getLanguageTag(locale));
+		return resource.addProperty(TERM_LANGUAGE.getNamespace(), TERM_LANGUAGE.getName(), Locales.getLanguageTag(locale));
 	}
 
 	/**
@@ -90,7 +91,7 @@ public class RDFDublinCore {
 	 * @return The added literal property value.
 	 */
 	public static RDFLiteral addPublisher(final RDFResource resource, final String value) {
-		return resource.addProperty(DCMI11_ELEMENTS_NAMESPACE_URI, PUBLISHER_PROPERTY_NAME, value);
+		return resource.addProperty(TERM_PUBLISHER.getNamespace(), TERM_PUBLISHER.getName(), value);
 	}
 
 	/**
@@ -100,7 +101,7 @@ public class RDFDublinCore {
 	 * @return The added literal property value.
 	 */
 	public static RDFLiteral addRights(final RDFResource resource, final String value) {
-		return resource.addProperty(DCMI11_ELEMENTS_NAMESPACE_URI, RIGHTS_PROPERTY_NAME, value);
+		return resource.addProperty(TERM_RIGHTS.getNamespace(), TERM_RIGHTS.getName(), value);
 	}
 
 	/**
@@ -110,7 +111,7 @@ public class RDFDublinCore {
 	 * @return The added literal property value.
 	 */
 	public static RDFLiteral addSource(final RDFResource resource, final String value) {
-		return resource.addProperty(DCMI11_ELEMENTS_NAMESPACE_URI, SOURCE_PROPERTY_NAME, value);
+		return resource.addProperty(TERM_SOURCE.getNamespace(), TERM_SOURCE.getName(), value);
 	}
 
 	/**
@@ -120,7 +121,7 @@ public class RDFDublinCore {
 	 * @return The added literal property value.
 	 */
 	public static RDFLiteral addTitle(final RDFResource resource, final String value) {
-		return resource.addProperty(DCMI11_ELEMENTS_NAMESPACE_URI, TITLE_PROPERTY_NAME, value);
+		return resource.addProperty(TERM_TITLE.getNamespace(), TERM_TITLE.getName(), value);
 	}
 
 	/**
@@ -129,7 +130,7 @@ public class RDFDublinCore {
 	 * @return The value of the first <code>dc:creator</code> property, or <code>null</code> if no such property exists.
 	 */
 	public static RDFObject getCreator(final RDFResource resource) {
-		return resource.getPropertyValue(DCMI11_ELEMENTS_NAMESPACE_URI, CREATOR_PROPERTY_NAME);
+		return resource.getPropertyValue(TERM_CREATOR.getNamespace(), TERM_CREATOR.getName());
 	}
 
 	/**
@@ -139,7 +140,7 @@ public class RDFDublinCore {
 	 * @see W3CDateFormat.Style#DATE_TIME
 	 */
 	public static Date getDate(final RDFResource resource) {
-		return RDFResources.getDate(resource, DCMI11_ELEMENTS_NAMESPACE_URI, DATE_PROPERTY_NAME);
+		return RDFResources.getDate(resource, TERM_DATE.getNamespace(), TERM_DATE.getName());
 	}
 
 	/**
@@ -149,7 +150,7 @@ public class RDFDublinCore {
 	 * @return The value of the first <code>dc:date</code> property, or <code>null</code> if no such property exists or it does not contain a date.
 	 */
 	public static Date getDate(final RDFResource resource, final W3CDateFormat.Style style) {
-		return RDFResources.getDate(resource, DCMI11_ELEMENTS_NAMESPACE_URI, DATE_PROPERTY_NAME, style);
+		return RDFResources.getDate(resource, TERM_DATE.getNamespace(), TERM_DATE.getName(), style);
 	}
 
 	/**
@@ -159,7 +160,7 @@ public class RDFDublinCore {
 	 * @return The value of the first <code>dc:date</code> property, or <code>null</code> if no such property exists or it does not contain a date.
 	 */
 	public static Date getDate(final RDFResource resource, final DateFormat dateFormat) {
-		return RDFResources.getDate(resource, DCMI11_ELEMENTS_NAMESPACE_URI, DATE_PROPERTY_NAME, dateFormat);
+		return RDFResources.getDate(resource, TERM_DATE.getNamespace(), TERM_DATE.getName(), dateFormat);
 	}
 
 	/**
@@ -168,7 +169,7 @@ public class RDFDublinCore {
 	 * @return The value of the first <code>dc:description</code> property, or <code>null</code> if no such property exists.
 	 */
 	public static RDFObject getDescription(final RDFResource resource) {
-		return resource.getPropertyValue(DCMI11_ELEMENTS_NAMESPACE_URI, DESCRIPTION_PROPERTY_NAME);
+		return resource.getPropertyValue(TERM_DESCRIPTION.getNamespace(), TERM_DESCRIPTION.getName());
 	}
 
 	/**
@@ -178,7 +179,7 @@ public class RDFDublinCore {
 	 *         literal language tag.
 	 */
 	public static Locale getLanguage(final RDFResource resource) {
-		final RDFObject languageObject = resource.getPropertyValue(DCMI11_ELEMENTS_NAMESPACE_URI, LANGUAGE_PROPERTY_NAME);
+		final RDFObject languageObject = resource.getPropertyValue(TERM_LANGUAGE.getNamespace(), TERM_LANGUAGE.getName());
 		if(languageObject instanceof RDFLiteral) { //if this is a literal value
 			return Locales.createLocale(((RDFLiteral)languageObject).getLexicalForm()); //create a locale from the literal's lexical form
 		} else { //if there is no literal language tag
@@ -192,7 +193,7 @@ public class RDFDublinCore {
 	 * @return The value of the first <code>dc:title</code> property, or <code>null</code> if no such property exists as a literal.
 	 */
 	public static RDFLiteral getTitle(final RDFResource resource) {
-		return asLiteral(resource.getPropertyValue(DCMI11_ELEMENTS_NAMESPACE_URI, TITLE_PROPERTY_NAME));
+		return asLiteral(resource.getPropertyValue(TERM_TITLE.getNamespace(), TERM_TITLE.getName()));
 	}
 
 	/**
@@ -202,7 +203,7 @@ public class RDFDublinCore {
 	 * @return The set literal property value.
 	 */
 	public static RDFLiteral setTitle(final RDFResource resource, final String value) {
-		return resource.setProperty(DCMI11_ELEMENTS_NAMESPACE_URI, TITLE_PROPERTY_NAME, value);
+		return resource.setProperty(TERM_TITLE.getNamespace(), TERM_TITLE.getName(), value);
 	}
 
 	/**
@@ -211,7 +212,7 @@ public class RDFDublinCore {
 	 * @return The value of the first <code>dc:rights</code> property, or <code>null</code> if no such property exists.
 	 */
 	public static RDFObject getRights(final RDFResource resource) {
-		return resource.getPropertyValue(DCMI11_ELEMENTS_NAMESPACE_URI, RIGHTS_PROPERTY_NAME);
+		return resource.getPropertyValue(TERM_RIGHTS.getNamespace(), TERM_RIGHTS.getName());
 	}
 
 	/**
@@ -222,7 +223,7 @@ public class RDFDublinCore {
 	 * @see W3CDateFormat.Style#DATE_TIME
 	 */
 	public static RDFLiteral setDate(final RDFResource resource, final Date date) {
-		return RDFResources.setDate(resource, DCMI11_ELEMENTS_NAMESPACE_URI, DATE_PROPERTY_NAME, date);
+		return RDFResources.setDate(resource, TERM_DATE.getNamespace(), TERM_DATE.getName(), date);
 	}
 
 	/**
@@ -233,7 +234,7 @@ public class RDFDublinCore {
 	 * @return The added literal property value.
 	 */
 	public static RDFLiteral setDate(final RDFResource resource, final Date date, final W3CDateFormat.Style style) {
-		return RDFResources.setDate(resource, DCMI11_ELEMENTS_NAMESPACE_URI, DATE_PROPERTY_NAME, date, style);
+		return RDFResources.setDate(resource, TERM_DATE.getNamespace(), TERM_DATE.getName(), date, style);
 	}
 
 	/**
@@ -244,7 +245,7 @@ public class RDFDublinCore {
 	 * @return The added literal property value.
 	 */
 	public static RDFLiteral setDate(final RDFResource resource, final Date date, final DateFormat dateFormat) {
-		return RDFResources.setDate(resource, DCMI11_ELEMENTS_NAMESPACE_URI, DATE_PROPERTY_NAME, date, dateFormat);
+		return RDFResources.setDate(resource, TERM_DATE.getNamespace(), TERM_DATE.getName(), date, dateFormat);
 	}
 
 	/**
@@ -255,7 +256,7 @@ public class RDFDublinCore {
 	 */
 	public static RDFLiteral setLanguage(final RDFResource resource, final Locale locale) {
 		//set the literal language tag for this locale
-		return resource.setProperty(DCMI11_ELEMENTS_NAMESPACE_URI, LANGUAGE_PROPERTY_NAME, Locales.getLanguageTag(locale));
+		return resource.setProperty(TERM_LANGUAGE.getNamespace(), TERM_LANGUAGE.getName(), Locales.getLanguageTag(locale));
 	}
 
 }
