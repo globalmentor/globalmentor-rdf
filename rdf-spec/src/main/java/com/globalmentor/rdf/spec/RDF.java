@@ -116,10 +116,10 @@ public class RDF {
 		public static final String NAME_EXTENSION = "rdf";
 
 		/**
-		 * The content type for RDF serialized in XML: <code>application/rdf+xml</code>.
+		 * The media type for RDF serialized in XML: <code>application/rdf+xml</code>.
 		 * @see <a href="https://www.ietf.org/rfc/rfc3870.txt">RFC 3870: application/rdf+xml Media Type Registration</a>
 		 */
-		public static final ContentType CONTENT_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, "rdf+xml");
+		public static final ContentType MEDIA_TYPE = ContentType.of(ContentType.APPLICATION_PRIMARY_TYPE, "rdf+xml");
 
 		//RDF XML elements
 		/** The name of the enclosing RDF element. */
