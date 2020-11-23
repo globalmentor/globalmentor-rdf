@@ -213,11 +213,8 @@ public abstract class AbstractRDFStorage extends DefaultModifiable implements UR
 	 */
 	protected synchronized void store(final Document document, final URI uri) throws IOException {
 		final XMLSerializer xmlSerializer = getXMLSerializer(); //get an XML serializer
-		final OutputStream outputStream = new BufferedOutputStream(getOutputStream(uri)); //get a buffered output stream to the URI
-		try {
+		try (final OutputStream outputStream = new BufferedOutputStream(getOutputStream(uri))) { //get a buffered output stream to the URI
 			xmlSerializer.serialize(document, outputStream); //serialize the XML document to the output stream	
-		} finally {
-			outputStream.close(); //always close the output stream
 		}
 	}
 
@@ -270,13 +267,10 @@ public abstract class AbstractRDFStorage extends DefaultModifiable implements UR
 	 */
 	protected synchronized Document retrieveXML(final URI uri) throws IOException {
 		final DocumentBuilder documentBuilder = getDocumentBuilder(); //get an XML processor
-		final InputStream inputStream = new BufferedInputStream(getInputStream(uri)); //get a buffered input stream from the URI
-		try {
+		try (final InputStream inputStream = new BufferedInputStream(getInputStream(uri))) { //get a buffered input stream from the URI
 			return documentBuilder.parse(inputStream, uri.toString()); //read an XML document from the input stream and return it	
 		} catch(final SAXException saxException) {
 			throw new IOException(saxException.getMessage(), saxException);
-		} finally {
-			inputStream.close(); //always close the input stream
 		}
 	}
 }
