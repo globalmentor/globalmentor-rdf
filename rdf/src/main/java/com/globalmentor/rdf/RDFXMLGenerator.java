@@ -297,9 +297,9 @@ public class RDFXMLGenerator //TODO fix bug that doesn't serialize property valu
 	 */
 	public static Document createDefaultRDFDocument(final DOMImplementation domImplementation) {
 		//create an RDF document
-		final Document document = domImplementation.createDocument(RDF.NAMESPACE_URI.toString(), createQName(RDF.NAMESPACE_PREFIX, ELEMENT_RDF), null);
+		final Document document = domImplementation.createDocument(RDF.NAMESPACE_URI.toString(), createQualifiedName(RDF.NAMESPACE_PREFIX, ELEMENT_RDF), null);
 		//add the RDF namespace declaration prefix, xmlns:rdf
-		document.getDocumentElement().setAttributeNS(XML.XMLNS_NAMESPACE_URI.toString(), createQName(XML.XMLNS_NAMESPACE_PREFIX, RDF.NAMESPACE_PREFIX),
+		document.getDocumentElement().setAttributeNS(XML.XMLNS_NAMESPACE_URI.toString(), createQualifiedName(XML.XMLNS_NAMESPACE_PREFIX, RDF.NAMESPACE_PREFIX),
 				RDF.NAMESPACE_URI.toString());
 		return document; //return the document we created
 	}
@@ -350,7 +350,7 @@ public class RDFXMLGenerator //TODO fix bug that doesn't serialize property valu
 	 * @return An <code>&lt;rdf:RDF&gt;</code> element for the given document.
 	 */
 	public static Element createRDFElement(final Document document) {
-		return document.createElementNS(RDF.NAMESPACE_URI.toString(), createQName(RDF.NAMESPACE_PREFIX, ELEMENT_RDF)); //create an <code>&lt;rdf:RDF&gt;</code> element for the given document
+		return document.createElementNS(RDF.NAMESPACE_URI.toString(), createQualifiedName(RDF.NAMESPACE_PREFIX, ELEMENT_RDF)); //create an <code>&lt;rdf:RDF&gt;</code> element for the given document
 	}
 
 	/**
@@ -364,7 +364,7 @@ public class RDFXMLGenerator //TODO fix bug that doesn't serialize property valu
 		rdf.getReferences(resourceReferenceMap); //get all the references to resources in the RDF data model
 		try {
 			//create an <code>&lt;rdf:RDF&gt;</code> element
-			final Element rdfElement = document.createElementNS(RDF.NAMESPACE_URI.toString(), createQName(RDF.NAMESPACE_PREFIX, ELEMENT_RDF));
+			final Element rdfElement = document.createElementNS(RDF.NAMESPACE_URI.toString(), createQualifiedName(RDF.NAMESPACE_PREFIX, ELEMENT_RDF));
 			createElements(rdf, rdfElement); //XMLify the resource as elements under the RDF element
 			return rdfElement; //return the element we constructed with RDF resources as child elements
 		} finally {
@@ -398,11 +398,11 @@ public class RDFXMLGenerator //TODO fix bug that doesn't serialize property valu
 			final URI namespaceURI = getNamespaceURI(resourceTypeURI); //get the type's namespace URI
 			assert namespaceURI != null : "Unable to find namespace of type " + resourceTypeURI; //TODO add real error handling here
 			final String prefix = xmlNamespacePrefixManager.getNamespacePrefix(namespaceURI.toString()); //get the prefix for use with this namespace
-			final String qualifiedName = createQName(prefix, getLocalName(resourceTypeURI)); //create a qualified name for the element
+			final String qualifiedName = createQualifiedName(prefix, getLocalName(resourceTypeURI)); //create a qualified name for the element
 			//TODO check for null on local name
 			resourceElement = document.createElementNS(namespaceURI.toString(), qualifiedName); //create an element from the resource type
 		} else { //if we can't create an element from its type
-			final String qualifiedName = createQName(RDF.NAMESPACE_PREFIX, ELEMENT_DESCRIPTION); //create a qualified name for the element
+			final String qualifiedName = createQualifiedName(RDF.NAMESPACE_PREFIX, ELEMENT_DESCRIPTION); //create a qualified name for the element
 			resourceElement = document.createElementNS(RDF.NAMESPACE_URI.toString(), qualifiedName); //create an rdf:Description element
 		}
 		final URI referenceURI = resource.getURI(); //get the reference URI of the resource
@@ -415,7 +415,7 @@ public class RDFXMLGenerator //TODO fix bug that doesn't serialize property valu
 				serializationReferenceURI = referenceURI; //use the full reference URI as the serialization URI
 			}
 			//set the rdf:about attribute to the reference URI
-			final String aboutAttributeQualifiedName = createQName(RDF.NAMESPACE_PREFIX, ATTRIBUTE_ABOUT); //create a qualified name for reference URI
+			final String aboutAttributeQualifiedName = createQualifiedName(RDF.NAMESPACE_PREFIX, ATTRIBUTE_ABOUT); //create a qualified name for reference URI
 			//add the rdf:about attribute with the value set to the reference URI of the resource
 			resourceElement.setAttributeNS(RDF.NAMESPACE_URI.toString(), aboutAttributeQualifiedName, serializationReferenceURI.toString());
 		} else { //if this resource has no reference URI, we'll have to give it a node ID if any other resources reference it
@@ -423,7 +423,7 @@ public class RDFXMLGenerator //TODO fix bug that doesn't serialize property valu
 			if(referenceSet != null && referenceSet.size() > 1) { //if more than one resource references this resource (if there's only one reference to it, we'll just serialize it inline)
 				final String nodeID = getNodeID(resource); //get the node ID for this resource
 				//set the rdf:nodeID attribute to the node ID
-				final String nodeIDAttributeQualifiedName = createQName(RDF.NAMESPACE_PREFIX, ATTRIBUTE_NODE_ID); //create a qualified name for node ID
+				final String nodeIDAttributeQualifiedName = createQualifiedName(RDF.NAMESPACE_PREFIX, ATTRIBUTE_NODE_ID); //create a qualified name for node ID
 				//add the rdf:nodeID attribute with the value set to the node ID of the resource
 				resourceElement.setAttributeNS(RDF.NAMESPACE_URI.toString(), nodeIDAttributeQualifiedName, nodeID);
 			}
@@ -444,13 +444,13 @@ public class RDFXMLGenerator //TODO fix bug that doesn't serialize property valu
 	protected void setReference(final Element element, final RDFResource resource) {
 		final URI referenceURI = resource.getURI(); //get the reference URI of the resource
 		if(referenceURI != null) { //if the resource has a reference URI, reference the reference URI using rdf:resource
-			final String resourceAttributeQualifiedName = createQName(RDF.NAMESPACE_PREFIX, ATTRIBUTE_RESOURCE); //create a qualified name for the link attribute
+			final String resourceAttributeQualifiedName = createQualifiedName(RDF.NAMESPACE_PREFIX, ATTRIBUTE_RESOURCE); //create a qualified name for the link attribute
 			//add the rdf:resource attribute with the value set to the reference URI of the property value resource
 			element.setAttributeNS(RDF.NAMESPACE_URI.toString(), resourceAttributeQualifiedName, referenceURI.toString());
 		} else { //if the object resource has no reference URI, we'll reference it using rdf:nodeID
 			final String nodeID = getNodeID(resource); //get the node ID for this resource
 			//set the rdf:nodeID attribute to the node ID
-			final String nodeIDAttributeQualifiedName = createQName(RDF.NAMESPACE_PREFIX, ATTRIBUTE_NODE_ID); //create a qualified name for node ID
+			final String nodeIDAttributeQualifiedName = createQualifiedName(RDF.NAMESPACE_PREFIX, ATTRIBUTE_NODE_ID); //create a qualified name for node ID
 			//add the rdf:nodeID attribute with the value set to the node ID of the resource
 			element.setAttributeNS(RDF.NAMESPACE_URI.toString(), nodeIDAttributeQualifiedName, nodeID);
 		}
@@ -494,7 +494,7 @@ public class RDFXMLGenerator //TODO fix bug that doesn't serialize property valu
 					final String localName = getLocalName(propertyResourceURI); //get the local name of the property
 					//TODO check for null on local name
 					if(!element.hasAttributeNS(propertyNamespaceURI.toString(), localName)) { //if we don't already have this attribute (otherwise, we'll have to use a child element after all
-						final String qualifiedName = createQName(prefix, localName); //create a qualified name for the attribute
+						final String qualifiedName = createQualifiedName(prefix, localName); //create a qualified name for the attribute
 						//store the property as an attribute
 						element.setAttributeNS(propertyNamespaceURI.toString(), qualifiedName, ((RDFLiteral)propertyValue).getLexicalForm());
 						return null; //indicate that we didn't use an element to represent the property
@@ -531,12 +531,12 @@ public class RDFXMLGenerator //TODO fix bug that doesn't serialize property valu
 			if(localName.startsWith(CONTAINER_MEMBER_PREFIX)) //if this is one of the rdf:li_XXX members
 				localName = LI_PROPERTY_NAME; //just use the normal rdf:li property name---the order is implicit in the serialization
 		}
-		qualifiedName = createQName(prefix, localName); //create a qualified name for the element
+		qualifiedName = createQualifiedName(prefix, localName); //create a qualified name for the element
 		final Element propertyElement = document.createElementNS(namespaceURI.toString(), qualifiedName); //create an element from the property resource
 		if(propertyValue instanceof RDFResource) { //if the property value is a resource
 			if(propertyValue instanceof RDFListResource && isCompactRDFListSerialization()) { //if this is a list and we should serialize lists in compact form TODO maybe make sure it's a normal list, first, before creating the compact form
 				//set the rdf:parseType attribute to "Collection" TODO eventually get our prefix from a prefix rather than hard-coding RDF, maybe
-				propertyElement.setAttributeNS(RDF.NAMESPACE_URI.toString(), createQName(RDF.NAMESPACE_PREFIX.toString(), ATTRIBUTE_PARSE_TYPE), COLLECTION_PARSE_TYPE);
+				propertyElement.setAttributeNS(RDF.NAMESPACE_URI.toString(), createQualifiedName(RDF.NAMESPACE_PREFIX.toString(), ATTRIBUTE_PARSE_TYPE), COLLECTION_PARSE_TYPE);
 				final RDFListResource propertyListResource = (RDFListResource)propertyValue; //cast the resource to a list
 				final Iterator<RDFObject> iterator = propertyListResource.iterator(); //get an iterator to look at the list elements
 				while(iterator.hasNext()) { //while there are more elements
@@ -609,7 +609,7 @@ public class RDFXMLGenerator //TODO fix bug that doesn't serialize property valu
 			if(propertyValue instanceof RDFXMLLiteral) { //special-case XML literals because they have a special XML serialization syntax---that of XML itself
 				final RDFXMLLiteral valueXMLLiteral = (RDFXMLLiteral)valueLiteral; //cast the literal to an XML literal
 				//add an rdf:parseType="Literal" attribute
-				propertyElement.setAttributeNS(RDF.NAMESPACE_URI.toString(), createQName(RDF.NAMESPACE_PREFIX, ATTRIBUTE_PARSE_TYPE), LITERAL_PARSE_TYPE);
+				propertyElement.setAttributeNS(RDF.NAMESPACE_URI.toString(), createQualifiedName(RDF.NAMESPACE_PREFIX, ATTRIBUTE_PARSE_TYPE), LITERAL_PARSE_TYPE);
 				//import the document fragment to our document
 				final Node importedDocumentFragment = document.importNode(valueXMLLiteral.getValue(), true);
 				propertyElement.appendChild(importedDocumentFragment); //append the children of the document fragment to this node
@@ -622,13 +622,13 @@ public class RDFXMLGenerator //TODO fix bug that doesn't serialize property valu
 					if(valuePlainLiteral.getLanguage() != null) { //if there is a language indication
 						final String languageTag = Locales.getLanguageTag(valuePlainLiteral.getLanguage()); //create a language tag from the locale
 						//store the language tag in the xml:lang attribute
-						propertyElement.setAttributeNS(XML.ATTRIBUTE_LANG.getNamespaceString(), createQName(XML.XML_NAMESPACE_PREFIX, XML.ATTRIBUTE_LANG.getLocalName()),
+						propertyElement.setAttributeNS(XML.ATTRIBUTE_LANG.getNamespaceString(), createQualifiedName(XML.XML_NAMESPACE_PREFIX, XML.ATTRIBUTE_LANG.getLocalName()),
 								languageTag);
 					}
 				} else if(valueLiteral instanceof RDFTypedLiteral) { //if this is a typed literal
 					final RDFTypedLiteral<?> valueTypedLiteral = (RDFTypedLiteral<?>)valueLiteral; //cast the literal to a typed literal
 					//store the datatype reference URI in the rdf:datatype attribute
-					propertyElement.setAttributeNS(RDF.NAMESPACE_URI.toString(), createQName(RDF.NAMESPACE_PREFIX, ATTRIBUTE_DATATYPE),
+					propertyElement.setAttributeNS(RDF.NAMESPACE_URI.toString(), createQualifiedName(RDF.NAMESPACE_PREFIX, ATTRIBUTE_DATATYPE),
 							valueTypedLiteral.getDatatypeURI().toString());
 				}
 			}
@@ -707,7 +707,7 @@ public class RDFXMLGenerator //TODO fix bug that doesn't serialize property valu
 					if(localName.startsWith(CONTAINER_MEMBER_PREFIX)) //if this is one of the rdf:li_XXX members
 						localName = LI_PROPERTY_NAME; //just use the normal rdf:li property name---the order is implicit in the serialization
 				}
-				return createQName(prefix, localName); //create an XML qualified name for this namespace prefix and local name
+				return createQualifiedName(prefix, localName); //create an XML qualified name for this namespace prefix and local name
 			}
 		}
 		return referenceURI.toString(); //just use the reference URI as the label, if we can't find anything else TODO we might want to check for rdf:li_ here as well; maybe not

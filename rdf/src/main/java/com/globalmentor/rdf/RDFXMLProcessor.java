@@ -522,7 +522,7 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 				return getRDF().createTypedLiteral(childText, new URI(datatype)); //create a typed literal from the typed literal text
 			} else { //if a datatype is not present, this is a plain literal
 				//get the xml:lang language tag, if there is one
-				final String languageTag = propertyNode instanceof Element ? findAttributeNS((Element)propertyNode, XML.ATTRIBUTE_LANG).orElse(null) : null;
+				final String languageTag = propertyNode instanceof Element ? findAttribute((Element)propertyNode, XML.ATTRIBUTE_LANG).orElse(null) : null;
 				//create a locale for the language if there is a language tag
 				final Locale languageLocale = languageTag != null ? Locales.createLocale(languageTag) : null;
 				return new RDFPlainLiteral(childText, languageLocale); //create a literal from the element's text, noting the specified language if any
