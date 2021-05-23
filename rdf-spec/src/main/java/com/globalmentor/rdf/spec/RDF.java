@@ -113,7 +113,7 @@ public class RDF {
 	public static class XML {
 
 		/** The name extension for Resource Description Framework (RDF) files serialized in XML. */
-		public static final String NAME_EXTENSION = "rdf";
+		public static final String FILENAME_EXTENSION = "rdf";
 
 		/**
 		 * The media type for RDF serialized in XML: <code>application/rdf+xml</code>.

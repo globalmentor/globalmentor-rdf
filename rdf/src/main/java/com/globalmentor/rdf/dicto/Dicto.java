@@ -32,7 +32,7 @@ import com.globalmentor.rdf.*;
 public class Dicto implements RDFResourceFactory {
 
 	/** The name extension for Dictionary Ontology (Dicto) dictionaries. */
-	public static final String DICTO_NAME_EXTENSION = "dicto";
+	public static final String DICTO_FILENAME_EXTENSION = "dicto";
 
 	/** The recommended prefix to the Dicto ontology namespace. */
 	public static final String DICTO_NAMESPACE_PREFIX = "dicto";
