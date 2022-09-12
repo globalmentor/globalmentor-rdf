@@ -42,6 +42,7 @@ import org.w3c.dom.*;
  * @see com.globalmentor.model.Modifiable#MODIFIED_PROPERTY
  * @deprecated
  */
+@Deprecated
 public abstract class AbstractFileRDFStorage extends AbstractRDFStorage {
 
 	/** Whether backup files should be used. */

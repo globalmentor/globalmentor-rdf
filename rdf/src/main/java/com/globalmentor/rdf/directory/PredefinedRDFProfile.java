@@ -30,6 +30,7 @@ import com.globalmentor.text.directory.*;
  * @author Garret Wilson
  * @deprecated
  */
+@Deprecated
 public class PredefinedRDFProfile extends PredefinedProfile implements RDFPropertyFactory, RDFPropertyValueFactory {
 
 	/** A map of property URIs keyed to supported type name strings. */

@@ -35,6 +35,7 @@ import static java.util.Objects.*;
  * @author Garret Wilson
  * @deprecated
  */
+@Deprecated
 public class RDFDirectory {
 
 	/** The recommended prefix to the directory namespace. */
