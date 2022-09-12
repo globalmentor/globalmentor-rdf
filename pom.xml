@@ -4,8 +4,8 @@
 
 	<parent>
 		<groupId>com.globalmentor</groupId>
-		<artifactId>globalmentor-opensource-parent</artifactId>
-		<version>8.6.0</version>
+		<artifactId>globalmentor-base</artifactId>
+		<version>0.7.1</version>
 	</parent>
 
 	<artifactId>globalmentor-rdf-parent</artifactId>
@@ -17,6 +17,14 @@
 	<url>http://www.globalmentor.com/software/</url>
 	<inceptionYear>1996</inceptionYear>
 
+	<licenses>
+		<license>
+			<name>Apache-2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
 	<scm>
 		<connection>scm:git:https://bitbucket.org/globalmentor/globalmentor-rdf.git</connection>
 		<developerConnection>scm:git:https://bitbucket.org/globalmentor/globalmentor-rdf.git</developerConnection>
@@ -25,13 +33,11 @@
 
 	<properties>
 		<maven.compiler.release>11</maven.compiler.release>
-		<globalmentor-web.version>0.6.5</globalmentor-web.version>
+		<globalmentor-web.version>0.6.6-SNAPSHOT</globalmentor-web.version>
 	</properties>
 
 	<modules>
 		<module>rdf</module>
-		<module>rdf-spec</module>
-		<module>rdfa-spec</module>
 	</modules>
 
 	<dependencyManagement>
@@ -45,7 +51,7 @@
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-rdf-spec</artifactId>
-				<version>0.6.4-SNAPSHOT</version>
+				<version>${globalmentor-web.version}</version>
 			</dependency>
 
 			<dependency>
