@@ -321,8 +321,8 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 
 	/**
 	 * Returns a list iterator of the elements in this list (in proper sequence), starting at the specified position in this list. The specified index indicates
-	 * the first element that would be returned by an initial call to the <code>next</code> method. An initial call to the <code>previous</code> method would return the
-	 * element with the specified index minus one.
+	 * the first element that would be returned by an initial call to the <code>next</code> method. An initial call to the <code>previous</code> method would
+	 * return the element with the specified index minus one.
 	 *
 	 * @param index index of first element to be returned from the list iterator (by a call to the <code>next</code> method).
 	 * @return a list iterator of the elements in this list (in proper sequence), starting at the specified position in this list.
@@ -443,7 +443,7 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	 * Appends the specified element to the end of the list.
 	 * <p>
 	 * This implementation calls <code>add(size(), o)</code>.
-	 * <p>
+	 * </p>
 	 * @param object The object to be appended to this list.
 	 * @return <code>true</code> if this collection changed as a result of the call.
 	 * @throws ClassCastException Thrown if the class of the specified element prevents it from being added to this list.
@@ -689,9 +689,9 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	}
 
 	/**
-	 * Returns a view of the portion of this list between the specified <code>fromIndex</code>, inclusive, and <code>toIndex</code>, exclusive. (If <code>fromIndex</code> and
-	 * <code>toIndex</code> are equal, the returned list is empty.) The returned list is backed by this list, so non-structural changes in the returned list are
-	 * reflected in this list, and vice-versa. The returned list supports all of the optional list operations supported by this list.
+	 * Returns a view of the portion of this list between the specified <code>fromIndex</code>, inclusive, and <code>toIndex</code>, exclusive. (If
+	 * <code>fromIndex</code> and <code>toIndex</code> are equal, the returned list is empty.) The returned list is backed by this list, so non-structural changes
+	 * in the returned list are reflected in this list, and vice-versa. The returned list supports all of the optional list operations supported by this list.
 	 * <p>
 	 *
 	 * This method eliminates the need for explicit range operations (of the sort that commonly exist for arrays). Any operation that expects a list can be used
@@ -701,8 +701,8 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	 * list.subList(from, to).clear();
 	 * </pre>
 	 * 
-	 * Similar idioms may be constructed for <code>indexOf</code> and <code>lastIndexOf</code>, and all of the algorithms in the <code>Collections</code> class can be applied
-	 * to a subList.
+	 * Similar idioms may be constructed for <code>indexOf</code> and <code>lastIndexOf</code>, and all of the algorithms in the <code>Collections</code> class
+	 * can be applied to a subList.
 	 * <p>
 	 *
 	 * The semantics of the list returned by this method become undefined if the backing list (i.e., this list) is <i>structurally modified</i> in any way other
