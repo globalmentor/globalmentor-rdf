@@ -25,13 +25,11 @@
 
 	<properties>
 		<maven.compiler.release>11</maven.compiler.release>
-		<globalmentor-web.version>0.6.5</globalmentor-web.version>
+		<globalmentor-web.version>0.6.6-SNAPSHOT</globalmentor-web.version>
 	</properties>
 
 	<modules>
 		<module>rdf</module>
-		<module>rdf-spec</module>
-		<module>rdfa-spec</module>
 	</modules>
 
 	<dependencyManagement>
@@ -45,7 +43,7 @@
 			<dependency>
 				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-rdf-spec</artifactId>
-				<version>0.6.4-SNAPSHOT</version>
+				<version>${globalmentor-web.version}</version>
 			</dependency>
 
 			<dependency>
