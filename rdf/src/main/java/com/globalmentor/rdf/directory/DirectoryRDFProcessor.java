@@ -28,6 +28,7 @@ import static com.globalmentor.text.directory.Directory.*;
  * @author Garret Wilson
  * @deprecated
  */
+@Deprecated
 public class DirectoryRDFProcessor extends AbstractRDFProcessor {
 
 	/** The profile for the predefined types. */

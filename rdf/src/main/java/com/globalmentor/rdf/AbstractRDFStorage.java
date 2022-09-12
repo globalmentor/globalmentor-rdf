@@ -46,6 +46,7 @@ import org.xml.sax.SAXException;
  * @see Modifiable#MODIFIED_PROPERTY
  * @deprecated
  */
+@Deprecated
 public abstract class AbstractRDFStorage extends DefaultModifiable implements URIInputStreamable, URIOutputStreamable {
 
 	/** The location where the RDF should be stored. */

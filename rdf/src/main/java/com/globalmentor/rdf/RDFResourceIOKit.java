@@ -38,6 +38,7 @@ import org.xml.sax.SAXException;
  * @see RDFResource
  * @deprecated
  */
+@Deprecated
 public class RDFResourceIOKit<R extends RDFResource> extends AbstractIOKit<R> {
 
 	/** The map of prefixes, keyed by namespace URIs. */

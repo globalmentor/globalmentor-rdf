@@ -25,6 +25,7 @@ import com.globalmentor.text.directory.ContentLine;
  * @author Garret Wilson
  * @deprecated
  */
+@Deprecated
 public interface RDFPropertyValueFactory {
 
 	/**
