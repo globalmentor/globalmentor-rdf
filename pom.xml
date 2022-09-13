@@ -8,12 +8,12 @@
 		<version>0.7.2-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>globalmentor-rdf-parent</artifactId>
+	<artifactId>globalmentor-rdf-bom</artifactId>
 	<version>0.6.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>GlobalMentor RDF Parent</name>
-	<description>RDF specification, implementation, and utilities.</description>
+	<name>GlobalMentor RDF BOM</name>
+	<description>RDF implementation aggregate parent POM and bill of materials.</description>
 	<url>http://www.globalmentor.com/software/</url>
 	<inceptionYear>1996</inceptionYear>
 
@@ -33,7 +33,6 @@
 
 	<properties>
 		<maven.compiler.release>11</maven.compiler.release>
-		<globalmentor-web.version>0.6.6-SNAPSHOT</globalmentor-web.version>
 	</properties>
 
 	<modules>
@@ -44,32 +43,22 @@
 		<dependencies>
 			<dependency>
 				<groupId>com.globalmentor</groupId>
+				<artifactId>globalmentor-web</artifactId>
+				<version>0.6.6-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>com.globalmentor</groupId>
+				<artifactId>globalmentor-rdf</artifactId>
+				<version>0.6.4-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.globalmentor</groupId>
 				<artifactId>globalmentor-text-directory-vcard</artifactId>
 				<version>0.6.2</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.globalmentor</groupId>
-				<artifactId>globalmentor-rdf-spec</artifactId>
-				<version>${globalmentor-web.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.globalmentor</groupId>
-				<artifactId>globalmentor-vocab</artifactId>
-				<version>${globalmentor-web.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.globalmentor</groupId>
-				<artifactId>globalmentor-vocab-dcmi</artifactId>
-				<version>${globalmentor-web.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.globalmentor</groupId>
-				<artifactId>globalmentor-xml</artifactId>
-				<version>${globalmentor-web.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
