@@ -16,7 +16,8 @@
 
 package com.globalmentor.rdf;
 
-import com.globalmentor.java.Objects;
+import java.util.Objects;
+
 import com.globalmentor.net.Resource;
 
 /**
