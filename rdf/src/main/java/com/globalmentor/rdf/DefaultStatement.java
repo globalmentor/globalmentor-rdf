@@ -87,7 +87,7 @@ public class DefaultStatement implements Statement {
 	}
 
 	/**
-	 * Creates a new statement from subject and predicate resouces and an object literal.
+	 * Creates a new statement from subject and predicate resources and an object literal.
 	 * @param subject The subject of the statement.
 	 * @param predicate The predicate of the statement.
 	 * @param objectLiteral The object of the statement.

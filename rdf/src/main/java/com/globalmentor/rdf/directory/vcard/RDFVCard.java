@@ -17,9 +17,12 @@
 package com.globalmentor.rdf.directory.vcard;
 
 import java.net.URI;
+import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
-import com.globalmentor.model.NameValuePair;
 import com.globalmentor.net.URIs;
 import com.globalmentor.rdf.*;
 import com.globalmentor.rdf.directory.RDFDirectory;
@@ -35,12 +38,10 @@ import static com.globalmentor.rdf.RDFResources.*;
 import static java.util.Objects.*;
 
 /**
- * An ontology to represent a vCard <code>text/directory</code> profile as defined in <a href="http://www.ietf.org/rfc/rfc2426.txt">RFC 2426</a>,
- * "vCard MIME Directory Profile".
+ * An ontology to represent a vCard <code>text/directory</code> profile as defined in <a href="http://www.ietf.org/rfc/rfc2426.txt">RFC 2426</a>, "vCard MIME
+ * Directory Profile".
  * @author Garret Wilson
- * @deprecated
  */
-@Deprecated
 public class RDFVCard extends RDFDirectory {
 
 	/** The recommended prefix to the vCard namespace. */
@@ -91,21 +92,21 @@ public class RDFVCard extends RDFDirectory {
 			setLanguage(nResource, locale); //set the vcard:N directory:language property
 		}
 		//create an array of the properties and values to store
-		final NameValuePair<URI, String[]>[] propertyValuesPairs = (NameValuePair<URI, String[]>[])new NameValuePair[] {
-				new NameValuePair<URI, String[]>(createReferenceURI(VCARD_NAMESPACE_URI, FAMILY_NAME_PROPERTY_NAME), name.getFamilyNames()),
-				new NameValuePair<URI, String[]>(createReferenceURI(VCARD_NAMESPACE_URI, GIVEN_NAME_PROPERTY_NAME), name.getGivenNames()),
-				new NameValuePair<URI, String[]>(createReferenceURI(VCARD_NAMESPACE_URI, ADDITIONAL_NAME_PROPERTY_NAME), name.getAdditionalNames()),
-				new NameValuePair<URI, String[]>(createReferenceURI(VCARD_NAMESPACE_URI, HONORIFIC_PREFIX_PROPERTY_NAME), name.getHonorificPrefixes()),
-				new NameValuePair<URI, String[]>(createReferenceURI(VCARD_NAMESPACE_URI, HONORIFIC_SUFFIX_PROPERTY_NAME), name.getHonorificSuffixes()) };
-		for(final NameValuePair<URI, String[]> propertyValuesPair : propertyValuesPairs) { //for all the property value pairs
-			final URI propertyURI = propertyValuesPair.getName(); //get the property URI
+		final List<Map.Entry<URI, String[]>> propertyValuesPairs = Arrays.asList(
+				new SimpleImmutableEntry<URI, String[]>(createReferenceURI(VCARD_NAMESPACE_URI, FAMILY_NAME_PROPERTY_NAME), name.getFamilyNames()),
+				new SimpleImmutableEntry<URI, String[]>(createReferenceURI(VCARD_NAMESPACE_URI, GIVEN_NAME_PROPERTY_NAME), name.getGivenNames()),
+				new SimpleImmutableEntry<URI, String[]>(createReferenceURI(VCARD_NAMESPACE_URI, ADDITIONAL_NAME_PROPERTY_NAME), name.getAdditionalNames()),
+				new SimpleImmutableEntry<URI, String[]>(createReferenceURI(VCARD_NAMESPACE_URI, HONORIFIC_PREFIX_PROPERTY_NAME), name.getHonorificPrefixes()),
+				new SimpleImmutableEntry<URI, String[]>(createReferenceURI(VCARD_NAMESPACE_URI, HONORIFIC_SUFFIX_PROPERTY_NAME), name.getHonorificSuffixes()));
+		for(final Map.Entry<URI, String[]> propertyValuesPair : propertyValuesPairs) { //for all the property value pairs
+			final URI propertyURI = propertyValuesPair.getKey(); //get the property URI
 			final String[] values = propertyValuesPair.getValue(); //get the string values
 			final int valueCount = values.length; //see how many values there are
 			if(values.length > 0) { //if there is at least one value
 				if(valueCount == 1) { //if there is only one value
 					nResource.setProperty(propertyURI, values[0]); //set the first value as the single value
 				} else { //if there is more than one value
-					final RDFListResource valueListResource = new RDFListResource(nResource.getRDF()); //create a new list
+					final RDFListResource<RDFObject> valueListResource = new RDFListResource<>(nResource.getRDF()); //create a new list
 					for(final String value : values) { //for each value
 						final RDFResource valueResource = locateResource(valueListResource, null); //create a blank node
 						setValue(valueResource, value); //set the value of the value resource
@@ -119,9 +120,9 @@ public class RDFVCard extends RDFDirectory {
 	}
 
 	/** The property URIs for the name components. */
-	private static final URI[] N_COMPONENT_PROPERTY_URIS = new URI[] { createReferenceURI(VCARD_NAMESPACE_URI, FAMILY_NAME_PROPERTY_NAME),
+	private static final URI[] N_COMPONENT_PROPERTY_URIS = new URI[] {createReferenceURI(VCARD_NAMESPACE_URI, FAMILY_NAME_PROPERTY_NAME),
 			createReferenceURI(VCARD_NAMESPACE_URI, GIVEN_NAME_PROPERTY_NAME), createReferenceURI(VCARD_NAMESPACE_URI, ADDITIONAL_NAME_PROPERTY_NAME),
-			createReferenceURI(VCARD_NAMESPACE_URI, HONORIFIC_PREFIX_PROPERTY_NAME), createReferenceURI(VCARD_NAMESPACE_URI, HONORIFIC_SUFFIX_PROPERTY_NAME) };
+			createReferenceURI(VCARD_NAMESPACE_URI, HONORIFIC_PREFIX_PROPERTY_NAME), createReferenceURI(VCARD_NAMESPACE_URI, HONORIFIC_SUFFIX_PROPERTY_NAME)};
 
 	/**
 	 * Retrieves the {@link #N_PROPERTY_NAME} name information from a resource.

@@ -51,11 +51,11 @@ public abstract class RDFContainerResource extends TypedRDFResource {
 	 * @return A collection of name/value pairs that represent <code>rdf:li_</code> properties and their values, in an undefined order.
 	 * @see RDFPropertyValuePair
 	 */
-	protected List getItemProperties() {
-		final List itemPropertyList = new ArrayList(); //create a list in which to store the items
-		final Iterator propertyIterator = getPropertyIterator(); //get an iterator to all properties
+	protected List<RDFPropertyValuePair> getItemProperties() {
+		final List<RDFPropertyValuePair> itemPropertyList = new ArrayList<>(); //create a list in which to store the items
+		final Iterator<RDFPropertyValuePair> propertyIterator = getPropertyIterator(); //get an iterator to all properties
 		while(propertyIterator.hasNext()) { //while there are more properties
-			final RDFPropertyValuePair propertyValuePair = (RDFPropertyValuePair)propertyIterator.next(); //get the next name/value pair
+			final RDFPropertyValuePair propertyValuePair = propertyIterator.next(); //get the next name/value pair
 			//if this property reference URI begins with rdf:_
 			if(isContainerMemberPropertyReference(propertyValuePair.getProperty().getURI()))
 				itemPropertyList.add(propertyValuePair); //add this property and value to the list
@@ -67,8 +67,8 @@ public abstract class RDFContainerResource extends TypedRDFResource {
 	 * @return A read-only collection of the items (specified by <code>rdf:li_</code> properties), in an order determined by this type of container. This version
 	 *         returns an unordered collection, and should be overridden in a child class if order is important.
 	 */
-	public Collection getItemCollection() {
-		final List itemPropertyList = getItemProperties(); //get the <li> item properties
+	public Collection<RDFObject> getItemCollection() {
+		final List<RDFPropertyValuePair> itemPropertyList = getItemProperties(); //get the <li> item properties
 		return unmodifiableCollection(getItemList(itemPropertyList)); //return the items values as an unmodifiable collection
 	}
 
@@ -76,7 +76,7 @@ public abstract class RDFContainerResource extends TypedRDFResource {
 	 * @return A read-only iterator to the items (specified by <code>rdf:li_</code> properties), in an order determined by this type of container.
 	 * @see #getItemCollection
 	 */
-	public Iterator getItemIterator() {
+	public Iterator<RDFObject> getItemIterator() {
 		return getItemCollection().iterator(); //return an iterator to the collection
 	}
 
@@ -86,11 +86,11 @@ public abstract class RDFContainerResource extends TypedRDFResource {
 	 * @return A list of values in the same order as the name/value pairs.
 	 * @see RDFPropertyValuePair
 	 */
-	protected List getItemList(final List itemPropertyList) {
-		final List itemList = new ArrayList(itemPropertyList.size()); //create a list in which to store the actual values, making it the same length as the property list
-		final Iterator itemPropertyIterator = itemPropertyList.iterator(); //get an iterator to all the item properties
+	protected List<RDFObject> getItemList(final List<RDFPropertyValuePair> itemPropertyList) {
+		final List<RDFObject> itemList = new ArrayList<>(itemPropertyList.size()); //create a list in which to store the actual values, making it the same length as the property list
+		final Iterator<RDFPropertyValuePair> itemPropertyIterator = itemPropertyList.iterator(); //get an iterator to all the item properties
 		while(itemPropertyIterator.hasNext()) { //while there are more item properties
-			final RDFPropertyValuePair propertyValuePair = (RDFPropertyValuePair)itemPropertyIterator.next(); //get the next name/value pair
+			final RDFPropertyValuePair propertyValuePair = itemPropertyIterator.next(); //get the next name/value pair
 			itemList.add(propertyValuePair.getPropertyValue()); //store the value (which should be an RDFObject) in the list
 		}
 		return itemList; //return the list list of items
@@ -101,9 +101,9 @@ public abstract class RDFContainerResource extends TypedRDFResource {
 	 */
 	protected int getNextItemNumber() {
 		int highestNumber = 0; //we haven't found a highest number, yet
-		final Iterator propertyIterator = getPropertyIterator(); //get an iterator to all properties
+		final Iterator<RDFPropertyValuePair> propertyIterator = getPropertyIterator(); //get an iterator to all properties
 		while(propertyIterator.hasNext()) { //while there are more properties
-			final RDFPropertyValuePair propertyValuePair = (RDFPropertyValuePair)propertyIterator.next(); //get the next name/value pair
+			final RDFPropertyValuePair propertyValuePair = propertyIterator.next(); //get the next name/value pair
 			final URI propertyReferenceURI = propertyValuePair.getProperty().getURI(); //get the reference URI of the property
 			if(isContainerMemberPropertyReference(propertyReferenceURI)) { //if this property name begins with rdf:_
 				//get the current number by removing the start of the URI up to and including "#_"
@@ -124,9 +124,9 @@ public abstract class RDFContainerResource extends TypedRDFResource {
 	 * @param delta The amount each number should be changed by.
 	 */
 	protected void changeNumbers(final int minNumber, final int delta) {
-		final ListIterator propertyIterator = getPropertyIterator(); //get an iterator to all properties
+		final ListIterator<RDFPropertyValuePair> propertyIterator = getPropertyIterator(); //get an iterator to all properties
 		while(propertyIterator.hasNext()) { //while there are more properties
-			final RDFPropertyValuePair propertyValuePair = (RDFPropertyValuePair)propertyIterator.next(); //get the next name/value pair
+			final RDFPropertyValuePair propertyValuePair = propertyIterator.next(); //get the next name/value pair
 			final URI propertyReferenceURI = propertyValuePair.getProperty().getURI(); //get the reference URI of the property
 			if(isContainerMemberPropertyReference(propertyReferenceURI)) { //if this property name begins with rdf:_
 				//get the current number by removing the start of the URI up to and including "#_"

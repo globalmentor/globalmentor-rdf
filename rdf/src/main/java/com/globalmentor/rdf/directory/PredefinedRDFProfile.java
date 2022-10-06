@@ -28,9 +28,7 @@ import com.globalmentor.text.directory.*;
  * RDF factory for the predefined types of a directory of type <code>text/directory</code> as defined in <a href="http://www.ietf.org/rfc/rfc2425.txt">RFC
  * 2425</a>, "A MIME Content-Type for Directory Information". This implementation is unfinished.
  * @author Garret Wilson
- * @deprecated
  */
-@Deprecated
 public class PredefinedRDFProfile extends PredefinedProfile implements RDFPropertyFactory, RDFPropertyValueFactory {
 
 	/** A map of property URIs keyed to supported type name strings. */

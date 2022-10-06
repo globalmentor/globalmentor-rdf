@@ -21,7 +21,6 @@ import java.util.*;
 
 import static com.globalmentor.collections.Collections.*;
 
-import com.globalmentor.collections.IdentityHashSet;
 import com.globalmentor.model.Locales;
 import com.globalmentor.rdf.spec.RDF;
 
@@ -37,6 +36,7 @@ import com.globalmentor.xml.spec.XML;
 
 import org.w3c.dom.*;
 
+import static java.util.Collections.*;
 import static java.util.Objects.*;
 
 /**
@@ -270,7 +270,7 @@ public class RDFXMLGenerator //TODO fix bug that doesn't serialize property valu
 	public RDFXMLGenerator(final URI baseURI, final XMLNamespacePrefixManager xmlNamespacePrefixManager) {
 		this.baseURI = baseURI; //save the base URI
 		this.xmlNamespacePrefixManager = requireNonNull(xmlNamespacePrefixManager, "XML namespace prefix manager cannot be null.");
-		serializedResourceSet = new IdentityHashSet<RDFResource>(); //create a map that will determine whether resources have been serialized, based upon the identity of resources
+		serializedResourceSet = newSetFromMap(new IdentityHashMap<>()); //create a map that will determine whether resources have been serialized, based upon the identity of resources
 		resourceReferenceMap = new IdentityHashMap<RDFResource, Set<RDFResource>>(); //create a map of sets of referring resources for each referant resource, using identity rather than equality for equivalence
 		nodeIDMap = new IdentityHashMap<RDFResource, String>(); //create a map of node IDs keyed to resources, using identity rather than equality to determine associated resource
 	}
@@ -536,9 +536,10 @@ public class RDFXMLGenerator //TODO fix bug that doesn't serialize property valu
 		if(propertyValue instanceof RDFResource) { //if the property value is a resource
 			if(propertyValue instanceof RDFListResource && isCompactRDFListSerialization()) { //if this is a list and we should serialize lists in compact form TODO maybe make sure it's a normal list, first, before creating the compact form
 				//set the rdf:parseType attribute to "Collection" TODO eventually get our prefix from a prefix rather than hard-coding RDF, maybe
-				propertyElement.setAttributeNS(RDF.NAMESPACE_URI.toString(), createQualifiedName(RDF.NAMESPACE_PREFIX.toString(), ATTRIBUTE_PARSE_TYPE), COLLECTION_PARSE_TYPE);
-				final RDFListResource propertyListResource = (RDFListResource)propertyValue; //cast the resource to a list
-				final Iterator<RDFObject> iterator = propertyListResource.iterator(); //get an iterator to look at the list elements
+				propertyElement.setAttributeNS(RDF.NAMESPACE_URI.toString(), createQualifiedName(RDF.NAMESPACE_PREFIX.toString(), ATTRIBUTE_PARSE_TYPE),
+						COLLECTION_PARSE_TYPE);
+				final RDFListResource<? extends RDFObject> propertyListResource = (RDFListResource<?>)propertyValue; //cast the resource to a list
+				final Iterator<? extends RDFObject> iterator = propertyListResource.iterator(); //get an iterator to look at the list elements
 				while(iterator.hasNext()) { //while there are more elements
 
 					//TODO important: fix; individual elements can be literals
@@ -622,8 +623,8 @@ public class RDFXMLGenerator //TODO fix bug that doesn't serialize property valu
 					if(valuePlainLiteral.getLanguage() != null) { //if there is a language indication
 						final String languageTag = Locales.getLanguageTag(valuePlainLiteral.getLanguage()); //create a language tag from the locale
 						//store the language tag in the xml:lang attribute
-						propertyElement.setAttributeNS(XML.ATTRIBUTE_LANG.getNamespaceString(), createQualifiedName(XML.XML_NAMESPACE_PREFIX, XML.ATTRIBUTE_LANG.getLocalName()),
-								languageTag);
+						propertyElement.setAttributeNS(XML.ATTRIBUTE_LANG.getNamespaceString(),
+								createQualifiedName(XML.XML_NAMESPACE_PREFIX, XML.ATTRIBUTE_LANG.getLocalName()), languageTag);
 					}
 				} else if(valueLiteral instanceof RDFTypedLiteral) { //if this is a typed literal
 					final RDFTypedLiteral<?> valueTypedLiteral = (RDFTypedLiteral<?>)valueLiteral; //cast the literal to a typed literal

@@ -23,7 +23,6 @@ import java.util.*;
 import com.globalmentor.java.Arrays;
 import com.globalmentor.net.BoundPropertyResource;
 import com.globalmentor.rdf.rdfs.RDFSResources;
-import com.globalmentor.rdf.spec.RDFS;
 
 import static com.globalmentor.rdf.RDFResources.*;
 import static com.globalmentor.rdf.spec.RDF.*;
@@ -154,7 +153,7 @@ public class DefaultRDFResource extends BoundPropertyResource implements RDFReso
 			if(propertyURI.equals(propertyValuePair.getProperty().getURI())) { //if this resource is that identified by the property URI
 				final RDFObject propertyValue = propertyValuePair.getPropertyValue(); //get the property value
 				if(valueType.isInstance(propertyValue)) { //if the property is of the correct type
-					propertyValueList.add((T)propertyValue); //add the value of the property to the value list
+					propertyValueList.add(valueType.cast(propertyValue)); //add the value of the property to the value list
 				}
 			}
 		}
@@ -589,7 +588,7 @@ public class DefaultRDFResource extends BoundPropertyResource implements RDFReso
 	public DefaultRDFResource(final RDFResource rdfResource, final URI referenceURI) {
 		this(rdfResource.getRDF(), referenceURI); //create the resource with the data model and given reference URI
 		for(final RDFPropertyValuePair rdfPropertyValuePair : rdfResource.getProperties()) { //for each property
-			addProperty(rdfPropertyValuePair.getName().getURI(), rdfPropertyValuePair.getValue()); //add this property
+			addProperty(rdfPropertyValuePair.getProperty().getURI(), rdfPropertyValuePair.getPropertyValue()); //add this property
 		}
 	}
 
@@ -644,6 +643,7 @@ public class DefaultRDFResource extends BoundPropertyResource implements RDFReso
 	}
 
 	/** @return A copy of this resource with the same URI and identical properties. */
+	@SuppressWarnings("unchecked")
 	public Object clone() {
 		try {
 			DefaultRDFResource resource = (DefaultRDFResource)super.clone(); //create a cloned copy of this resource
@@ -670,7 +670,7 @@ public class DefaultRDFResource extends BoundPropertyResource implements RDFReso
 	//TODO del when works		if(resource instanceof RDFResource)	//if this resource is an RDF resource
 		{
 			final RDFLiteral label1 = RDFSResources.getLabel(this); //see if this resource has a label
-			final RDFLiteral label2 = RDFSResources.getLabel((RDFResource)resource); //see if there is a label for the other resource
+			final RDFLiteral label2 = RDFSResources.getLabel(resource); //see if there is a label for the other resource
 			if(label1 != null && label2 != null) { //if we have two labels to compare
 				return label1.compareTo(label2); //compare labels
 			}

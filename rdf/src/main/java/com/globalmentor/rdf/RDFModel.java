@@ -21,7 +21,6 @@ import java.net.URISyntaxException;
 import java.util.*;
 import static java.util.Collections.*;
 
-import com.globalmentor.collections.IdentityHashSet;
 import com.globalmentor.net.URIs;
 import static com.globalmentor.rdf.RDFResources.*;
 import static com.globalmentor.rdf.spec.RDF.*;
@@ -52,8 +51,7 @@ import com.globalmentor.xml.spec.XMLSchema;
  * </dl>
  * @author Garret Wilson
  */
-public class RDFModel
-{
+public class RDFModel {
 
 	/** A map of resource factories, keyed to namespace URI. */
 	private final Map<URI, RDFResourceFactory> resourceFactoryMap = new HashMap<URI, RDFResourceFactory>();
@@ -134,7 +132,7 @@ public class RDFModel
 	}
 
 	/** The set of all resources, named and unnamed, using identity rather than equality for equivalence. */
-	private final IdentityHashSet<RDFResource> resourceSet = new IdentityHashSet<RDFResource>();
+	private final Set<RDFResource> resourceSet = newSetFromMap(new IdentityHashMap<>());
 
 	/** The map of all named resources, keyed to resource reference URI. */
 	private final Map<URI, RDFResource> resourceMap = new HashMap<URI, RDFResource>();
@@ -181,11 +179,11 @@ public class RDFModel
 	 * @param comparator The object that determines how the resources will be sorted, or <code>null</code> if the resources should not be sorted.
 	 * @return A read-only iterable of root resources sorted by the optional comparator.
 	 */
-	public Iterable<RDFResource> getRootResources(final Comparator comparator) {
+	public Iterable<RDFResource> getRootResources(final Comparator<? super RDFResource> comparator) {
 		//create a set in which to place the root resources, making the set sorted if we have a comparator
 		///TODO fix		final Set<RDFResource> rootResourceSet=comparator!=null ? (Set<RDFResource>)new TreeSet<RDFResource>(comparator) : (Set<RDFResource>)new HashSet<RDFResource>();	 		
 		final Set<RDFResource> rootResourceSet = new HashSet<RDFResource>(); //TODO fix comparing once we decide what type of comparator to use---should it include just resources, or all RDF objects?
-		for(final RDFResource resource : getResources()) { //look at all resouces
+		for(final RDFResource resource : getResources()) { //look at all resources
 			if(isRootResource(resource)) { //if this is a root resource
 				rootResourceSet.add(resource); //add the resource to the set of root resources
 			}
@@ -403,7 +401,7 @@ public class RDFModel
 		}
 		if(resource == null) { //if we haven't created a resource, see if this is an RDF resource
 			if(NIL_RESOURCE_URI.equals(referenceURI)) { //if we are creating the nil resource
-				resource = new RDFListResource(this, NIL_RESOURCE_URI); //create the nil resource with the special RDF nil URI
+				resource = new RDFListResource<RDFObject>(this, NIL_RESOURCE_URI); //create the nil resource with the special RDF nil URI
 			} else if(NAMESPACE_URI.equals(typeNamespaceURI)) { //if this resource is an RDF resource
 				if(ALT_CLASS_NAME.equals(typeLocalName)) { //<rdf:Alt>
 					//TODO fix for alt
@@ -412,7 +410,7 @@ public class RDFModel
 				} else if(SEQ_CLASS_NAME.equals(typeLocalName)) { //<rdf:Seq>
 					resource = new RDFSequenceResource(this, referenceURI); //create a sequence resource
 				} else if(LIST_CLASS_NAME.equals(typeLocalName)) { //<rdf:Seq>
-					resource = new RDFListResource(this, referenceURI); //create a list resource
+					resource = new RDFListResource<RDFObject>(this, referenceURI); //create a list resource
 				}
 			}
 		}
@@ -493,7 +491,7 @@ public class RDFModel
 	 *         resources may be anonymous.
 	 */
 	public Map<RDFResource, Set<RDFResource>> getReferences(final Map<RDFResource, Set<RDFResource>> referenceMap) {
-		final Set<RDFResource> referringResourceSet = new IdentityHashSet<RDFResource>(); //create a set of referring resources to prevent endless following of circular references
+		final Set<RDFResource> referringResourceSet = newSetFromMap(new IdentityHashMap<>()); //create a set of referring resources to prevent endless following of circular references
 		for(final RDFResource resource : getResources()) { //for each resource in this data model
 			getReferences(resource, referenceMap, referringResourceSet); //gather all references to this resource
 		}
@@ -526,7 +524,7 @@ public class RDFModel
 	 *         resources may be anonymous.
 	 */
 	public static Map<RDFResource, Set<RDFResource>> getReferences(final RDFResource resource, final Map<RDFResource, Set<RDFResource>> referenceMap) {
-		return getReferences(resource, referenceMap, new IdentityHashSet<RDFResource>()); //gather references, showing that we haven't looked at any referring resources, yet
+		return getReferences(resource, referenceMap, newSetFromMap(new IdentityHashMap<>())); //gather references, showing that we haven't looked at any referring resources, yet
 	}
 
 	/**
@@ -545,15 +543,15 @@ public class RDFModel
 			final Set<RDFResource> referrerResourceSet) {
 		if(!referrerResourceSet.contains(resource)) { //if we haven't checked this resource before
 			referrerResourceSet.add(resource); //show that we've now checked this resource (in case one of the resource's own properties or subproperties reference this resource)
-			final Iterator propertyIterator = resource.getPropertyIterator(); //get an iterator to this resource's properties
+			final Iterator<RDFPropertyValuePair> propertyIterator = resource.getPropertyIterator(); //get an iterator to this resource's properties
 			while(propertyIterator.hasNext()) { //while there are more properties
-				final RDFPropertyValuePair property = (RDFPropertyValuePair)propertyIterator.next(); //get the next property
+				final RDFPropertyValuePair property = propertyIterator.next(); //get the next property
 				final RDFObject valueObject = property.getPropertyValue(); //get the value of the property
 				if(valueObject instanceof RDFResource) { //if the value is a resource
 					final RDFResource valueResource = (RDFResource)valueObject; //cast the object value to a resource
 					Set<RDFResource> referenceSet = referenceMap.get(valueResource); //get the set of references to the object resource
 					if(referenceSet == null) { //if this is the first reference we've gathered for the object resource
-						referenceSet = new IdentityHashSet<RDFResource>(); //create a new set to keep track of references to the object resource
+						referenceSet = newSetFromMap(new IdentityHashMap<>()); //create a new set to keep track of references to the object resource
 						referenceMap.put(valueResource, referenceSet); //store the set in the map, keyed to the object resource
 					}
 					referenceSet.add(resource); //show that this resource is another referrer to the object resource of this property

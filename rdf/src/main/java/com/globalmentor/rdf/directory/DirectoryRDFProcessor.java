@@ -26,9 +26,7 @@ import static com.globalmentor.text.directory.Directory.*;
  * Class that is able to construct an RDF data model from a directory of type <code>text/directory</code> as defined in <a
  * href="http://www.ietf.org/rfc/rfc2425.txt">RFC 2425</a>, "A MIME Content-Type for Directory Information".
  * @author Garret Wilson
- * @deprecated
  */
-@Deprecated
 public class DirectoryRDFProcessor extends AbstractRDFProcessor {
 
 	/** The profile for the predefined types. */
@@ -40,12 +38,12 @@ public class DirectoryRDFProcessor extends AbstractRDFProcessor {
 	}
 
 	/** A map of profiles keyed to the lowercase version of the profile name. */
-	private final Map profileMap = new HashMap();
+	private final Map<String, Profile> profileMap = new HashMap<>();
 
 	/**
 	 * Registers a profile.
 	 * @param profileName The name of the profile.
-	 * @param profile The profile to be registered with this profilename.
+	 * @param profile The profile to be registered with this profile name.
 	 */
 	public void registerProfile(final String profileName, final Profile profile) {
 		profileMap.put(profileName.toLowerCase(), profile); //put the profile in the map, keyed to the lowercase version of the profile name
@@ -58,11 +56,11 @@ public class DirectoryRDFProcessor extends AbstractRDFProcessor {
 	 * @see #getPredefinedProfile
 	 */
 	protected Profile getProfile(final String profileName) {
-		return profileName != null ? (Profile)profileMap.get(profileName.toLowerCase()) : getPredefinedProfile(); //get the profile keyed to the lowercase version of the profile name, or return the predefined profile if null was passed
+		return profileName != null ? profileMap.get(profileName.toLowerCase()) : getPredefinedProfile(); //get the profile keyed to the lowercase version of the profile name, or return the predefined profile if null was passed
 	}
 
 	/** A map of property value factories keyed to the lowercase version of the value type. */
-	private final Map valueTypePropertyValueFactoryMap = new HashMap();
+	private final Map<String, RDFPropertyValueFactory> valueTypePropertyValueFactoryMap = new HashMap<>();
 
 	/**
 	 * Registers a property value factory by value type.
@@ -79,7 +77,7 @@ public class DirectoryRDFProcessor extends AbstractRDFProcessor {
 	 * @return A property value factory for this value type, or <code>null</code> if there is no property value factory registered for this value type.
 	 */
 	protected RDFPropertyValueFactory getPropertyValueFactoryByValueType(final String valueType) {
-		return (RDFPropertyValueFactory)valueTypePropertyValueFactoryMap.get(valueType.toLowerCase()); //get the property value factory keyed to the lowercase version of this value type
+		return valueTypePropertyValueFactoryMap.get(valueType.toLowerCase()); //get the property value factory keyed to the lowercase version of this value type
 	}
 
 	/** Default constructor. */
@@ -124,9 +122,9 @@ public class DirectoryRDFProcessor extends AbstractRDFProcessor {
 	 */
 	public RDFModel process(final RDFResource resource, final Directory directory) {
 		final RDFModel rdf = getRDF(); //get the RDF data model we're using
-		final Iterator contentLineIterator = directory.getContentLineList().iterator(); //get an iterator to all the content lines of the directory
+		final Iterator<ContentLine> contentLineIterator = directory.getContentLineList().iterator(); //get an iterator to all the content lines of the directory
 		while(contentLineIterator.hasNext()) { //while there are more content lines
-			final ContentLine contentLine = (ContentLine)contentLineIterator.next(); //get the next content line
+			final ContentLine contentLine = contentLineIterator.next(); //get the next content line
 			final String profileName = contentLine.getProfile(); //get the name of this content line's profile 
 			final Profile profile = getProfile(profileName); //see if we have a profile registered with this profile name
 			RDFResource property = null; //we'll try to get the property resource to use

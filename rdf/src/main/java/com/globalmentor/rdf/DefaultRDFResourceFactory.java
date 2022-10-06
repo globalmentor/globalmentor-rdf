@@ -79,12 +79,13 @@ public class DefaultRDFResourceFactory implements RDFResourceFactory {
 						final Constructor<?> constructor = resourceClass.getConstructor(URI.class); //try to get a reference URI constructor
 						resource = constructor.newInstance(referenceURI); //create the resource from the reference URI constructor
 					} catch(final NoSuchMethodException noSuchMethodException) { //if there is no reference URI constructor
-						resource = resourceClass.newInstance(); //create the resource using its default constructor
+						resource = resourceClass.getDeclaredConstructor().newInstance(); //create the resource using its default constructor
 					}
 				} catch(final IllegalArgumentException illegalArgumentException) { //ignore errors and return null
 				} catch(final InstantiationException instantiationException) { //ignore errors and return null
 				} catch(final IllegalAccessException illegalAccessException) { //ignore errors and return null
 				} catch(final InvocationTargetException invocationTargetException) { //ignore errors and return null
+				} catch(final NoSuchMethodException invocationTargetException) { //ignore errors and return null
 				}
 				return RDFResource.class.cast(resource); //cast and return the resource we created, if any
 			} else { //if this class is not for an RDF resource

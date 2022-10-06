@@ -187,12 +187,11 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	/**
 	 * Retrieves the first element of the list. If this resource has more than one property of <code>rdf:first</code>, it is undefined which of those property
 	 * values will be returned.
-	 * @param <T> The type of the {@link RDFObject}.
 	 * @param resource The list resource for which the first element will be returned.
 	 * @return The first element of the list, or <code>null</code> if the resource has no first element specified.
 	 */
-	public static <T extends RDFObject> T getFirst(final RDFResource resource) {
-		return (T)resource.getPropertyValue(NAMESPACE_URI, FIRST_PROPERTY_NAME); //return the first element property
+	public static RDFObject getFirst(final RDFResource resource) {
+		return resource.getPropertyValue(NAMESPACE_URI, FIRST_PROPERTY_NAME); //return the first element property
 	}
 
 	/**
@@ -201,7 +200,6 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	 * @return The first element of this list, or <code>null</code> if there is no first element specified.
 	 */
 	@SuppressWarnings("unchecked")
-	//cast needed so that Sun JDK 1.6.0_03-b05 will know which type we want; not required for Eclipse 3.4M3
 	public E getFirst() {
 		return (E)getFirst(this); //return the first element property
 	}
@@ -273,11 +271,7 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 		return new RDFListResource<E>(getRDF(), NIL_RESOURCE_URI); //create a nil list resource
 	}
 
-	/**
-	 * Returns the number of elements in this list. If this list contains more than <code>Integer.MAX_VALUE</code> elements, returns
-	 * <code>Integer.MAX_VALUE</code>.
-	 * @return The number of elements in this list.
-	 */
+	@Override
 	public int size() { //TODO cache the size of the list if we can at all, because walking the list is very expensive; perhaps only cache the size if there are no non-anonymous list nodes within the list (even though if a data model was constructed from a nodeID serialization, other lists could reference an anonymous sublist)
 		int size = 0; //start out knowing about no elements
 		RDFResource list = this; //start with this list resource
@@ -288,66 +282,49 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 		return size; //return whatever size we found
 	}
 
-	/** @return <code>true</code> if this list contains no elements. */
+	@Override
 	public boolean isEmpty() {
 		return RDFResources.isNil(this); //we're empty if we're the nil list		
 	}
 
 	/**
-	 * Determines if this list contains the specified element.
-	 * @param object The element whose presence in this list is to be tested.
-	 * @return <code>true</code> if this list contains the specified element
+	 * {@inheritDoc}
 	 * @throws ClassCastException Thrown if the specified element is not an {@link RDFObject}.
-	 * @see #indexOf(Object)
 	 */
+	@Override
 	public boolean contains(final Object object) {
 		return indexOf(object) >= 0; //if the object has a valid index, it's contained in the list
 	}
 
-	/** @return An iterator over the elements in this list in proper sequence. */
+	@Override
 	public Iterator<E> iterator() {
 		return new RDFListIterator(); //create a new iterator over all the list elements
 	}
 
 	/**
-	 * Returns a list iterator of the elements in this list (in proper sequence).
-	 *
-	 * @return a list iterator of the elements in this list (in proper sequence).
+	 * {@inheritDoc}
+	 * @implSpec This method is currently unsupported.
 	 */
+	@Override
 	public ListIterator<E> listIterator() {
-		return null; //TODO implement listIterator(), and have iterator() call this
+		throw new UnsupportedOperationException(); //TODO implement listIterator(), and have iterator() call this
 	}
 
 	/**
-	 * Returns a list iterator of the elements in this list (in proper sequence), starting at the specified position in this list. The specified index indicates
-	 * the first element that would be returned by an initial call to the <code>next</code> method. An initial call to the <code>previous</code> method would
-	 * return the element with the specified index minus one.
-	 *
-	 * @param index index of first element to be returned from the list iterator (by a call to the <code>next</code> method).
-	 * @return a list iterator of the elements in this list (in proper sequence), starting at the specified position in this list.
-	 * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt; size()).
+	 * {@inheritDoc}
+	 * @implSpec This method is currently unsupported.
 	 */
+	@Override
 	public ListIterator<E> listIterator(int index) {
-		return null; //TODO implement listIterator(), and have iterator() call this
+		throw new UnsupportedOperationException(); //TODO implement listIterator(), and have iterator() call this
 	}
 
-	/** @return an array containing all of the elements in this collection. */
+	@Override
 	public Object[] toArray() {
 		return toArray(new RDFObject[size()]); //create a new array of RDF objects, store the elements in it, and return the array TODO is this correct? check
 	}
 
-	/**
-	 * Returns an array containing all of the elements in this list.
-	 * <p>
-	 * If the list fits in the specified array with room to spare (i.e., the array has more elements than the list), the element in the array immediately
-	 * following the end of the collection is set to <code>null</code>.
-	 * </p>
-	 * @param array The array into which the elements of this list are to be stored, if it is big enough; otherwise, a new array of the same runtime type is
-	 *          allocated for this purpose.
-	 * @return An array containing the elements of this list.
-	 * @throws ArrayStoreException Throw if the runtime type of the specified array is not a supertype of the runtime type of every element in this list.
-	 * @throws NullPointerException if the specified array is <code>null</code>.
-	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T[] toArray(T[] array) {
 		final int size = size(); //get our size
@@ -390,15 +367,8 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 		return null; //report that we couldn't find a resource containing the requested resource
 	}
 
-	/**
-	 * Returns the <code>RDFObject</code> at the specified position in this list.
-	 * @param index The index of the element to return.
-	 * @return The element at the specified position in this list.
-	 * @throws IndexOutOfBoundsException Thrown if the index is out of range (<var>index</var>&lt;0 || <var>index</var>&gt;=size()).
-	 * @see RDFObject
-	 */
+	@Override
 	@SuppressWarnings("unchecked")
-	//cast needed so that Sun JDK 1.6.0_03-b05 will know which type we want; not required for Eclipse 3.4M3
 	public E get(int index) {
 		int currentIndex = 0; //start out on the first index
 		RDFResource list = this; //start with this list resource
@@ -412,17 +382,8 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 		throw new IndexOutOfBoundsException("The index " + index + " must be >=0 and <" + currentIndex); //show that we don't have an element for this index
 	}
 
-	/**
-	 * Replaces the element at the specified position in this list with the specified element.
-	 * @param index The index of element to replace.
-	 * @param object The element to be stored at the specified position.
-	 * @return the element previously at the specified position.
-	 * @throws ClassCastException Thrown if the class of the specified element prevents it from being added to this list.
-	 * @throws IllegalArgumentException if some aspect of the specified element prevents it from being added to this list.
-	 * @throws IndexOutOfBoundsException Thrown if the index is out of range (index &lt; 0 || index &gt;= size()).
-	 */
+	@Override
 	@SuppressWarnings("unchecked")
-	//cast needed so that Sun JDK 1.6.0_03-b05 will know which type we want; not required for Eclipse 3.4M3
 	public E set(final int index, final E object) {
 		int currentIndex = 0; //start out on the first index
 		RDFResource list = this; //start with this list resource, which guarantees that the list will not be null the first time around
@@ -439,35 +400,21 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	}
 
 	/**
-	 * Appends the specified element to the end of the list.
-	 * <p>
-	 * This implementation calls <code>add(size(), o)</code>.
-	 * </p>
-	 * @param object The object to be appended to this list.
-	 * @return <code>true</code> if this collection changed as a result of the call.
-	 * @throws ClassCastException Thrown if the class of the specified element prevents it from being added to this list.
-	 * @throws IllegalArgumentException Thrown some aspect of this element prevents it from being added to this collection.
+	 * {@inheritDoc}
+	 * @implSpec This implementation calls {@link #add(int, RDFObject)} using {@link #size()}.
 	 */
+	@Override
 	public boolean add(final E object) {
 		add(size(), object); //add the object to the end of the list
 		return true; //show that we modified the list
 	}
 
 	/**
-	 * Inserts the specified element at the specified position in this list. Shifts the element currently at that position (if any) and any subsequent elements to
-	 * the right (adds one to their indices).
-	 * <p>
-	 * As each list is the first element in the list, an element cannot be inserted before the first element in the list, at index zero. Instead, create a new
-	 * list with the new element and this list as parameters.
-	 * </p>
-	 * @param index The index at which the specified element is to be inserted.
-	 * @param object The element to be inserted.
-	 * @throws ClassCastException Thrown if the class of the specified element prevents it from being added to this list.
-	 * @throws IndexOutOfBoundsException Thrown if index is out of range <code>(index &le; 0 || index &gt; size())</code>.
+	 * {@inheritDoc}
 	 * @see #create(RDFModel, URI, Collection)
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
-	//cast needed so that Sun JDK 1.6.0_03-b05 will know which type we want; not required for Eclipse 3.4M3
 	public void add(final int index, final E object) {
 		int currentIndex = 0; //start out on the first index
 		RDFResource list = this; //start with this list resource, which guarantees that the list will not be null the first time around
@@ -491,12 +438,7 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 		throw new IndexOutOfBoundsException("The index " + index + " must be >=0 and <" + currentIndex); //show that we don't have an element for this index
 	}
 
-	/**
-	 * Removes a single instance of the specified element from this list, if it is present
-	 * @param object The element to be removed from this list, if present.
-	 * @return <code>true</code> if this list changed as a result of the call.
-	 * @throws ClassCastException if the type of the specified element is incompatible with this list.
-	 */
+	@Override
 	public boolean remove(final Object object) {
 		//TODO del		final RDFObject rdfObject=(RDFObject)object;	//cast the object to an RDF object to make sure it's the correct type
 		RDFResource list = this; //start with this list resource
@@ -516,14 +458,8 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 		return false; //show that we didn't modify the list
 	}
 
-	/**
-	 * Removes the element at the specified position in this list.
-	 * @param index The index of the element to remove.
-	 * @return The element previously at the specified position.
-	 * @throws IndexOutOfBoundsException Thrown if the index is out of range (index &lt; 0 || index &gt;= size()).
-	 */
+	@Override
 	@SuppressWarnings("unchecked")
-	//cast needed so that Sun JDK 1.6.0_03-b05 will know which type we want; not required for Eclipse 3.4M3
 	public E remove(final int index) {
 		int currentIndex = 0; //start out on the first index
 		RDFResource list = this; //start with this list resource
@@ -544,16 +480,9 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 		throw new IndexOutOfBoundsException("The index " + index + " must be >=0 and <" + currentIndex); //show that we don't have an element for this index		
 	}
 
-	/**
-	 * Determines if this list contains all of the elements in the specified collection.
-	 * @param collection The collection to be checked for containment in this list.
-	 * @return <code>true</code> if this list contains all of the elements in the specified collection
-	 * @throws ClassCastException Thrown if the types of one or more elements in the specified list are incompatible with this collection.
-	 * @throws NullPointerException Thrown if the specified collection is <code>null</code>.
-	 * @see #contains(Object)
-	 */
-	public boolean containsAll(final Collection collection) {
-		final Iterator iterator = collection.iterator(); //get an iterator to the collection
+	@Override
+	public boolean containsAll(final Collection<?> collection) {
+		final Iterator<?> iterator = collection.iterator(); //get an iterator to the collection
 		while(iterator.hasNext()) { //while there are more elements in the collection
 			if(!contains(iterator.next())) { //if we don't contain the next element
 				return false; //show that there at least one element we don't contain
@@ -562,14 +491,7 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 		return true; //we checked all elements, and we have them all
 	}
 
-	/**
-	 * Adds all of the elements in the specified collection to this list.
-	 * @param collection The elements to be inserted into this list.
-	 * @return <code>true</code> if this list changed as a result of the call.
-	 * @throws ClassCastException Thrown if the class of an element of the specified collection prevents it from being added to this list.
-	 * @throws IllegalArgumentException some aspect of an element of the specified collection prevents it from being added to this list.
-	 * @see #add(Object)
-	 */
+	@Override
 	public boolean addAll(final Collection<? extends E> collection) {
 		boolean modified = false; //we haven't modified the list, yet
 		for(E resource : collection) { //look at each resource in the collection
@@ -581,35 +503,15 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	}
 
 	/**
-	 * Inserts all of the elements in the specified collection into this list at the specified position (optional operation). Shifts the element currently at that
-	 * position (if any) and any subsequent elements to the right (increases their indices). The new elements will appear in this list in the order that they are
-	 * returned by the specified collection's iterator. The behavior of this operation is unspecified if the specified collection is modified while the operation
-	 * is in progress. (Note that this will occur if the specified collection is this list, and it's nonempty.)
-	 *
-	 * @param index index at which to insert first element from the specified collection.
-	 * @param collection elements to be inserted into this list.
-	 * @return <code>true</code> if this list changed as a result of the call.
-	 * 
-	 * @throws UnsupportedOperationException if the <code>addAll</code> method is not supported by this list.
-	 * @throws ClassCastException if the class of one of elements of the specified collection prevents it from being added to this list.
-	 * @throws NullPointerException if the specified collection contains one or more null elements and this list does not support null elements, or if the
-	 *           specified collection is <code>null</code>.
-	 * @throws IllegalArgumentException if some aspect of one of elements of the specified collection prevents it from being added to this list.
-	 * @throws IndexOutOfBoundsException if the index is out of range (index &lt; 0 || index &gt; size()).
+	 * {@inheritDoc}
+	 * @implSpec This method is currently unsupported.
 	 */
+	@Override
 	public boolean addAll(final int index, final Collection<? extends E> collection) { //TODO implement addAll(int, Collection)
 		throw new UnsupportedOperationException("RDFListResource does not yet support addAll(int, Collection)");
 	}
 
-	/**
-	 * Removes all this collection's elements that are also contained in the specified collection.
-	 * @param collection The elements to be removed from this list.
-	 * @return <code>true</code> if this list changed as a result of the call.
-	 * @throws ClassCastException Thrown if the class of an element of the specified collection prevents it from being added to this list.
-	 * @throws NullPointerException Thrown if the specified collection is <code>null</code>.
-	 * @see #remove(Object)
-	 * @see #contains(Object)
-	 */
+	@Override
 	public boolean removeAll(final Collection<?> collection) {
 		boolean modified = false; //we haven't modified the list, yet
 		for(Object object : collection) { //look at each object in the collection
@@ -621,28 +523,15 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	}
 
 	/**
-	 * Retains only the elements in this collection that are contained in the specified collection.
-	 * <p>
-	 * This method is currently unsupported.
-	 * </p>
-	 * @param collection The elements to be retained in this list.
-	 * @return <code>true</code> if this collection changed as a result of the call.
-	 * @throws UnsupportedOperationException Thrown if the <code>retainAll</code> method is not supported by this list.
-	 * @throws ClassCastException Thrown if the class of an element of the specified collection prevents it from being added to this list.
-	 * @throws NullPointerException Thrown if the specified collection is <code>null</code>
-	 * @see #remove(Object)
-	 * @see #contains(Object)
+	 * {@inheritDoc}
+	 * @implSpec This method is currently unsupported.
 	 */
+	@Override
 	public boolean retainAll(final Collection<?> collection) { //TODO add retainAll() support
 		throw new UnsupportedOperationException("RDFListResource does not yet support retainAll()");
 	}
 
-	/**
-	 * Returns the index in this list of the first occurrence of the specified element, or -1 if this list does not contain this element.
-	 * @param object The element to search for.
-	 * @return The index in this list of the first occurrence of the specified element, or -1 if this list does not contain this element.
-	 * @throws ClassCastException Thrown if the type of the specified element is incompatible with this list.
-	 */
+	@Override
 	public int indexOf(final Object object) {
 		int index = 0; //start out on the first index
 		//TODO del		final RDFObject rdfObject=(RDFObject)object;	//cast the object to an RDF object to make sure it's the correct type
@@ -658,12 +547,7 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 		return -1; //show that we couldn't find the specified object
 	}
 
-	/**
-	 * Returns the index in this list of the last occurrence of the specified element, or -1 if this list does not contain this element.
-	 * @param object The element to search for.
-	 * @return The index in this list of the last occurrence of the specified element, or -1 if this list does not contain this element.
-	 * @throws ClassCastException Thrown if the type of the specified element is incompatible with this list.
-	 */
+	@Override
 	public int lastIndexOf(final Object object) {
 		int lastIndexOf = -1; //start off not knowing the last index of the object
 		int index = 0; //start out on the first index
@@ -680,7 +564,7 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 		return lastIndexOf; //return the last index at which we found the object, or -1 if we couldn't find it a tall 		
 	}
 
-	/** Removes all of the elements from this collection. */
+	@Override
 	public void clear() {
 		setFirst(null); //remove our first element
 		setRest(null); //remove the rest of the list
@@ -688,41 +572,17 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 	}
 
 	/**
-	 * Returns a view of the portion of this list between the specified <code>fromIndex</code>, inclusive, and <code>toIndex</code>, exclusive. (If
-	 * <code>fromIndex</code> and <code>toIndex</code> are equal, the returned list is empty.) The returned list is backed by this list, so non-structural changes
-	 * in the returned list are reflected in this list, and vice-versa. The returned list supports all of the optional list operations supported by this list.
-	 * <p>
-	 *
-	 * This method eliminates the need for explicit range operations (of the sort that commonly exist for arrays). Any operation that expects a list can be used
-	 * as a range operation by passing a subList view instead of a whole list. For example, the following idiom removes a range of elements from a list:
-	 * 
-	 * <pre>
-	 * list.subList(from, to).clear();
-	 * </pre>
-	 * 
-	 * Similar idioms may be constructed for <code>indexOf</code> and <code>lastIndexOf</code>, and all of the algorithms in the <code>Collections</code> class
-	 * can be applied to a subList.
-	 * <p>
-	 *
-	 * The semantics of the list returned by this method become undefined if the backing list (i.e., this list) is <i>structurally modified</i> in any way other
-	 * than via the returned list. (Structural modifications are those that change the size of this list, or otherwise perturb it in such a fashion that
-	 * iterations in progress may yield incorrect results.)
-	 *
-	 * @param fromIndex low endpoint (inclusive) of the subList.
-	 * @param toIndex high endpoint (exclusive) of the subList.
-	 * @return a view of the specified range within this list.
-	 * 
-	 * @throws IndexOutOfBoundsException for an illegal endpoint index value (fromIndex &lt; 0 || toIndex &gt; size || fromIndex &gt; toIndex).
+	 * {@inheritDoc}
+	 * @implSpec This method is currently unsupported.
 	 */
+	@Override
 	public List<E> subList(final int fromIndex, final int toIndex) {
-		return null; //TODO implement subList()
+		throw new UnsupportedOperationException(); //TODO implement subList()
 	}
 
 	/**
 	 * An iterator that allows iteration over the the elements in the list resource.
-	 * <p>
-	 * This implementation does not support <code>remove()</code>.
-	 * </p>
+	 * @implSpec This implementation does not support {@link #remove()}.
 	 */
 	protected class RDFListIterator implements Iterator<E> {
 
@@ -734,19 +594,15 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 			nextList = RDFListResource.this; //the first list element will be represented by our current list resource
 		}
 
-		/** @return <code>true</code> if the iterator has more elements. */
+		@Override
 		public boolean hasNext() {
 			//we have a next list element if there is a next list node and it's not the nil resource;
 			//make sure it has a next element as well, in case the list is corrupt, as that is what the next() method will use
 			return nextList != null && !RDFResources.isNil(nextList) && getFirst(nextList) != null;
 		}
 
-		/**
-		 * @return The next element in the iteration.
-		 * @throws NoSuchElementException iteration has no more elements.
-		 */
+		@Override
 		@SuppressWarnings("unchecked")
-		//cast needed so that Sun JDK 1.6.0_03-b05 will know which type we want; not required for Eclipse 3.4M3
 		public E next() {
 			if(nextList != null && !RDFResources.isNil(nextList)) { //if we have a next list that isn't the nil resource
 				final E nextResource = (E)getFirst(nextList); //get the element represented by the list
@@ -759,13 +615,10 @@ public class RDFListResource<E extends RDFObject> extends TypedRDFResource imple
 		}
 
 		/**
-		 * Removes from the underlying collection the last element returned by the iterator. This method can be called only once per call to {@link #next()}. The
-		 * behavior of an iterator is unspecified if the underlying collection is modified while the iteration is in progress in any way other than by calling this
-		 * method. This implementation always throws an {@link UnsupportedOperationException}.
-		 * @throws UnsupportedOperationException Thrown if the {@link #remove()} operation is not supported by this Iterator.
-		 * @throws IllegalStateException Thrown if the {@link #next()} method has not yet been called, or the {@link #remove()} method has already been called after
-		 *           the last call to the {@link #next()} method.
+		 * {@inheritDoc}
+		 * @implSpec This method is currently unsupported.
 		 */
+		@Override
 		public void remove() {
 			throw new UnsupportedOperationException(); //show that we don't yet support removing elements			
 		}

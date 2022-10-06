@@ -55,8 +55,8 @@ public class Dictionary extends TypedRDFResource {
 	 * @return The list of entries for this dictionary.
 	 * @throws ClassCastException if the value of the interactions property is not a list resource.
 	 */
-	public RDFListResource getEntries() {
-		return (RDFListResource)getPropertyValue(DICTO_NAMESPACE_URI, ENTRIES_PROPERTY_NAME); //get the dicto:entries property value		
+	public RDFListResource<?> getEntries() {
+		return (RDFListResource<?>)getPropertyValue(DICTO_NAMESPACE_URI, ENTRIES_PROPERTY_NAME); //get the dicto:entries property value		
 	}
 
 	/**

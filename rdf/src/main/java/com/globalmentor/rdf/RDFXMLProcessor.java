@@ -236,7 +236,7 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 			referenceURI = null; //this is a blank node
 		}
 		final Resource resource; //we'll create either an RDF resource, if we know the type, or a proxy for the resource
-		if(referenceURI != null) { //if we have a reference URI for the resouce
+		if(referenceURI != null) { //if we have a reference URI for the resource
 			resource = getResourceProxy(referenceURI); //create a resource proxy from the reference URI, or use one already available for the reference URI
 		} else { //if there is no reference URI
 			//TODO del Log.trace("there is no reference URI; getting proxy");
@@ -431,7 +431,7 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 					lastItemListResource = listResource; //save this list resource for the next time around, in case there are other list items
 				}
 			}
-			final RDFListResource nilListResource = new RDFListResource(NIL_RESOURCE_URI); //create a list resource representing the rdf:nil resource; don't use an existing rdf:nil list resource, because the reference URI may need to change when the list is modified
+			final RDFListResource<RDFObject> nilListResource = new RDFListResource<RDFObject>(NIL_RESOURCE_URI); //create a list resource representing the rdf:nil resource; don't use an existing rdf:nil list resource, because the reference URI may need to change when the list is modified
 			//add a statement in the form, {nil list, rdf:type, rdf:list}
 			addStatement(new DefaultStatement(nilListResource, typeProperty, listClassResource));
 			if(lastItemListResource != null) { //if there was a last item
@@ -461,7 +461,7 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 					+ "."; //TODO change to an actual RDF error
 			if(referenceURIValue != null || nodeIDValue != null) { //if there is a reference URI or a node ID, this is a reference to another node
 				final ResourceProxy resourceProxy; //we'll create a stand-in object for the resource
-				if(referenceURIValue != null) { //if we have a reference URI for the resouce
+				if(referenceURIValue != null) { //if we have a reference URI for the resource
 					final URI referenceURI = resolveURI(element, new URI(referenceURIValue)); //resolve the reference URI to the base URI
 					propertyValue = getResourceProxy(referenceURI); //create a resource proxy from the reference URI, or use one already available for the reference URI
 				} else { //if there is no reference URI
@@ -574,6 +574,7 @@ public class RDFXMLProcessor extends AbstractRDFProcessor {
 					//TODO fix logging Log.warn("Non-prefixed rdf:" + attributeLocalName + " attribute deprecated."); //TODO put in a real warning
 					return element.getAttributeNS(null, attributeLocalName); //return the non-prefixed attribute value
 				}
+				break;
 			case ANY:
 				final NamedNodeMap attributes = element.getAttributes(); //get the attributes
 				for(int i = attributes.getLength() - 1; i >= 0; --i) { //look at all the attributes

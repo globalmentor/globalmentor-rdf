@@ -195,6 +195,7 @@ public class RDFResourceIOKit<R extends RDFResource> extends AbstractIOKit<R> {
 	 * @return The RDF resource loaded from the input stream.
 	 * @throws IOException Thrown if there is an error reading the data.
 	 */
+	@SuppressWarnings("unchecked")
 	public R load(final InputStream inputStream, final URI baseURI) throws IOException {
 		try {
 			final RDFModel rdf = new RDFModel(); //create a new RDF data model

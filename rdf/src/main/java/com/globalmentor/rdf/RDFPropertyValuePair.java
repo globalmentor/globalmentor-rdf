@@ -16,17 +16,19 @@
 
 package com.globalmentor.rdf;
 
-import com.globalmentor.model.NameValuePair;
+import java.util.AbstractMap;
 
 /**
  * An RDF property and its value.
  * @author Garret Wilson
  */
-public class RDFPropertyValuePair extends NameValuePair<RDFResource, RDFObject> {
+public class RDFPropertyValuePair extends AbstractMap.SimpleImmutableEntry<RDFResource, RDFObject> {
+
+	private static final long serialVersionUID = -6327803011358027787L;
 
 	/** @return A property resource; the predicate of an RDF statement. */
 	public RDFResource getProperty() {
-		return getName();
+		return getKey();
 	}
 
 	/** @return A property value; the object of an RDF statement. */

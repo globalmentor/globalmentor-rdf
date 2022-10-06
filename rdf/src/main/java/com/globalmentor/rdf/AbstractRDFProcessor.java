@@ -307,7 +307,7 @@ public abstract class AbstractRDFProcessor {
 		//TODO del Log.trace("ready to process statements");
 		final Iterator<Statement> statementIterator = getStatementIterator(); //get an iterator to statements
 		while(statementIterator.hasNext()) { //while there are more statements
-			final Statement statement = (Statement)statementIterator.next(); //get the next statement
+			final Statement statement = statementIterator.next(); //get the next statement
 			//TODO del Log.trace("here's a statement:", statement);
 			final Resource subject = statement.getSubject(); //get the statement subject
 			final Resource predicate = statement.getPredicate(); //get the statement predicate
@@ -392,7 +392,7 @@ public abstract class AbstractRDFProcessor {
 		 */
 		public boolean equals(final Object object) {
 			if(getURI() != null) { //if we have a reference URI
-				return super.equals(object); //compare using the default resouce functionality
+				return super.equals(object); //compare using the default resource functionality
 			} else { //if we don't have a reference URI, we must have a node ID; compare node IDs
 				assert getNodeID() != null : "Resource proxy must have either a reference URI or node ID.";
 				if(object instanceof ResourceProxy) { //if the other object is resource proxy

@@ -299,11 +299,11 @@ public class RDFResources {
 	 * @param rdf The RDF data model.
 	 * @param typeNamespaceURI The XML namespace URI that represents part of the reference URI.
 	 * @param typeLocalName The XML local name that represents part of the reference URI.
-	 * @return A resource of the requested type, or <code>null</code> if there are no resourcees with the specified type.
+	 * @return A resource of the requested type, or <code>null</code> if there are no resources with the specified type.
 	 */
 	public static RDFResource getResourceByType(final RDFModel rdf, final URI typeNamespaceURI, final String typeLocalName) { //TODO should we move these to the RDF data model?
 		final Iterator<RDFResource> resourceIterator = getResourcesByType(rdf, typeNamespaceURI, typeLocalName).iterator(); //get an iterator to matching resources
-		return resourceIterator.hasNext() ? (RDFResource)resourceIterator.next() : null; //return the first resource, if there are any at all
+		return resourceIterator.hasNext() ? resourceIterator.next() : null; //return the first resource, if there are any at all
 	}
 
 	/**
@@ -322,11 +322,11 @@ public class RDFResources {
 	 * which one will be returned.
 	 * @param rdf The RDF data model.
 	 * @param typeURI The reference URI of the type resource.
-	 * @return A resource of the requested type, or <code>null</code> if there are no resourcees with the specified type.
+	 * @return A resource of the requested type, or <code>null</code> if there are no resources with the specified type.
 	 */
 	public static RDFResource getResourceByType(final RDFModel rdf, final URI typeURI) {
 		final Iterator<RDFResource> resourceIterator = getResourcesByType(rdf, typeURI).iterator(); //get an iterator to matching resources
-		return resourceIterator.hasNext() ? (RDFResource)resourceIterator.next() : null; //return the first resource, if there are any at all
+		return resourceIterator.hasNext() ? resourceIterator.next() : null; //return the first resource, if there are any at all
 	}
 
 	/**

@@ -33,7 +33,9 @@ import org.w3c.dom.Document;
  * Class for loading and saving a Dicto dictionary.
  * @author Garret Wilson
  * @see Dictionary
+ * @deprecated
  */
+@Deprecated
 public class DictionaryModelIOKit extends AbstractIOKit<ResourceModel<Dictionary>> {
 
 	/** Default constructor. */

@@ -21,13 +21,11 @@ import java.util.*;
 
 import static com.globalmentor.rdf.spec.RDF.*;
 
-import com.globalmentor.model.NameValuePair;
-
 /**
  * Represents an RDF sequence resource.
  * @author Garret Wilson
  */
-public class RDFSequenceResource extends RDFContainerResource implements Comparator {
+public class RDFSequenceResource extends RDFContainerResource implements Comparator<RDFPropertyValuePair> {
 
 	/** @return The namespace URI of the ontology defining the default type of this resource. */
 	public URI getDefaultTypeNamespaceURI() {
@@ -70,42 +68,39 @@ public class RDFSequenceResource extends RDFContainerResource implements Compara
 	}
 
 	/**
-	 * @return A read-only collection of the items (specified by <code>rdf:li_</code> properties), in the order specified by their <code>rdf:li_</code> properties.
+	 * @return A read-only collection of the items (specified by <code>rdf:li_</code> properties), in the order specified by their <code>rdf:li_</code>
+	 *         properties.
 	 * @see #getItemList
 	 */
-	public Collection getItemCollection() {
+	public Collection<RDFObject> getItemCollection() {
 		return getItemList(); //return the ordered version
 	}
 
 	/**
 	 * @return A read-only list of the items in the container, in the order specified by their <code>rdf:li_</code> properties.
 	 */
-	public List getItemList() {
-		final List itemPropertyList = getItemProperties(); //get the <li> item properties
-		Collections.sort(itemPropertyList, this); //sort the items by the number contained in the names
+	public List<RDFObject> getItemList() {
+		final List<RDFPropertyValuePair> itemPropertyList = getItemProperties(); //get the <li> item properties
+		itemPropertyList.sort(this); //sort the items by the number contained in the names
 		return Collections.unmodifiableList(getItemList(itemPropertyList)); //return the values of the item properties as an unmodifiable list
 	}
 
 	/**
-	 * Compares two <code>NameValuePair</code> objects for order. Returns a negative integer, zero, or a positive integer as the first argument is less than,
-	 * equal to, or greater than the second.
+	 * {@inheritDoc}
 	 * <p>
 	 * The name of the object is interpreted to be an RDF container property that contains as its reference URI the order within the container of the item.
 	 * </p>
-	 * @param object1 The first object to be compared, a <code>NameValuePair</code>.
-	 * @param object2 The second object to be compared, a <code>NameValuePair</code>.
-	 * @return A negative integer, zero, or a positive integer as the first argument is less than, equal to, or greater than the second.
-	 * @throws ClassCastException If the arguments are not <code>NameValuePair</code>s.
 	 */
-	public int compare(final Object object1, final Object object2) { //TODO we might put this in RDFContainerResource, even though it isn't used by all containers---or maybe even make an internal class that does this comparation
+	@Override
+	public int compare(final RDFPropertyValuePair object1, final RDFPropertyValuePair object2) { //TODO we might put this in RDFContainerResource, even though it isn't used by all containers---or maybe even make an internal class that does this comparation
 		//create the URI string that will appear at the beginning of every rdf:li_XXX property
 		//TODO testing; make this constant and static somewhere
 		final String RDF_LI_REFERENCE_URI_PREFIX = NAMESPACE_URI + CONTAINER_MEMBER_PREFIX;
 		//TODO testing; make this constant and static somewhere
 		final int RDF_LI_REFERENCE_URI_PREFIX_LENGTH = RDF_LI_REFERENCE_URI_PREFIX.length();
 		//get the reference URIs of the two properties
-		final URI typeURI1 = ((RDFResource)((NameValuePair)object1).getName()).getURI();
-		final URI typeURI2 = ((RDFResource)((NameValuePair)object2).getName()).getURI();
+		final URI typeURI1 = object1.getProperty().getURI();
+		final URI typeURI2 = object2.getProperty().getURI();
 		//TODO fix for better checking		if(typeURI1.startsWith(CONTAINER_MEMBER_PREFIX) && typeURI2.startsWith(CONTAINER_MEMBER_PREFIX))  //if
 
 		if(typeURI1.toString().startsWith(RDF_LI_REFERENCE_URI_PREFIX)) { //if the first property an rdf:li_XXX	//TODO fix better
@@ -125,18 +120,6 @@ public class RDFSequenceResource extends RDFContainerResource implements Compara
 				return typeURI1.compareTo(typeURI2); //compare the URIs normally
 		}
 		//TODO fix this to sort non-li properties as well
-		/*TODO del
-					{
-						final NameValuePair propertyNameValuePair=processProperty((Element)childNode);  //parse the element representing an RDF property
-						final RDFResource property;  //we'll see whether we should convert <rdf:li>
-						if(propertyNameValuePair.getName().equals(RDF_LI_REFERENCE_URI)) {	//if this is a rdf:li property
-							++memberCount;  //show that we have another member
-							//create a local name in the form "_X"
-							final String propertyLocalName=CONTAINER_MEMBER_PREFIX+memberCount;
-							property=getRDF().locateResource(RDF_NAMESPACE_URI, propertyLocalName); //use the revised member form as the property
-						}
-
-		*/
 	}
 
 }

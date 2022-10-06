@@ -33,9 +33,7 @@ import static java.util.Objects.*;
  * Constants used in RDF processing of a directory of type <code>text/directory</code> as defined in <a href="http://www.ietf.org/rfc/rfc2425.txt">RFC 2425</a>,
  * "A MIME Content-Type for Directory Information".
  * @author Garret Wilson
- * @deprecated
  */
-@Deprecated
 public class RDFDirectory {
 
 	/** The recommended prefix to the directory namespace. */

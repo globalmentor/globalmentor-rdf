@@ -23,9 +23,7 @@ import com.globalmentor.text.directory.ContentLine;
  * Class that can create an RDF property resource to represent a content lines of a directory of type <code>text/directory</code> as defined in <a
  * href="http://www.ietf.org/rfc/rfc2425.txt">RFC 2425</a>, "A MIME Content-Type for Directory Information".
  * @author Garret Wilson
- * @deprecated
  */
-@Deprecated
 public interface RDFPropertyFactory {
 
 	/**
